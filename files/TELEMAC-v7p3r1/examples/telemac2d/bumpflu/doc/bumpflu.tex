@@ -1,0 +1,135 @@
+\chapter{bumpflu}
+
+\section{Description of the problem}
+\bigskip
+This test case presents a flow over a bump on the bed with subcritical condition.
+It allows to show that \telemac{2d} is able to correctly reproduce 
+the hydrodynamic impact of a changing bed slopes, vertical flow 
+contractions and expansions. Furthermore, It allows to have a good 
+representation of flows computed in steady and transient flow regimes. \\
+The solution produced by \telemac{2d} in a frictionless channel 
+presenting an idealised bump on the bottom  is compared with 
+the analytical solution to this problem. For this test case, 
+the studied flow regime is sub-critical.
+
+\bigskip
+The geometry dimensions of the channel are 2~m wide and 20.5~m long. 
+It is horizontal with a 4~m long bump in its middle 
+(see Figure \ref{t2d:bumpflu:fig:baty}). The maximum elevation of 
+the bump is 0.2~m (see Figure \ref{t2d:bumpflu:fig:profil}) with 
+the bottom $z_f$ describes by the following equation :
+\begin{equation*}
+z_f = \left\{
+\begin{array}{rl}
+  -0.05(x-10)^2 & \text{ if 8 m < x < 12 m} \\
+-0.20 & \text{ elsewhere}
+\end{array}
+\right.
+\end{equation*}
+Note that the horizontal viscosity turbulent is constant and equal to zero. 
+However instead of prescribing a zero viscosity, no diffusion step could 
+have been used (keyword DIFFUSION OF VELOCITY prescribed to NO).
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/Mesh_topography.png}
+ \caption{Mesh and topography of the channel.}
+ \label{t2d:bumpflu:fig:baty}
+\end{figure}
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bottom_level.png}
+ \caption{Profile of the bump.}
+ \label{t2d:bumpflu:fig:profil}
+\end{figure}
+
+\section{Initial and boundary conditions}
+\bigskip
+The initial conditions are a null velocity and an analytical solution 
+(Equation \eqref{t2d:bumpflu:eq:ha}) for the water depth.
+
+\bigskip
+The boundary conditions are:
+\begin{itemize}
+\item At the channel entrance, the flow rate is $Q =  8.858893836~\text{m}^3\text{s}^{-1}$  
+(note that  $\displaystyle{q=\frac{Q}{B}}$, $B$ being the channel width). 
+The flow rate is taken so that the $q$ value is equal at $\sqrt{gh}$ in entrance.
+\item At the channel outlet, the free surface elevation is $ z_{s} = 1.8~\text{m}$. 
+Therefore, the depth
+$\displaystyle{h =  z_{s}-z_{f} = 2~\text{m}}$.
+\item No friction is taken into account on the bottom and on the lateral walls.
+\end{itemize}
+
+\section{Mesh and numerical parameters}
+\bigskip
+The mesh is regular, with a higher resolution in the middle of the channel. 
+It is made up with quadrangles split into two triangles.
+It is composed of 2,620 triangular elements (1,452 nodes) and the size of 
+triangles ranges between 0.25~m and 0.5~m. The triangular elements types 
+are linear triangles (P1) for velocities and for water depth.
+
+\bigskip
+The time step is 0.01~s for a period of 10~s. In fact, \telemac{2d} is run forward 
+in time until a steady state flow is obtained. The resolution accuracy 
+for the velocity is taken at $10^{-5}$.
+
+\bigskip
+Note that for numerical resolution, the conjugate gradient on a normal equation 
+is used for solving the propagation step (option 1). Furthermore the treatment 
+of linear system is done with a wave equation. To solve advection, 
+the conservative PSI scheme is used for the depth (scheme 5) and 
+the conservative N scheme is used for the velocities (scheme 4). 
+In addition, the treatment of linear system is done with a wave equation. 
+To finish, the implicitation coefficient for depth and velocities is equal at 0.6. 
+
+\section{Results}
+\bigskip
+From an analytical point of view, no friction on the bottom allows to write the Bernoulli 
+equation between the entrance of the channel E (where $q_E = 4.43~\text{m}^2\text{s}^{-1}$ 
+and $h_E = 2~\text{m}$) and point A of abscissa $x_A$:
+\begin{equation*}
+  z_{fA}+h_{A}+ \frac{q_{A}^{2}}{2gh_{A}^{2}}=z_{fE}+h_{E}+ 
+  \frac{q_{E}^{2}}{2gh_{E}^{2}}
+\end{equation*}
+Replacing by the values, the equation can be written as following:
+\begin{equation*}
+  z_{fA}+h_{A}+ \frac{q_{A}^{2}}{2gh_{A}^{2}}=2.25
+\end{equation*}
+Therefore, water depth $h_A$ is given analytically by:	  
+\begin{equation}
+h_{A}^{3}+(z_{fA}-2.05)h_{A}^{2}+\frac{q_{A}^{2}}{2g}=0
+\label{t2d:bumpflu:eq:ha}
+\end{equation}
+In this test case, the numerical results are compared with the 
+analytical solution, when the state flow is steady 
+(Figure \ref{t2d:bumpflu:fig:velo}). Furthermore, the computed 
+Froude number is also compared with the analytical solution 
+$\displaystyle F_{r}=\frac{q}{h\sqrt{gh}}$.
+The solution produced by \telemac{2d} is in close agreement with 
+the analytical solution as shown on the Figures \ref{t2d:bumpflu:fig:h} and \ref{t2d:bumpflu:fig:fr}. 
+
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/velocity_vector.png}
+ \caption{Velocity field for the steady state flow.}
+ \label{t2d:bumpflu:fig:velo}
+\end{figure}
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/free_surface.png}
+ \caption{Comparison between analytical solution and \telemac{2d} 
+ solution for the free surface elevation.}
+ \label{t2d:bumpflu:fig:h}
+\end{figure}
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/froude_number.png}
+ \caption{Comparison between analytical solution and \telemac{2d} 
+ solution for the Froude number.}
+ \label{t2d:bumpflu:fig:fr}
+\end{figure}
+
+\bigskip
+To conclude, this type of channel flow is driven by advection 
+and pressure gradient terms. It is adequately reproduced by 
+\telemac{2d} in sub-critical flow regime.
+

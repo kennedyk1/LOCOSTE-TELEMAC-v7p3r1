@@ -1,0 +1,78 @@
+\chapter{ Getting Started with TelApy  module}
+\label{ch:inp:outp}
+
+\section{TelApy module installation}
+
+In order to be able to use TelApy module, the \telemacsystem and all its
+external libraries must be compiled in dynamic form. The explanation of dynamic
+compilation is available on the \telemacsystem website in the wiki category
+"installation notes 2"
+(\url{http://wiki.opentelemac.org/doku.php?id=installation_notes_2_beta}).
+
+Then after compiling the module, the use of TelApy is presented and explained
+in some notebooks documentation. In fact, the TelApy module is provided with
+some tutorial intended for people who want to run \telemac{2D} in an
+interactive mode with the help of the \python programming language.
+
+\section{How to run notebook documentation}
+
+In order to read notebooks, the user needs to install a notebook viewer such as
+jupyter notebook. Notebook documents (or "notebooks", all lower case) are
+documents which contain both computer code (e.g. \python) and rich text elements
+(paragraph, equations, figures, links, etc...). Notebook documents are both
+human-readable documents containing the analysis description and the results
+(figures, tables, etc..) as well as executable documents which can be run to
+perform data analysis.
+
+First and foremost, the Jupyter Notebook is an interactive environment for
+writing and running code. The notebook is capable of running code in a wide
+range of languages. However, each notebook is associated with a single kernel.
+This notebook is associated with the I\python kernel, therefore runs \python
+code. More details on the installation and use can be found in the Jupyter
+website \url{http://jupyter.org}.
+
+\section{Notebook examples in TelApy}
+
+As already mentioned, the TelApy module is provided with some tutorial intended
+for people who want to run \telemac{2D} in an interactive mode with the help of
+the \python programming language. Currently, these tutorials based on notebook
+examples are located in the folder
+$\$HOMETEL/scripts/python27/TelApy/notebooks$. In this directory, two notebooks
+categories are available:
+
+\begin{itemize}
+\item the folder $api$ contains tutorials to run \telemac{2D} in an interactive
+  mode with the help of the \python programming language. The interactive mode
+  means that communication with \telemac{2D} becomes possible throughout the
+  simulation without having to stop it. One can easily set or get the value of
+  any variables at each time step with the help of special communication
+  functions: the Application Programming Interfaces (API).
+  \begin{itemize}
+  \item "telemac2d.ipynb" is a tutorial dedicated to the API description and
+    the presentation of \telemac{2D} \python functionalities.
+   \item "telemac2d\_example.ipynb" is a tutorial showing a computation run of
+     \telemac{2D} in an interactive mode with the help of the \python programming
+     language.
+  \end{itemize}
+\item  The folder $optim$ is dedicated, as indicated by his name, to
+  optimization problem.
+  \begin{itemize}
+  \item "genop.ipynb" is a tutorial intended for people who want to use the
+    Genop optimizer. Genop (Genetic optimizer) is a \python package implementing
+    the Genetic Algorithm (GA) for a mono-objective minimization. GA is a
+    derivative-free optimizer. This metaheuristic mimics the natural evolution
+    with the repeated application of operators (selection, mutation, crossover,
+    etc.) in order to evolve a set of solutions towards the optimality. People
+    interested in this class of algorithms may refer to Genetic Algorithms or
+    Genetic Programming for more information.
+  \item "telemac2d\_optim\_genop.ipynb" is a tutorial showing how to optimize a
+    \telemac{2D} case with a genetic algorithm based on Genop \python module.
+    \item "telemac2d\_optim\_newop.ipynb" is a tutorial showing how to optimize
+      a \telemac{2D} case with the deterministic algorithm based on the SciPy
+      package.
+  \end{itemize}
+\end{itemize}
+
+In order to see and run the notebook examples, the user need to launch the
+command "jupyter notebook example\_name.ipynb". This will launch a Jupyter
+server and a page should appear in your default internet browser.

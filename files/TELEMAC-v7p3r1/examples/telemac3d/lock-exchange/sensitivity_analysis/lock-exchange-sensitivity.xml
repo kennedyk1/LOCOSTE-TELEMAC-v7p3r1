@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<!-- Validation and verification of test cases, given a list of CAS files
+-->
+<validation xref="lock-exchange-sensitivity" rank="19" >
+
+<!-- Extras and Meta Data ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+   <deco xref="default">
+      <look format="png" colourbar="gist_rainbow" />
+      <data title="lock-exchange" author="A.Leroy" contact="www.opentelemac.org" />
+   </deco>
+   <deco xref="vect">
+      <look colour="jet.xml" />
+   </deco>
+   <deco xref="line">
+      <look colour="k" />
+   </deco>
+   <deco xref="PlotVert1" >
+      <look aspect="1" size="(20,10)" roi="(0;-4)(30;0)" cmap="jet"/>
+   </deco>
+   <deco xref="PlotVert2">
+      <look aspect="1" size="(30,4)" roi="(0;-4)(30;0)" levels="np.arange(-0.1,1.2,0.1)"  cmap="jet"/>
+   </deco>
+   <deco xref="PlotHoriz">
+      <look size="(20,5)" roi="(0;0)(30;1.2)" />
+   </deco>
+
+<!-- Actions on CAS files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /!\ do="cas;princi" are being ignored at the moment
+-->
+   <action xref="1"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_CARAC.cas"
+       title="lock-exchange CARAC"
+   />
+   <action xref="2"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_SUPG.cas"
+       title="lock-exchange SUPG"
+   />
+   <action xref="3"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_LEOP.cas"
+       title="lock-exchange LEOP"
+   />
+   <action xref="4"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_PSI1.cas"
+       title="lock-exchange PSI1"
+   />
+   <action xref="5"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_PSI2_2corr.cas"
+       title="lock-exchange PSI2 2 corrections"
+   />
+   <action xref="6"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_PSI2_3corr.cas"
+       title="lock-exchange PSI2 3 corrections"
+   />
+   <action xref="7"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_PSI2_4corr.cas"
+       title="lock-exchange PSI2 4 corrections"
+   />
+   <action xref="8"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_PSI2_5corr.cas"
+       title="lock-exchange PSI2 5 corrections"
+   />
+   <action xref="9"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_PSI3_2corr.cas"
+       title="lock-exchange PSI3 2 corrections"
+   />
+   <action xref="10"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_PSI3_3corr.cas"
+       title="lock-exchange PSI3 3 corrections"
+   />
+   <action xref="11"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_PSI3_4corr.cas"
+       title="lock-exchange PSI3 4 corrections"
+   />
+   <action xref="12"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_PSI3_5corr.cas"
+       title="lock-exchange PSI3 5 corrections"
+   />
+   <action xref="13"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_dpwaveq_PSI2_2corr.cas"
+       title="lock-exchange DPWAVEQ=YES PSI2 2 corrections"
+   />
+   <action xref="14"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_dpwaveq_PSI2_3corr.cas"
+       title="lock-exchange DPWAVEQ=YES PSI2 3 corrections"
+   />
+   <action xref="15"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock_dpwaveq_PSI2_4corr.cas"
+       title="lock-exchange DPWAVEQ=YES PSI2 4 corrections"
+   />
+   <action xref="16"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock-hydro.cas"
+       title="lock-exchange hydrostatic"
+   />
+
+<!-- plot2d ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+   <plot2d xref="../doc/img/lock-exchange_CARAC" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="1:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_SUPG" type="v-section" config="oneofall" time="[-1]" size="(20,10)">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="2:T3DRES" deco="PlotVert2" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_LEOP" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="3:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_PSI1" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="4:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_PSI2_2corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="5:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_PSI2_3corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="6:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_PSI2_4corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="7:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_PSI2_5corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="8:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_PSI3_2corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="9:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_PSI3_3corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="10:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_PSI3_4corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="11:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_PSI3_5corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="12:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_dpwaveq_PSI2_2corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="13:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_dpwaveq_PSI2_3corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="14:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_dpwaveq_PSI2_4corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="15:T3DRES" />
+   </plot2d>
+   <plot2d xref="../doc/img/lock-exchange_hydro" type="v-section" config="oneofall" time="[-1]" deco="PlotVert1">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="16:T3DRES" />
+   </plot2d>
+
+ </validation>

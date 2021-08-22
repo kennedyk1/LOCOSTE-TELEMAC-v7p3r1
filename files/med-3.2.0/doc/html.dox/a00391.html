@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>MED fichier: Référence du fichier MEDdatasetNumEcrire.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Généré par Doxygen 1.6.1 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Documentation&nbsp;MED</span></a></li>
+      <li><a href="pages.html"><span>Guides&nbsp;d'utilisation</span></a></li>
+      <li><a href="modules.html"><span>Guides&nbsp;de&nbsp;référence</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_5dd6e84f739ad96c16a708db73465b58.html">src</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_766283d6fbadfdb96581688ff1159108.html">2.3.6</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_95a8dbd30b67e3522edbcdd1cff8485a.html">hdfi</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier MEDdatasetNumEcrire.c</h1><code>#include &lt;<a class="el" href="a00332_source.html">med.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="a00345_source.html">med_config.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="a00357_source.html">med_outils.h</a>&gt;</code><br/>
+<code>#include &lt;hdf5.h&gt;</code><br/>
+<div class="dynheader">
+Graphe des dépendances par inclusion de MEDdatasetNumEcrire.c:</div>
+<div class="dynsection">
+<div class="center"><img src="a01379.jpg" border="0" usemap="#MEDdatasetNumEcrire_8c_map" alt=""/></div>
+<map name="MEDdatasetNumEcrire_8c_map" id="MEDdatasetNumEcrire_8c">
+<area shape="rect" id="node3" href="a00332.html" title="med.h" alt="" coords="871,246,929,277"/><area shape="rect" id="node50" href="a00345.html" title="med_config.h" alt="" coords="1408,246,1507,277"/><area shape="rect" id="node52" href="a00357.html" title="med_outils.h" alt="" coords="1047,86,1143,117"/><area shape="rect" id="node7" href="a00359.html" title="med_proto.h" alt="" coords="853,326,947,357"/><area shape="rect" id="node9" href="a00376.html" title="medC_win_dll.h" alt="" coords="844,486,956,517"/><area shape="rect" id="node11" href="a00532.html" title="medlibrary.h" alt="" coords="5,406,99,437"/><area shape="rect" id="node14" href="a00468.html" title="medfile.h" alt="" coords="123,406,197,437"/><area shape="rect" id="node17" href="a00560.html" title="medmesh.h" alt="" coords="221,406,312,437"/><area shape="rect" id="node20" href="a00439.html" title="medfield.h" alt="" coords="336,406,419,437"/><area shape="rect" id="node23" href="a00426.html" title="medfamily.h" alt="" coords="443,406,536,437"/><area shape="rect" id="node26" href="a00406.html" title="medequivalence.h" alt="" coords="560,406,685,437"/><area shape="rect" id="node29" href="a00736.html" title="medsubdomain.h" alt="" coords="709,406,829,437"/><area shape="rect" id="node32" href="a00701.html" title="medprofile.h" alt="" coords="853,406,947,437"/><area shape="rect" id="node35" href="a00483.html" title="medfilter.h" alt="" coords="971,406,1053,437"/><area shape="rect" id="node38" href="a00550.html" title="medlocalization.h" alt="" coords="1077,406,1200,437"/><area shape="rect" id="node41" href="a00543.html" title="medlink.h" alt="" coords="1224,406,1301,437"/><area shape="rect" id="node44" href="a00682.html" title="medparameter.h" alt="" coords="1325,406,1440,437"/><area shape="rect" id="node47" href="a00511.html" title="medinterp.h" alt="" coords="1464,406,1555,437"/><area shape="rect" id="node55" href="a00362.html" title="med_vargs.h" alt="" coords="1277,166,1373,197"/><area shape="rect" id="node60" href="a00355.html" title="med_misc.h" alt="" coords="1048,166,1141,197"/><area shape="rect" id="node68" href="a00350.html" title="med_hdfi.h" alt="" coords="939,166,1024,197"/><area shape="rect" id="node71" href="a00361.html" title="med_utils.h" alt="" coords="1165,166,1253,197"/><area shape="rect" id="node65" href="a00348.html" title="med_exit_if.h" alt="" coords="1071,246,1169,277"/><area shape="rect" id="node76" href="a00346.html" title="med_err.h" alt="" coords="1193,246,1273,277"/></map>
+</div>
+
+<p><a href="a00391_source.html">Aller au code source de ce fichier.</a></p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Fonctions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00332_abd29d7c6abaef5da2a5ed1b73464f0ba.html#abd29d7c6abaef5da2a5ed1b73464f0ba">med_err</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00391_a99ad170365520060ef544dc1a62c46a8.html#a99ad170365520060ef544dc1a62c46a8">_MEDdatasetNumEcrire</a> (<a class="el" href="a00332_afa4ec8284026c8c5545e5333475fb65a.html#afa4ec8284026c8c5545e5333475fb65a">med_idt</a> pere, char *nom, <a class="el" href="a00331_a7d730da9417184bffcdccc90a1749e27.html#a7d730da9417184bffcdccc90a1749e27">med_type_champ</a> type, <a class="el" href="a00331_a0ac861d71fe5e0be056a86f9212f1c6a.html#a0ac861d71fe5e0be056a86f9212f1c6a">med_mode_switch</a> interlace, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> nbdim, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> fixdim, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> psize, <a class="el" href="a00331_afc7ce1d801c10d9348a0349e664fb9e5.html#afc7ce1d801c10d9348a0349e664fb9e5">med_mode_profil</a> pflmod, <a class="el" href="a00332_a88dc15143f934cc7b771bc89f46372dc.html#a88dc15143f934cc7b771bc89f46372dc">med_int</a> modifpfl, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *pfltab, <a class="el" href="a00332_a88dc15143f934cc7b771bc89f46372dc.html#a88dc15143f934cc7b771bc89f46372dc">med_int</a> ngauss, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *size, unsigned char *val)</td></tr>
+</table>
+</div>
+<hr size="1"/><address style="text-align: right;"><small>Généré le Thu Jan 21 18:06:19 2016 pour MED fichier par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
+</body>
+</html>

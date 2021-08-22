@@ -1,0 +1,15 @@
+\chapter{Outlooks}
+\label{ch:oulooks}
+
+The work on \telemacsystem interoperability is always in progress. In fact, all modules have not yet API structure.
+This will be completed in future with at least one new module available per new \telemacsystem version. Moreover, for the
+existing API, some works must be done in order to obtain a full API:
+\begin{itemize}
+\item Switch the instance use, normally API modules should be pointing on the
+instance and not the other way around. This will allow multiple instances of
+considered module to run at the same time.
+\item Add more variables (the one from the steering file for example)
+\item Remove all uses of save and common in the code they can induce memory
+leaks.
+\end{itemize}
+The outlooks in longer term vision is to remove "user fortran" because all modifications can be done directly via the APIs. Also, the coupling between modules using the APIs will be rewritted. And finally, more tutorials will be added in notebook format in order to facilitate the user life with APIs.

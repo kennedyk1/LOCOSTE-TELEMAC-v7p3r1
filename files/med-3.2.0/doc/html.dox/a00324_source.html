@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>MED fichier:  Fichier source de MAJ_300_310_champs.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Généré par Doxygen 1.6.1 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Documentation&nbsp;MED</span></a></li>
+      <li><a href="pages.html"><span>Guides&nbsp;d'utilisation</span></a></li>
+      <li><a href="modules.html"><span>Guides&nbsp;de&nbsp;référence</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_a0aa163f1191afd35e07e4162b62c072.html">tools</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_1c2e039cab605be7c1ddddc381601aab.html">medimport</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_653b003a27a7668fdbd2d617fcdfdd6b.html">3.0.0</a>
+  </div>
+</div>
+<div class="contents">
+<h1>MAJ_300_310_champs.c</h1><a href="a00324.html">Aller à la documentation de ce fichier.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/*  This file is part of MED.</span>
+<a name="l00002"></a>00002 <span class="comment"> *</span>
+<a name="l00003"></a>00003 <span class="comment"> *  COPYRIGHT (C) 1999 - 2016  EDF R&amp;D, CEA/DEN</span>
+<a name="l00004"></a>00004 <span class="comment"> *  MED is free software: you can redistribute it and/or modify</span>
+<a name="l00005"></a>00005 <span class="comment"> *  it under the terms of the GNU Lesser General Public License as published by</span>
+<a name="l00006"></a>00006 <span class="comment"> *  the Free Software Foundation, either version 3 of the License, or</span>
+<a name="l00007"></a>00007 <span class="comment"> *  (at your option) any later version.</span>
+<a name="l00008"></a>00008 <span class="comment"> *</span>
+<a name="l00009"></a>00009 <span class="comment"> *  MED is distributed in the hope that it will be useful,</span>
+<a name="l00010"></a>00010 <span class="comment"> *  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="l00011"></a>00011 <span class="comment"> *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="l00012"></a>00012 <span class="comment"> *  GNU Lesser General Public License for more details.</span>
+<a name="l00013"></a>00013 <span class="comment"> *</span>
+<a name="l00014"></a>00014 <span class="comment"> *  You should have received a copy of the GNU Lesser General Public License</span>
+<a name="l00015"></a>00015 <span class="comment"> *  along with MED.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="l00016"></a>00016 <span class="comment"> */</span>
+<a name="l00017"></a>00017 
+<a name="l00018"></a>00018 
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;<a class="code" href="a00345.html">med_config.h</a>&quot;</span>
+<a name="l00020"></a>00020 <span class="preprocessor">#include &quot;<a class="code" href="a00357.html">med_outils.h</a>&quot;</span>
+<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;<a class="code" href="a00332.html">med.h</a>&quot;</span>
+<a name="l00022"></a>00022 
+<a name="l00023"></a>00023 <span class="preprocessor">#include &lt;string.h&gt;</span>
+<a name="l00024"></a>00024 
+<a name="l00025"></a>00025 <span class="preprocessor">#include &quot;<a class="code" href="a00323.html">MAJ_300_310.h</a>&quot;</span>
+<a name="l00026"></a>00026 <span class="preprocessor">#include &quot;<a class="code" href="a00328.html">MAJ_version.h</a>&quot;</span>
+<a name="l00027"></a>00027 
+<a name="l00028"></a><a class="code" href="a00323_a1447491d3206d85416feb2ee53fa11a2.html#a1447491d3206d85416feb2ee53fa11a2">00028</a> <span class="keywordtype">void</span> <a class="code" href="a00324_a1447491d3206d85416feb2ee53fa11a2.html#a1447491d3206d85416feb2ee53fa11a2">MAJ_300_310_champs</a>(<a class="code" href="a00331_afa4ec8284026c8c5545e5333475fb65a.html#afa4ec8284026c8c5545e5333475fb65a">med_idt</a> fid)
+<a name="l00029"></a>00029 {
+<a name="l00030"></a>00030   <a class="code" href="a00331_abd29d7c6abaef5da2a5ed1b73464f0ba.html#abd29d7c6abaef5da2a5ed1b73464f0ba">med_err</a> ret;
+<a name="l00031"></a>00031   <a class="code" href="a00332_a5615eeaf85e0b3f40b74bdd24178f2cd.html#a5615eeaf85e0b3f40b74bdd24178f2cd">med_field_type</a>   typcha;
+<a name="l00032"></a>00032   <span class="keywordtype">char</span> nomcha    [<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1]=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00033"></a>00033   <span class="keywordtype">char</span> _meshname [<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1]=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00034"></a>00034   <span class="keywordtype">char</span> _dtunit   [<a class="code" href="a00332_a213ecd1a546eb96092b980a870bc386b.html#a213ecd1a546eb96092b980a870bc386b">MED_SNAME_SIZE</a>+1]=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00035"></a>00035   <span class="keywordtype">char</span> *comp= NULL, *unit= NULL;
+<a name="l00036"></a>00036   <a class="code" href="a00331_a88dc15143f934cc7b771bc89f46372dc.html#a88dc15143f934cc7b771bc89f46372dc">med_int</a>   ncomp,ncha;
+<a name="l00037"></a>00037   <a class="code" href="a00331_a88dc15143f934cc7b771bc89f46372dc.html#a88dc15143f934cc7b771bc89f46372dc">med_int</a>  _ncstp=0;
+<a name="l00038"></a>00038   <a class="code" href="a00332_a23f7fa6d76886ed3c91dc33b59190dee.html#a23f7fa6d76886ed3c91dc33b59190dee">med_bool</a> _local=<a class="code" href="a00332_a23f7fa6d76886ed3c91dc33b59190dee.html#a23f7fa6d76886ed3c91dc33b59190deea30b70cc2a253ed4141db9a78ba696046">MED_FALSE</a>;
+<a name="l00039"></a>00039   htri_t   _datasetexist;
+<a name="l00040"></a>00040   <span class="keywordtype">char</span> _pathi[(<a class="code" href="a00356_a946e73da702a9124f741da789561d75c.html#a946e73da702a9124f741da789561d75c">MED_TAILLE_CHA</a>+<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1)+2*<a class="code" href="a00331_a5ad5e5ac777d6bc82bb6d4ad38d7af53.html#a5ad5e5ac777d6bc82bb6d4ad38d7af53">MED_MAX_PARA</a>+1  ] = <a class="code" href="a00356_a85e63d51cfcc44545c55f6941555c5df.html#a85e63d51cfcc44545c55f6941555c5df">MED_CHA</a>;
+<a name="l00041"></a>00041   <span class="keywordtype">char</span> _pathf[(<a class="code" href="a00356_a946e73da702a9124f741da789561d75c.html#a946e73da702a9124f741da789561d75c">MED_TAILLE_CHA</a>+1+<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1)+2*<a class="code" href="a00331_a5ad5e5ac777d6bc82bb6d4ad38d7af53.html#a5ad5e5ac777d6bc82bb6d4ad38d7af53">MED_MAX_PARA</a>+1] = <span class="stringliteral">&quot;/CHA_/&quot;</span>;
+<a name="l00042"></a>00042   <span class="keywordtype">char</span> _pathtmp[<a class="code" href="a00356_a946e73da702a9124f741da789561d75c.html#a946e73da702a9124f741da789561d75c">MED_TAILLE_CHA</a>+3]=<span class="stringliteral">&quot;/CHA__/&quot;</span>;
+<a name="l00043"></a>00043   <span class="keywordtype">int</span> i=0,_num=0;
+<a name="l00044"></a>00044   <a class="code" href="a00331_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> _sizei=0,_sizef=0;
+<a name="l00045"></a>00045   <span class="keywordtype">char</span>    _cstpname[2*<a class="code" href="a00331_a5ad5e5ac777d6bc82bb6d4ad38d7af53.html#a5ad5e5ac777d6bc82bb6d4ad38d7af53">MED_MAX_PARA</a>+1]=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047   <a class="code" href="a00328_ab88877b4efa8141814f92e5bed812b75.html#ab88877b4efa8141814f92e5bed812b75">MAJ_version_num</a>(fid,3,0,8);
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049   <span class="comment">/* combien de champs dans le fichier */</span>
+<a name="l00050"></a>00050   ncha = <a class="code" href="a01042_ga0d8be6c1b6b24ff150a5adcb58831d93.html#ga0d8be6c1b6b24ff150a5adcb58831d93" title="Cette fonction permet de lire le nombre de champs dans un fichier.">MEDnField</a>(fid);
+<a name="l00051"></a>00051   <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>(ncha &lt; 0,<span class="stringliteral">&quot;lors de la lecture du nombre de champs&quot;</span>,NULL);
+<a name="l00052"></a>00052 
+<a name="l00053"></a>00053   <span class="comment">/* MAJ des champs */</span>
+<a name="l00054"></a>00054   <span class="keywordflow">for</span> (i=0;i&lt;ncha;i++) {
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056     <span class="comment">/* Lecture du nombre de composantes */</span>
+<a name="l00057"></a>00057     ncomp = <a class="code" href="a01042_gabe6258ebc74592af81c9b51379b7b7af.html#gabe6258ebc74592af81c9b51379b7b7af" title="Cette fonction lit le nombre de composantes d&amp;#39;un champ.">MEDfieldnComponent</a>(fid,i+1);
+<a name="l00058"></a>00058     <span class="keywordflow">if</span> (ncomp &lt; 0) {
+<a name="l00059"></a>00059       <a class="code" href="a00360_a3756046b0a6a7e51b8eb544d0d77c17c.html#a3756046b0a6a7e51b8eb544d0d77c17c">MESSAGE</a>(<span class="stringliteral">&quot;Erreur à la lecture du nombre de composantes : &quot;</span>); <a class="code" href="a00360_a818470a84d2ad18a3fbb48170296cd95.html#a818470a84d2ad18a3fbb48170296cd95">ISCRUTE</a>(ncomp);
+<a name="l00060"></a>00060       exit(1);
+<a name="l00061"></a>00061     }
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063     <span class="comment">/* Lecture du type du champ, des noms des composantes et du nom de l&apos;unité*/</span>
+<a name="l00064"></a>00064     comp = (<span class="keywordtype">char</span>*) malloc(ncomp*<a class="code" href="a00332_a213ecd1a546eb96092b980a870bc386b.html#a213ecd1a546eb96092b980a870bc386b">MED_SNAME_SIZE</a>+1);
+<a name="l00065"></a>00065     <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>(comp == NULL,NULL,NULL);
+<a name="l00066"></a>00066     unit = (<span class="keywordtype">char</span>*) malloc(ncomp*<a class="code" href="a00332_a213ecd1a546eb96092b980a870bc386b.html#a213ecd1a546eb96092b980a870bc386b">MED_SNAME_SIZE</a>+1);
+<a name="l00067"></a>00067     <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>(unit == NULL,NULL,NULL);
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069     ret = <a class="code" href="a01042_gaf2169b6d6505a28d7ee5f8599d2fb25e.html#gaf2169b6d6505a28d7ee5f8599d2fb25e" title="Cette fonction permet de lire les informations concernant le champ d&amp;#39;indice ind...">MEDfieldInfo</a>(fid,i+1,nomcha,_meshname,&amp;_local,&amp;typcha,comp,unit,_dtunit,&amp;_ncstp);
+<a name="l00070"></a>00070     <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(ret,<a class="code" href="a00346_a6b994e29644b2927bb7280e1d6c3025b.html#a6b994e29644b2927bb7280e1d6c3025b">MED_ERR_ACCESS</a>,<a class="code" href="a00346_a56c28cd068a46a59d0692b642a560324.html#a56c28cd068a46a59d0692b642a560324">MED_ERR_FIELD</a>,nomcha);
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072     <span class="comment">/* Création du champ destination */</span>
+<a name="l00073"></a>00073     <span class="comment">/* ATTENTION appel de MAJ_version avec fid,num </span>
+<a name="l00074"></a>00074 <span class="comment">       et non juste fid --&gt; futures procédures de MAJ_310_... */</span>
+<a name="l00075"></a>00075     <span class="comment">/* MAJ_version(fid); */</span>
+<a name="l00076"></a>00076     <a class="code" href="a00328_ab88877b4efa8141814f92e5bed812b75.html#ab88877b4efa8141814f92e5bed812b75">MAJ_version_num</a>(fid,3,1,0);
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078     <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>( H5Gmove(fid, _pathi, _pathtmp  ) &lt; 0,<span class="stringliteral">&quot;Switch to &quot;</span>,_pathtmp);
+<a name="l00079"></a>00079     <span class="comment">/* Nous sommes dans une boucle sur les champs : </span>
+<a name="l00080"></a>00080 <span class="comment">       On récupère donc les champs en cours de transformation</span>
+<a name="l00081"></a>00081 <span class="comment">    */</span>
+<a name="l00082"></a>00082     _datasetexist=H5Lexists( fid, _pathf, H5P_DEFAULT );
+<a name="l00083"></a>00083     <span class="keywordflow">if</span> (_datasetexist ) { <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>( (H5Gmove(fid, _pathf, _pathi  ) &lt; 0) ,<span class="stringliteral">&quot;Switch to &quot;</span>,_pathi); }
+<a name="l00084"></a>00084     <span class="comment">/* Ajout du champ au nouveau format dans le _pathi */</span>
+<a name="l00085"></a>00085     <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>( <a class="code" href="a01042_ga8f73c6eb1a1b85f5e1e8bc1823c01ab9.html#ga8f73c6eb1a1b85f5e1e8bc1823c01ab9" title="Cette fonction crée un champ dans un fichier.">MEDfieldCr</a>(fid,nomcha,typcha,ncomp,comp,unit,_dtunit,_meshname ) &lt; 0,
+<a name="l00086"></a>00086                      <a class="code" href="a00346_a92354d1153d9e053407f2f8c0dedbda7.html#a92354d1153d9e053407f2f8c0dedbda7">MED_ERR_CREATE</a>,<a class="code" href="a00346_a56c28cd068a46a59d0692b642a560324.html#a56c28cd068a46a59d0692b642a560324">MED_ERR_FIELD</a>,_pathf);
+<a name="l00087"></a>00087 
+<a name="l00088"></a>00088     <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>( H5Gmove(fid, _pathi  , _pathf  ) &lt; 0,<span class="stringliteral">&quot;Switch to &quot;</span>,_pathf);
+<a name="l00089"></a>00089     <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>( H5Gmove(fid, _pathtmp, _pathi  ) &lt; 0,<span class="stringliteral">&quot;Switch to &quot;</span>,_pathi);
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091     strncpy(&amp;_pathi[<a class="code" href="a00356_a946e73da702a9124f741da789561d75c.html#a946e73da702a9124f741da789561d75c">MED_TAILLE_CHA</a>]  ,nomcha,<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1);
+<a name="l00092"></a>00092     strncpy(&amp;_pathf[MED_TAILLE_CHA+1],nomcha,<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1);
+<a name="l00093"></a>00093     _sizei = MED_TAILLE_CHA+strlen(nomcha);
+<a name="l00094"></a>00094     _sizef = _sizei+1;
+<a name="l00095"></a>00095     _pathi[_sizei]=<span class="charliteral">&apos;/&apos;</span>;++_sizei; 
+<a name="l00096"></a>00096     _pathf[_sizef]=<span class="charliteral">&apos;/&apos;</span>;++_sizef; 
+<a name="l00097"></a>00097   
+<a name="l00098"></a>00098  
+<a name="l00099"></a>00099     <span class="keywordflow">for</span> (_num=0; _num&lt;_ncstp; ++_num) {
+<a name="l00100"></a>00100  
+<a name="l00101"></a>00101       _pathi[_sizei]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00102"></a>00102       _pathf[_sizef]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00103"></a>00103       <span class="comment">/* SSCRUTE(_pathi); */</span>
+<a name="l00104"></a>00104       <span class="comment">/* SSCRUTE(_pathf); */</span>
+<a name="l00105"></a>00105    
+<a name="l00106"></a>00106       <span class="comment">/*</span>
+<a name="l00107"></a>00107 <span class="comment">       * On recupere le nom de la séquence de calcul </span>
+<a name="l00108"></a>00108 <span class="comment">       */</span>
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110       <span class="comment">/* Attention : On enlève les groupes DTIT au fur et à mesure,</span>
+<a name="l00111"></a>00111 <span class="comment">         il ne faut pas utiliser _num mais 0.</span>
+<a name="l00112"></a>00112 <span class="comment">        ret =  _MEDobjectGetName(fid, _pathi ,_num, &amp;_pathi[_sizei]) &lt; 0;</span>
+<a name="l00113"></a>00113 <span class="comment">      */</span>
+<a name="l00114"></a>00114       ret =  <a class="code" href="a00350_a209b0c9f7bfbe7739787aca43639efa4.html#a209b0c9f7bfbe7739787aca43639efa4">_MEDobjectGetName</a>(fid, _pathi ,0, &amp;_pathi[_sizei]) &lt; 0;
+<a name="l00115"></a>00115       <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(ret,<a class="code" href="a00346_a6b994e29644b2927bb7280e1d6c3025b.html#a6b994e29644b2927bb7280e1d6c3025b">MED_ERR_ACCESS</a>,<a class="code" href="a00346_a3e3ac48003b7eac5a1aecac139bcc201.html#a3e3ac48003b7eac5a1aecac139bcc201">MED_ERR_DATAGROUP</a>,_pathi);
+<a name="l00116"></a>00116 
+<a name="l00117"></a>00117       strncpy(&amp;_pathf[_sizef],&amp;_pathi[_sizei],2*<a class="code" href="a00331_a5ad5e5ac777d6bc82bb6d4ad38d7af53.html#a5ad5e5ac777d6bc82bb6d4ad38d7af53">MED_MAX_PARA</a>+1);
+<a name="l00118"></a>00118 
+<a name="l00119"></a>00119       <span class="comment">/* SSCRUTE(_pathi); */</span>
+<a name="l00120"></a>00120       <span class="comment">/* SSCRUTE(_pathf); */</span>
+<a name="l00121"></a>00121       <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>(  H5Lmove( fid, _pathi, fid, _pathf, H5P_DEFAULT, H5P_DEFAULT ) &lt; 0, <span class="stringliteral">&quot;Failed to move field &quot;</span>,_pathi); 
+<a name="l00122"></a>00122     }
+<a name="l00123"></a>00123 
+<a name="l00124"></a>00124     _pathi[MED_TAILLE_CHA]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00125"></a>00125     _pathf[MED_TAILLE_CHA+1]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00126"></a>00126 
+<a name="l00127"></a>00127     
+<a name="l00128"></a>00128     <a class="code" href="a00328_ab88877b4efa8141814f92e5bed812b75.html#ab88877b4efa8141814f92e5bed812b75">MAJ_version_num</a>(fid,3,0,8);
+<a name="l00129"></a>00129     
+<a name="l00130"></a>00130     free(comp);
+<a name="l00131"></a>00131     free(unit);
+<a name="l00132"></a>00132 
+<a name="l00133"></a>00133   }
+<a name="l00134"></a>00134   
+<a name="l00135"></a>00135   _datasetexist=H5Lexists( fid, _pathf, H5P_DEFAULT );
+<a name="l00136"></a>00136 
+<a name="l00137"></a>00137   <span class="keywordflow">if</span> (_datasetexist ) {
+<a name="l00138"></a>00138     <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>( (H5Ldelete(fid,_pathi, H5P_DEFAULT) &lt; 0) ,<span class="stringliteral">&quot;Delete &quot;</span>,_pathi);
+<a name="l00139"></a>00139     <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>( (H5Gmove(fid, _pathf, _pathi  ) &lt; 0) ,<span class="stringliteral">&quot;Switch to &quot;</span>,_pathf);
+<a name="l00140"></a>00140   }
+<a name="l00141"></a>00141 
+<a name="l00142"></a>00142    <span class="comment">/* _MEDobjetsOuverts(fid); */</span>
+<a name="l00143"></a>00143 
+<a name="l00144"></a>00144 }
+</pre></div></div>
+<hr size="1"/><address style="text-align: right;"><small>Généré le Thu Jan 21 18:06:07 2016 pour MED fichier par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
+</body>
+</html>

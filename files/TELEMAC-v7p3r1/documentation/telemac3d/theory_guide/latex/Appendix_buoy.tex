@@ -1,0 +1,98 @@
+
+%\paragraph{Calculation of the buoyancy source terms in the transformed mesh:}
+
+In the transformed mesh, we have:%
+
+\begin{equation}
+F_{x}=g\frac{\Delta\rho}{\rho_{o}}\left(  \frac{\partial \eta}{\partial
+x}\right)  _{y,t}-g\left[  \frac{\partial}{\partial x}\left(  \int%
+\nolimits_{z}^{\eta}\frac{\Delta\rho}{\rho_{o}}\,dz\right)  _{y,z^{\ast}%
+,t}+\left(  \frac{\partial z}{\partial x}\right)  _{y,z^{\ast},t}\frac
+{\Delta\rho}{\rho_{o}}\right]
+\end{equation}
+
+
+The variable $zs=z-\eta$ is introduced; $F_{x}$ is then simplified as:%
+
+\begin{equation}
+F_{x}=-g\left[  \frac{\partial}{\partial x}\left(  \int\nolimits_{zs}^{0}%
+\frac{\Delta\rho}{\rho_{o}}\,dz\right)  _{y,z^{\ast},t}+\left(  \frac{\partial
+zs}{\partial x}\right)  _{y,z^{\ast},t}\frac{\Delta\rho}{\rho_{o}}\right]
+\end{equation}
+
+
+At this stage of reasoning, it is worth pursuing the calculation of $F_{x}$ at
+the discrete level because the expression formulated above can be further
+simplified. The variation of this term will be calculated between two nodes of
+the mesh denoted as \textquotedblleft inf\textquotedblright\ and
+\textquotedblleft sup\textquotedblright, one located just above the other,
+with the knowledge that on the surface $F_{x}$ is zero:%
+
+\[
+F_{x}^{\inf}-F_{x}^{\sup}=-g\left[  \frac{\partial}{\partial x}\left(
+\int\nolimits_{zs^{\inf}}^{zs^{\sup}}\frac{\Delta\rho}{\rho_{o}}\,dz\right)
+_{y,z^{\ast},t}\right]
+\]
+%
+
+\begin{equation}
+-g\left[  \left(  \frac{\partial zs^{\inf}}{\partial x}\right)  _{y,z^{\ast
+},t}\frac{\Delta\rho^{\inf}}{\rho_{o}}-\left(  \frac{\partial zs^{\sup}%
+}{\partial x}\right)  _{y,z^{\ast},t}\frac{\Delta\rho^{\sup}}{\rho_{o}%
+}\right]
+\end{equation}
+
+
+With linear functions along $z$, this gives:%
+
+\[
+F_{x}^{\inf}-F_{x}^{\sup}=-g\frac{\partial}{\partial x}\left[  \frac{1}%
+{2}\left(  zs^{\sup}-zs^{\inf}\right)  \left(  \frac{\Delta\rho^{\sup}}%
+{\rho_{o}}+\frac{\Delta\rho^{\inf}}{\rho_{o}}\right)  \right]  _{_{y,z^{\ast
+},t}}%
+\]
+%
+
+\begin{equation}
+-g\left[  \left(  \frac{\partial zs^{\inf}}{\partial x}\right)  _{y,z^{\ast
+},t}\frac{\Delta\rho^{\inf}}{\rho_{o}}-\left(  \frac{\partial zs^{\sup}%
+}{\partial x}\right)  _{y,z^{\ast},t}\frac{\Delta\rho^{\sup}}{\rho_{o}%
+}\right]
+\end{equation}
+and we finally get:%
+
+\[
+F_{x}^{\inf}-F_{x}^{\sup}=\frac{g}{2}\left[  \left(  \frac{\Delta\rho^{\sup}%
+}{\rho_{o}}-\frac{\Delta\rho^{\inf}}{\rho_{o}}\right)  \frac{\partial
+}{\partial x}\left(  zs^{\sup}+zs^{\inf}\right)  _{y,z^{\ast},t}\right]
+\]
+%
+
+\begin{equation}
+-\frac{g}{2}\left[  \left(  zs^{\sup}-zs^{\inf}\right)  \frac{\partial
+}{\partial x}\left(  \frac{\Delta\rho^{\sup}}{\rho_{o}}+\frac{\Delta\rho
+^{\inf}}{\rho_{o}}\right)  _{y,z^{\ast},t}\right]
+\end{equation}
+
+
+The two derivatives along $x$ are discontinuous functions at the nodes of the
+mesh, and are calculated as follows:
+
+\begin{itemize}
+\item For every node $M$, we can define the set $ELEM(M)$ of elements of the
+mesh having the node $M$ among their vertices.
+
+\item For each of the elements $i$ of $ELEM(M)$ we can calculate the $\left(
+\frac{\partial f}{\partial x}\right)  _{i}$ derivative of $f$ at $M$ on the
+side of the element $i$.
+\end{itemize}
+
+The derivative of $f$ at $M$ is then estimated by:%
+
+\begin{equation}
+\left(  \frac{\partial f}{\partial x}\right)  \left(  M\right)  =\frac
+{\sum\limits_{i\;\in\;ELEM(M)}\int\limits_{\Omega}\left(  \frac{\partial
+f}{\partial x}\right)  _{i}\Psi_{M}d\Omega}{\int\limits_{\Omega}\Psi
+_{M}d\Omega}%
+\end{equation}
+where $\Psi_{M}\,$is the basis function associated to node $M$.

@@ -1,0 +1,54 @@
+Comme l'étape de convection est exécutée dans le maillage fixe, il est judicieux de calculer $W^*$ au lieu de $W$. De plus, $W^*$ n'est utilisée qu'avec la méthode des caractéristiques. Pour les autres schémas de convection, on utilise $ \Delta z W^*$.\\ 
+Considérer $ \Delta z W^*$ comme inconnue donne lieu à un système très mal conditionné avec la méthode des éléments finis. En effet, pour chaque degré de liberté on résout:
+\begin{align*}
+\int_{\Omega^*} \left[ \left(\frac{\partial\Delta z}{\partial t}\right)_{x,y,z^*} +
+	\left(\frac{\partial\Delta zU}{\partial x}\right)_{y,z^*,t} +
+	\left(\frac{\partial\Delta zV}{\partial y}\right)_{x,z^*,t} +
+	\left(\frac{\partial\Delta zW^*}{\partial z^*}\right)_{x,y,t}\right] \Psi_i^* d \Omega^* = 0
+\end{align*}
+La matrice $A$ du systèmé découle du terme:
+\begin{align*}
+\int_{\Omega^*} \left(\frac{\partial\Delta zW^*}{\partial z^*}\right)_{x,y,t}\Psi_i^* d \Omega^* 
+\end{align*}
+où l'inconnue $ \Delta z W^*$ est descrétisée comme $ \Delta z W^* = \sum\limits_{j=1}^{npoin3}[\Delta z W^*]_j \Psi^*_j$.
+Donc le terme général de la matrice est :
+\begin{align*}
+ A_{ij} = \int_{\Omega^*} \left(\frac{\partial \Psi_j^*}{\partial z^*}\right)_{x,y,t}\Psi_i^* d \Omega^* 
+\end{align*}
+On montre dans ce qui suit que les termes diagonaux de cette matrice sont nuls.\\
+On a $\Psi_i^* = \Psi_{i2D}^h \Psi_{ip}^{v*} $ où les fonctions test $\Psi_{i2D}^h$ sont définies sur le domaine horizontal et les $\Psi_{ip}^{v*}$ sont définies sur la verticale ($i2D$ et $ip$ étant, respectivement, le numéro du noeud $2D$ et le numéro du plan correspondants au point $i$).
+\begin{align*}
+ A_{ii} =& \int_{\Omega^*} \left(\frac{\partial \Psi_i^*}{\partial z^*}\right)_{x,y,t}\Psi_i^* d \Omega^*\\
+ =& \int_{\Omega 2D} (\Psi_{i2D}^h)^2 d \Omega 2D \int_0^1 \frac{\partial \Psi_{ip}^{v*}}{\partial z^* } \Psi_{ip}^{v*} d z^*
+\end{align*}
+Les fonctions test $\Psi_{ip}^{v*}$ sont linéaires :
+$$
+\Psi_{ip}^{v*} =
+\left\{ \begin{aligned}
+&0 \qquad \text{si} \quad z^* \leqslant z_{ip-1} \\
+&\frac{1}{\Delta z_1}(z^* - z_{ip-1})\qquad \text{si} \quad z_{ip-1} \leqslant z^* \leqslant z_{ip}\\
+&-\frac{1}{\Delta z_2}(z^* - z_{ip}) +1 \qquad \text{si} \quad z_{ip} \leqslant z^* \leqslant z_{ip+1}\\
+&0 \qquad \text{sinon}
+\end{aligned} \right. 
+\quad \text{et} \quad
+\frac{\partial \Psi_{ip}^{v*}}{\partial z^* } =
+\left\{ \begin{aligned}
+&0 \qquad \text{si} \quad z^* \leqslant z_{ip-1} \\
+&\frac{1}{\Delta z_1} \qquad \text{si} \quad z_{ip-1} \leqslant z^* \leqslant z_{ip}\\
+&-\frac{1}{\Delta z_2} \qquad \text{si} \quad z_{ip} \leqslant z^* \leqslant z_{ip+1}\\
+&0 \qquad \text{sinon}
+\end{aligned} \right. 
+$$
+avec ${\Delta z_1} = z_{ip}-z_{ip-1}$ et ${\Delta z_2} = z_{ip+1}-z_{ip}$\\
+
+\begin{figure}[H]
+   \input{Figures/testFunction.tex}
+   \caption{Représentation de la fonction test $\Psi_{ip}^{v*}$}
+\end{figure}
+
+
+Donc :
+\begin{align*}
+\int_0^1 \frac{\partial \Psi_{ip}^{v*}}{\partial z^* } \Psi_{ip}^{v*} d z^* =& \left( \frac{1}{\Delta z_1}\right)^2 \left[\frac{(z^* - z_{ip-1})^2}{2} \right] _{z_{ip-1}}^{ z_{ip}}+\left( \frac{1}{\Delta z_2}\right)^2 \left[\frac{(z^* - z_{ip})^2}{2} \right] _{z_{ip}}^{ z_{ip+1}} - \frac{1}{\Delta z_2}\left[z^* \right]_{z_{ip}}^{ z_{ip+1}}\\
+=&0
+\end{align*}

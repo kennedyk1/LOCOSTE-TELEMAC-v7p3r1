@@ -1,0 +1,248 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Telemac3D Documentation
+%  Theory guide
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+\documentclass[Telemac3D]{../../data/TelemacDoc} % Default font size and left-justified equations
+
+%%---------------------------------------------------------------------------
+%%Equations
+%%---------------------------------------------------------------------------
+\renewcommand{\Grad}{\vec \nabla}
+\renewcommand{\Div}{\nabla \cdot}
+\renewcommand{\Lap}{\nabla^2}%{\text{lap}\hspace{0.1em}}
+\newcommand{\BDiv}{\vec{\nabla} \cdot}
+\newcommand{\BLap}{\vec{\nabla}^2}
+\newcommand{\DivD}{\nabla_{2D} \cdot}
+\newcommand{\Divast}{\nabla^* \cdot}
+
+%%---------------------------------------------------------------------------
+%% Tableaux
+%%---------------------------------------------------------------------------
+%\usepackage{booktabs,multirow}
+%\usepackage{lscape}
+%\usepackage{longtable}
+%\newcommand{\minitab}[2][1]{\begin{tabular}{#1}#2\end{tabular}}
+%%\usepackage{array}
+%%\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+%%\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+%%\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+%%---------------------------------------------------------------------------
+%% Nomenclature
+%%---------------------------------------------------------------------------
+\usepackage{ifthen}
+\usepackage{nomencl}
+%
+\makenomenclature
+\renewcommand{\nompreamble}{\markboth{%
+                            \MakeUppercase\nomname}{\MakeUppercase\nomname}%
+                           }
+
+\renewcommand{\nomgroup}[1]{
+\ifthenelse{\equal{#1}{C}}{\item[\textbf{In the continuous domain}]}{
+\ifthenelse{\equal{#1}{D}}{\item[\textbf{In the discrete domain}]}{
+{}
+}% matches discrete domain
+}% matches continuous domain
+}
+
+\begin{document}
+
+\let\cleardoublepage\clearpage
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+\title{TELEMAC-3D}
+\subtitle{Theory guide}
+\version{\telmaversion}
+\author{}
+\date{\today}
+\maketitle
+\clearpage
+
+%----------------------------------------------------------------------------------------
+%	AUTHORS PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+
+\thispagestyle{empty}
+
+\chapter*{Authors and contributions}
+This theory guide was created by Agnès Leroy (EDF R\&D, LNHE), based on the previous available TELEMAC-3D
+documentation. In particular, most of the material came from documents written by Jean-Michel
+Hervouet (EDF R\&D, LNHE), be it his book, \textit{Hydrodynamics of Free-Surface Flows}, which also lists a number of contributors, or the
+TELEMAC-3D release notes. The release notes also included contributions by Chi-Tuân Pham (EDF R\&D, LNHE).
+This guide, as well as the abovementioned sources, rely on previous work by Jacek Jankowski and Astrid Decoene during their respective PhD theses.
+It also benefits from contributions by Lamia Abbas, Pierrick Quemar, Antoine Joly and Jacques Fontaine.
+
+\newpage
+
+\chapter*{Work under construction}\label{workunderconstruction}
+We would like to warn the reader that this document is still under construction and
+could be improved in many ways. Any remarks, suggestions, corrections, etc. are welcome
+and can be submitted to the TELEMAC developing team through the forum in the Documentation
+category: \url{http://www.opentelemac.org/index.php/kunena/10-documentation}.
+
+\newpage
+
+\chapter*{Abstract}\label{Abstract}
+This guide aims at providing a comprehensive overlook of the theory behind TELEMAC-3D.
+It is based on Jean-Michel Hervouet's book, \textit{Hydrodynamics of Free-Surface Flows} \cite{hervouet007}, as well as
+on the previous TELEMAC-3D release notes. It is organised into four chapters: the first two describe the equations
+and modelling choices in a continuous framework, as well as the principles of the Finite Elements method.
+The latter was nearly directly taken from \textit{Hydrodynamics of Free Surface Flows}, but
+also includes some contributions from Jacek Jankowski's PhD thesis.
+After this, the time discretisation and then the space-time discretisation of the equations are described in two separate chapters.
+While the first two chapters are rather classical, the last two are specific to TELEMAC-3D. They benefitted from a lot
+of material from the former release notes and from \textit{Hydrodynamics of Free-Surface Flows}.
+They are still unfinished at this stage. In particular, they contain some information regarding the resolution of the advection
+in TELEMAC-3D and the treatment of tidal flats, but these two sections directly come from the last release notes
+and have not been adapted to this guide yet. Nevertheless, we hope that these chapters will help the
+TELEMAC-3D users and developers better understand what is at the core of the module.\\
+
+The main contributions in this theory guide, compared to previous works, lie in the new format
+of the document, which aims at gathering all the theoretical background of TELEMAC-3D.
+It includes highlighted remarks regarding the limits and possible improvements of the models used in the code.
+The chapter 3 is new: it aims at giving the reader an overview of the time scheme, even though all
+the demonstrations of consistency, conservation, etc. are only valid when written for the space-time
+discretised equations. New notations are adopted compared to previous works, with the hope that
+they will facilitate the understanding of the numerical schemes.
+
+
+%----------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+
+\thispagestyle{empty}
+
+\TelemacCopyright{}
+
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+
+\pagestyle{empty} % No headers
+
+\tableofcontents% Print the table of contents itself
+
+%\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
+
+\pagestyle{fancy} % Print headers again
+
+%----------------------------------------------------------------------------------------
+%	The whole thing
+%----------------------------------------------------------------------------------------
+%%===========================================================================
+%\section{Reminders and definition of variables}
+%%===========================================================================
+%
+%Bold variables will represent vectors and tensors, and plain font will represent scalars; i.e.:
+%
+%\begin{align}
+%\vec{A} = \left[\begin{array}{c}
+%		A_x
+%		\\
+%		A_y
+%		\\
+%		A_z
+%		\end{array}\right]
+%\end{align}
+%
+%Furthermore, the following operators are defined:
+%
+%\begin{subequations}
+%\begin{align}
+%\Grad\{A\}		= & \vec{\nabla} A
+%\\
+%\Grad\{\vec{A}\}		= & \vec{\nabla} \vec{A}^T
+%\\
+%\Div\{\vec{A}\}	= & \vec{\nabla} \cdot \vec{A}
+%\\
+%\Lap\{B,A\} =	& \vec{\nabla} \cdot \left( B\vec{\nabla} A\right)
+%\notag\\
+%			=	& \Div\{B\Grad\{A\}\}
+%\\
+%\BLap\{B,\vec{A}\} =	& \vec{\nabla} \cdot \left( B\vec{\nabla} \vec{A}^T\right)
+%\notag\\
+%						=	& \Div\{B\Grad\{\vec{A}\}\}
+%\end{align}
+%\end{subequations}
+%
+%Where $\vec{\nabla}$ is the nabla operator defined as:
+%
+%\begin{align}
+%\vec{\nabla} = \left[\begin{array}{c}
+%		\dfrac{\partial}{\partial x}
+%		\\[1em]
+%		\dfrac{\partial}{\partial y}
+%		\\[1em]
+%		\dfrac{\partial}{\partial z}
+%		\end{array}\right]
+%\end{align}
+%
+%In addition $\vec{A}^T$ is the transpose of vector $\vec{A}$.
+
+%===========================================================================
+% Nomenclature
+%===========================================================================
+
+\printnomenclature
+
+\chapter{Equations and modelling choices in a continuous framework}\label{Chapter1}
+\input{latex/Chapter1.tex}
+\newpage
+
+\chapter{Principles of the Finite Elements method}\label{Chapter2}
+\input{latex/Chapter2.tex}
+\newpage
+
+\chapter{Time discretisation in TELEMAC-3D}\label{Chapter3}
+\input{latex/Chapter3.tex}
+\newpage
+
+\chapter{Space-time discretisation in TELEMAC-3D}\label{Chapter4}
+\input{latex/Chapter4.tex}
+\newpage
+
+\chapter{Appendix A: Thompson formulation for radiative open boundary conditions -- from \textit{Hydrodynamics of Free-Surface Flows}}\label{appendixA}
+\input{latex/Appendix_thomps.tex}
+\newpage
+
+\chapter{Appendix B: Calculation of the buoyancy source terms in the transformed mesh}\label{appendixB}
+\input{latex/Appendix_buoy.tex}
+\newpage
+
+%\chapter{Appendix B: Notes sur la transformation sigma}\label{appendixB}
+%\input{Appendix_B.tex}
+%\newpage
+%
+%\chapter{Appendix B: Résolution de l'équation de continuité dans le maillage transformé}\label{appendixC}
+%\input{Appendix_C.tex}
+%\newpage
+
+\nomenclature[D_U*]{$\vec{U}^*$}{Fluid velocity vector in the transformed domain \dotfill (m/s)}
+\nomenclature[D_U*_x]{$U^*$}{Fluid velocity along axis $x$ in the transformed domain; not that $U^*=U$ \dotfill (m/s)}
+\nomenclature[D_U*_y]{$V^*$}{Fluid velocity along axis $y$ in the transformed domain; not that $V^*=V$  \dotfill (m/s)}
+\nomenclature[D_U*_z]{$W^*$}{Fluid velocity along axis $z$ in the transformed domain \dotfill (m/s)}
+
+%===========================================================================
+% Bibliography
+%===========================================================================
+
+%\addcontentsline{toc}{section}{References}
+\bibliographystyle{plainnat}
+\bibliography{latex/telemac3d_theory_guide}
+
+%\bibliography{../../data/biblio}
+
+\end{document}

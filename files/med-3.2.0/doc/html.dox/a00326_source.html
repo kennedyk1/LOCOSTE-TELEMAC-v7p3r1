@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>MED fichier:  Fichier source de MAJ_310_320_familles.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Généré par Doxygen 1.6.1 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Documentation&nbsp;MED</span></a></li>
+      <li><a href="pages.html"><span>Guides&nbsp;d'utilisation</span></a></li>
+      <li><a href="modules.html"><span>Guides&nbsp;de&nbsp;référence</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_a0aa163f1191afd35e07e4162b62c072.html">tools</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_1c2e039cab605be7c1ddddc381601aab.html">medimport</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_ccdc889cf3eb0bdee5b8c5325c3139c7.html">3.1.0</a>
+  </div>
+</div>
+<div class="contents">
+<h1>MAJ_310_320_familles.c</h1><a href="a00326.html">Aller à la documentation de ce fichier.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/*  This file is part of MED.</span>
+<a name="l00002"></a>00002 <span class="comment"> *</span>
+<a name="l00003"></a>00003 <span class="comment"> *  COPYRIGHT (C) 1999 - 2016  EDF R&amp;D, CEA/DEN</span>
+<a name="l00004"></a>00004 <span class="comment"> *  MED is free software: you can redistribute it and/or modify</span>
+<a name="l00005"></a>00005 <span class="comment"> *  it under the terms of the GNU Lesser General Public License as published by</span>
+<a name="l00006"></a>00006 <span class="comment"> *  the Free Software Foundation, either version 3 of the License, or</span>
+<a name="l00007"></a>00007 <span class="comment"> *  (at your option) any later version.</span>
+<a name="l00008"></a>00008 <span class="comment"> *</span>
+<a name="l00009"></a>00009 <span class="comment"> *  MED is distributed in the hope that it will be useful,</span>
+<a name="l00010"></a>00010 <span class="comment"> *  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="l00011"></a>00011 <span class="comment"> *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="l00012"></a>00012 <span class="comment"> *  GNU Lesser General Public License for more details.</span>
+<a name="l00013"></a>00013 <span class="comment"> *</span>
+<a name="l00014"></a>00014 <span class="comment"> *  You should have received a copy of the GNU Lesser General Public License</span>
+<a name="l00015"></a>00015 <span class="comment"> *  along with MED.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="l00016"></a>00016 <span class="comment"> */</span>
+<a name="l00017"></a>00017 
+<a name="l00018"></a>00018 
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;<a class="code" href="a00345.html">med_config.h</a>&quot;</span>
+<a name="l00020"></a>00020 <span class="preprocessor">#include &quot;<a class="code" href="a00357.html">med_outils.h</a>&quot;</span>
+<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;<a class="code" href="a00332.html">med.h</a>&quot;</span>
+<a name="l00022"></a>00022 
+<a name="l00023"></a>00023 <span class="preprocessor">#include &lt;string.h&gt;</span>
+<a name="l00024"></a>00024 
+<a name="l00025"></a>00025 <span class="preprocessor">#include &quot;<a class="code" href="a00325.html">MAJ_310_320.h</a>&quot;</span>
+<a name="l00026"></a>00026 <span class="preprocessor">#include &quot;<a class="code" href="a00328.html">MAJ_version.h</a>&quot;</span>
+<a name="l00027"></a>00027 
+<a name="l00028"></a><a class="code" href="a00326_ace04ed456b49b13ea7c30249029f4788.html#ace04ed456b49b13ea7c30249029f4788">00028</a> <span class="keyword">static</span>  <span class="keywordtype">void</span> <a class="code" href="a00326_ace04ed456b49b13ea7c30249029f4788.html#ace04ed456b49b13ea7c30249029f4788">_move_families</a>(<a class="code" href="a00331_afa4ec8284026c8c5545e5333475fb65a.html#afa4ec8284026c8c5545e5333475fb65a">med_idt</a> fid, <span class="keywordtype">char</span> * <span class="keyword">const</span> _pathi,<span class="keywordtype">char</span> * <span class="keyword">const</span> _pathf) {
+<a name="l00029"></a>00029   <a class="code" href="a00331_abd29d7c6abaef5da2a5ed1b73464f0ba.html#abd29d7c6abaef5da2a5ed1b73464f0ba">med_err</a> _ret=0;
+<a name="l00030"></a>00030   <a class="code" href="a00331_a88dc15143f934cc7b771bc89f46372dc.html#a88dc15143f934cc7b771bc89f46372dc">med_int</a> _nfam=0;
+<a name="l00031"></a>00031   <a class="code" href="a00331_a88dc15143f934cc7b771bc89f46372dc.html#a88dc15143f934cc7b771bc89f46372dc">med_int</a> _sizei,_sizef;
+<a name="l00032"></a>00032   <a class="code" href="a00331_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> _size=0;
+<a name="l00033"></a>00033   <span class="keywordtype">int</span> i=0;
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035   _ret=<a class="code" href="a00350_a4b30fc43a5ea43b9dd866ceb63cbbe49.html#a4b30fc43a5ea43b9dd866ceb63cbbe49">_MEDnObjects</a>(fid,_pathi,&amp;_size);
+<a name="l00036"></a>00036   <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_ret,<a class="code" href="a00346_a65ef0d86e6f6ff88cfe5757570c7cdcb.html#a65ef0d86e6f6ff88cfe5757570c7cdcb">MED_ERR_COUNT</a>,<a class="code" href="a00346_a3e3ac48003b7eac5a1aecac139bcc201.html#a3e3ac48003b7eac5a1aecac139bcc201">MED_ERR_DATAGROUP</a>,_pathi);
+<a name="l00037"></a>00037   _nfam = (<a class="code" href="a00331_a88dc15143f934cc7b771bc89f46372dc.html#a88dc15143f934cc7b771bc89f46372dc">med_int</a> ) _size;
+<a name="l00038"></a>00038   
+<a name="l00039"></a>00039   _sizef=strlen(_pathf); _sizei =_sizef-1;
+<a name="l00040"></a>00040     
+<a name="l00041"></a>00041   <span class="comment">/* MAJ des familles */</span>
+<a name="l00042"></a>00042   <span class="keywordflow">for</span> (i=0;i&lt;_nfam;i++) {
+<a name="l00043"></a>00043 
+<a name="l00044"></a>00044     _pathi[_sizei]=<span class="charliteral">&apos;/&apos;</span>;
+<a name="l00045"></a>00045     _pathf[_sizef]=<span class="charliteral">&apos;/&apos;</span>;
+<a name="l00046"></a>00046     _pathi[++_sizei]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00047"></a>00047     _pathf[++_sizef]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00048"></a>00048     <span class="comment">/* SSCRUTE(_pathi); */</span>
+<a name="l00049"></a>00049     <span class="comment">/* SSCRUTE(_pathf); */</span>
+<a name="l00050"></a>00050       
+<a name="l00051"></a>00051     <span class="comment">/*</span>
+<a name="l00052"></a>00052 <span class="comment">     * On recupere le nom de la famille </span>
+<a name="l00053"></a>00053 <span class="comment">     */</span>
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055     <span class="comment">/* Attention : On enlève les groupes fam au fur et à mesure,</span>
+<a name="l00056"></a>00056 <span class="comment">       il ne faut pas utiliser _num mais 0.</span>
+<a name="l00057"></a>00057 <span class="comment">       ret =  _MEDobjectGetName(fid, _pathi ,_num, &amp;_pathi[_sizei]) &lt; 0;</span>
+<a name="l00058"></a>00058 <span class="comment">    */</span>
+<a name="l00059"></a>00059     _ret =  <a class="code" href="a00350_a209b0c9f7bfbe7739787aca43639efa4.html#a209b0c9f7bfbe7739787aca43639efa4">_MEDobjectGetName</a>(fid, _pathi ,0, &amp;_pathi[_sizei]) &lt; 0;
+<a name="l00060"></a>00060     <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_ret,<a class="code" href="a00346_a6b994e29644b2927bb7280e1d6c3025b.html#a6b994e29644b2927bb7280e1d6c3025b">MED_ERR_ACCESS</a>,<a class="code" href="a00346_a3e3ac48003b7eac5a1aecac139bcc201.html#a3e3ac48003b7eac5a1aecac139bcc201">MED_ERR_DATAGROUP</a>,_pathi);
+<a name="l00061"></a>00061 
+<a name="l00062"></a>00062     strncpy(&amp;_pathf[_sizef],&amp;_pathi[_sizei],<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1);
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064     <span class="comment">/* SSCRUTE(_pathi); */</span>
+<a name="l00065"></a>00065     <span class="comment">/* SSCRUTE(_pathf); */</span>
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067     <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>(  H5Lmove( fid, _pathi, fid, _pathf, H5P_DEFAULT, H5P_DEFAULT ) &lt; 0, <span class="stringliteral">&quot;Failed to move family &quot;</span>,_pathi);
+<a name="l00068"></a>00068     --_sizei;--_sizef;
+<a name="l00069"></a>00069   }
+<a name="l00070"></a>00070 }
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072 
+<a name="l00073"></a><a class="code" href="a00325_a2459f39906c681ebf61063182d2ff42b.html#a2459f39906c681ebf61063182d2ff42b">00073</a> <span class="keywordtype">void</span> <a class="code" href="a00326_a2459f39906c681ebf61063182d2ff42b.html#a2459f39906c681ebf61063182d2ff42b">MAJ_310_320_familles</a>(<a class="code" href="a00331_afa4ec8284026c8c5545e5333475fb65a.html#afa4ec8284026c8c5545e5333475fb65a">med_idt</a> fid)
+<a name="l00074"></a>00074 {
+<a name="l00075"></a>00075   <a class="code" href="a00331_abd29d7c6abaef5da2a5ed1b73464f0ba.html#abd29d7c6abaef5da2a5ed1b73464f0ba">med_err</a>  _ret=0;
+<a name="l00076"></a>00076   htri_t   _datasetexist;
+<a name="l00077"></a>00077   <span class="keywordtype">char</span>     _pathi[(<a class="code" href="a00356_a7252f9a057a8cec38fc0b99eef3c05a9.html#a7252f9a057a8cec38fc0b99eef3c05a9">MED_TAILLE_FAS</a>+<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1)  + <a class="code" href="a00356_a6621952e48366ef31c3dcfef3e1bbffe.html#a6621952e48366ef31c3dcfef3e1bbffe">MED_TAILLE_FAS_ENTITE</a>+<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1] = <a class="code" href="a00356_a20df7558c8143686f0e755db4da0c2b4.html#a20df7558c8143686f0e755db4da0c2b4">MED_FAS</a>;
+<a name="l00078"></a>00078   <span class="keywordtype">char</span>     _pathf[(<a class="code" href="a00356_a7252f9a057a8cec38fc0b99eef3c05a9.html#a7252f9a057a8cec38fc0b99eef3c05a9">MED_TAILLE_FAS</a>+1+<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1)+ <a class="code" href="a00356_a6621952e48366ef31c3dcfef3e1bbffe.html#a6621952e48366ef31c3dcfef3e1bbffe">MED_TAILLE_FAS_ENTITE</a>+<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1] = <span class="stringliteral">&quot;/FAS_/&quot;</span>;
+<a name="l00079"></a>00079   <span class="comment">/* char _pathtmp[MED_TAILLE_FAS+3]=&quot;/FAS__/&quot;; */</span>
+<a name="l00080"></a>00080   <span class="keywordtype">int</span>      _meshi=0;
+<a name="l00081"></a>00081   <a class="code" href="a00331_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> _sizei=0,_sizef=0,_size=0,_nmesh=0;
+<a name="l00082"></a>00082   <a class="code" href="a00331_afa4ec8284026c8c5545e5333475fb65a.html#afa4ec8284026c8c5545e5333475fb65a">med_idt</a>  _famId=0,_famMeshId=0,_famZeId=0,_famElId=0,_famNoeId=0;
+<a name="l00083"></a>00083   <a class="code" href="a00328_ab88877b4efa8141814f92e5bed812b75.html#ab88877b4efa8141814f92e5bed812b75">MAJ_version_num</a>(fid,3,1,0);
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085   <span class="comment">/*Itération sur les différents maillages présents dans le groupe famille*/</span>
+<a name="l00086"></a>00086   _ret=<a class="code" href="a00350_a4b30fc43a5ea43b9dd866ceb63cbbe49.html#a4b30fc43a5ea43b9dd866ceb63cbbe49">_MEDnObjects</a>(fid,_pathi,&amp;_nmesh);
+<a name="l00087"></a>00087   <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_ret,<a class="code" href="a00346_a65ef0d86e6f6ff88cfe5757570c7cdcb.html#a65ef0d86e6f6ff88cfe5757570c7cdcb">MED_ERR_COUNT</a>,<a class="code" href="a00346_a3e3ac48003b7eac5a1aecac139bcc201.html#a3e3ac48003b7eac5a1aecac139bcc201">MED_ERR_DATAGROUP</a>,_pathi);
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089   <span class="keywordflow">for</span> (_meshi=0;_meshi&lt;_nmesh;_meshi++) {
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091     <span class="comment">/*</span>
+<a name="l00092"></a>00092 <span class="comment">     * On recupere le nom du maillage</span>
+<a name="l00093"></a>00093 <span class="comment">     */</span>
+<a name="l00094"></a>00094     _pathi[<a class="code" href="a00356_a7252f9a057a8cec38fc0b99eef3c05a9.html#a7252f9a057a8cec38fc0b99eef3c05a9">MED_TAILLE_FAS</a>  ]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00095"></a>00095     _pathf[<a class="code" href="a00356_a7252f9a057a8cec38fc0b99eef3c05a9.html#a7252f9a057a8cec38fc0b99eef3c05a9">MED_TAILLE_FAS</a>+1]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097    _ret =  <a class="code" href="a00350_a209b0c9f7bfbe7739787aca43639efa4.html#a209b0c9f7bfbe7739787aca43639efa4">_MEDobjectGetName</a>(fid, _pathi ,_meshi, &amp;_pathi[<a class="code" href="a00356_a7252f9a057a8cec38fc0b99eef3c05a9.html#a7252f9a057a8cec38fc0b99eef3c05a9">MED_TAILLE_FAS</a>]) &lt; 0;
+<a name="l00098"></a>00098     <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_ret,<a class="code" href="a00346_a6b994e29644b2927bb7280e1d6c3025b.html#a6b994e29644b2927bb7280e1d6c3025b">MED_ERR_ACCESS</a>,<a class="code" href="a00346_a3e3ac48003b7eac5a1aecac139bcc201.html#a3e3ac48003b7eac5a1aecac139bcc201">MED_ERR_DATAGROUP</a>,_pathi);
+<a name="l00099"></a>00099     <span class="comment">/* SSCRUTE(_pathi); */</span>
+<a name="l00100"></a>00100 
+<a name="l00101"></a>00101     <span class="comment">/*Création du chemin cible _pathf s&apos;il n&apos;existe pas dans le fichier*/</span>
+<a name="l00102"></a>00102     _datasetexist=H5Lexists( fid, _pathf, H5P_DEFAULT );
+<a name="l00103"></a>00103     <span class="keywordflow">if</span>(!_datasetexist) {
+<a name="l00104"></a>00104       _famId = <a class="code" href="a00349_a035c29f443adaee7c8aa4550ef59b807.html#a035c29f443adaee7c8aa4550ef59b807">_MEDdatagroupCreer</a>(fid,_pathf);
+<a name="l00105"></a>00105       <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_famId &lt; 0, <a class="code" href="a00346_a92354d1153d9e053407f2f8c0dedbda7.html#a92354d1153d9e053407f2f8c0dedbda7">MED_ERR_CREATE</a>,<a class="code" href="a00346_a21b161b9c2e54a5b96e0d0a73aa0940b.html#a21b161b9c2e54a5b96e0d0a73aa0940b">MED_ERR_FAMILY</a>,_pathf);
+<a name="l00106"></a>00106       <span class="keywordflow">if</span> (_famId&gt;0) _ret=<a class="code" href="a00349_ae3ba55fd16381090e93f0ee8e3f9e6c6.html#ae3ba55fd16381090e93f0ee8e3f9e6c6">_MEDdatagroupFermer</a>(_famId);
+<a name="l00107"></a>00107       <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_ret,<a class="code" href="a00346_a444c5e2cb5b9f60b769909297300ac14.html#a444c5e2cb5b9f60b769909297300ac14">MED_ERR_CLOSE</a>,<a class="code" href="a00346_a3e3ac48003b7eac5a1aecac139bcc201.html#a3e3ac48003b7eac5a1aecac139bcc201">MED_ERR_DATAGROUP</a>,_pathf);
+<a name="l00108"></a>00108     }
+<a name="l00109"></a>00109     <span class="comment">/*Création de la famille sur le maillage courant*/</span>
+<a name="l00110"></a>00110     strncpy(&amp;_pathf[MED_TAILLE_FAS+1],&amp;_pathi[MED_TAILLE_FAS],<a class="code" href="a00332_a0ae989cbbfeecbb5296b3ceba8dab886.html#a0ae989cbbfeecbb5296b3ceba8dab886">MED_NAME_SIZE</a>+1);
+<a name="l00111"></a>00111     _datasetexist=H5Lexists( fid, _pathf, H5P_DEFAULT );
+<a name="l00112"></a>00112     <span class="keywordflow">if</span>(!_datasetexist) {
+<a name="l00113"></a>00113       _famMeshId = <a class="code" href="a00349_a035c29f443adaee7c8aa4550ef59b807.html#a035c29f443adaee7c8aa4550ef59b807">_MEDdatagroupCreer</a>(fid,_pathf);
+<a name="l00114"></a>00114       <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_famMeshId &lt; 0, <a class="code" href="a00346_a92354d1153d9e053407f2f8c0dedbda7.html#a92354d1153d9e053407f2f8c0dedbda7">MED_ERR_CREATE</a>,<a class="code" href="a00346_a21b161b9c2e54a5b96e0d0a73aa0940b.html#a21b161b9c2e54a5b96e0d0a73aa0940b">MED_ERR_FAMILY</a>,_pathf);
+<a name="l00115"></a>00115       <span class="keywordflow">if</span> (_famMeshId&gt;0) _ret=<a class="code" href="a00349_ae3ba55fd16381090e93f0ee8e3f9e6c6.html#ae3ba55fd16381090e93f0ee8e3f9e6c6">_MEDdatagroupFermer</a>(_famMeshId);
+<a name="l00116"></a>00116       <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_ret,<a class="code" href="a00346_a444c5e2cb5b9f60b769909297300ac14.html#a444c5e2cb5b9f60b769909297300ac14">MED_ERR_CLOSE</a>,<a class="code" href="a00346_a3e3ac48003b7eac5a1aecac139bcc201.html#a3e3ac48003b7eac5a1aecac139bcc201">MED_ERR_DATAGROUP</a>,_pathf);
+<a name="l00117"></a>00117     }
+<a name="l00118"></a>00118 
+<a name="l00119"></a>00119     _sizef=strlen(_pathf);_sizei =_sizef-1;
+<a name="l00120"></a>00120 
+<a name="l00121"></a>00121     <span class="comment">/* Si une famille d&apos;éléments existe ds pathi crée la dans _path */</span>
+<a name="l00122"></a>00122     strncpy(&amp;_pathi[_sizei],<a class="code" href="a00356_a1a7273c62ad90c3e2c8ccaf19b6615a2.html#a1a7273c62ad90c3e2c8ccaf19b6615a2">MED_FAS_NOEUD</a>,<a class="code" href="a00356_a6621952e48366ef31c3dcfef3e1bbffe.html#a6621952e48366ef31c3dcfef3e1bbffe">MED_TAILLE_FAS_ENTITE</a>-1);
+<a name="l00123"></a>00123     _pathi[_sizei+(<a class="code" href="a00356_a6621952e48366ef31c3dcfef3e1bbffe.html#a6621952e48366ef31c3dcfef3e1bbffe">MED_TAILLE_FAS_ENTITE</a>-1)]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00124"></a>00124     _datasetexist=H5Lexists( fid, _pathi, H5P_DEFAULT );
+<a name="l00125"></a>00125     <span class="keywordflow">if</span> (_datasetexist) {
+<a name="l00126"></a>00126       strncpy(&amp;_pathf[_sizef],<a class="code" href="a00356_a1a7273c62ad90c3e2c8ccaf19b6615a2.html#a1a7273c62ad90c3e2c8ccaf19b6615a2">MED_FAS_NOEUD</a>,<a class="code" href="a00356_a6621952e48366ef31c3dcfef3e1bbffe.html#a6621952e48366ef31c3dcfef3e1bbffe">MED_TAILLE_FAS_ENTITE</a>-1);
+<a name="l00127"></a>00127       _pathf[_sizef+(<a class="code" href="a00356_a6621952e48366ef31c3dcfef3e1bbffe.html#a6621952e48366ef31c3dcfef3e1bbffe">MED_TAILLE_FAS_ENTITE</a>-1)]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00128"></a>00128      _famNoeId = <a class="code" href="a00350_a95aa2e0a3f07513b5b8e489848d24e00.html#a95aa2e0a3f07513b5b8e489848d24e00">_MEDdatagroupCrOrderCr</a>(fid,_pathf);
+<a name="l00129"></a>00129       <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_famNoeId &lt; 0, <a class="code" href="a00346_a92354d1153d9e053407f2f8c0dedbda7.html#a92354d1153d9e053407f2f8c0dedbda7">MED_ERR_CREATE</a>,<a class="code" href="a00346_a21b161b9c2e54a5b96e0d0a73aa0940b.html#a21b161b9c2e54a5b96e0d0a73aa0940b">MED_ERR_FAMILY</a>,_pathf);
+<a name="l00130"></a>00130       <span class="keywordflow">if</span> (_famNoeId&gt;0) _ret=<a class="code" href="a00349_ae3ba55fd16381090e93f0ee8e3f9e6c6.html#ae3ba55fd16381090e93f0ee8e3f9e6c6">_MEDdatagroupFermer</a>(_famNoeId);
+<a name="l00131"></a>00131       <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_ret,<a class="code" href="a00346_a444c5e2cb5b9f60b769909297300ac14.html#a444c5e2cb5b9f60b769909297300ac14">MED_ERR_CLOSE</a>,<a class="code" href="a00346_a3e3ac48003b7eac5a1aecac139bcc201.html#a3e3ac48003b7eac5a1aecac139bcc201">MED_ERR_DATAGROUP</a>,_pathf);
+<a name="l00132"></a>00132       <a class="code" href="a00326_ace04ed456b49b13ea7c30249029f4788.html#ace04ed456b49b13ea7c30249029f4788">_move_families</a>( fid, _pathi,_pathf);
+<a name="l00133"></a>00133     }
+<a name="l00134"></a>00134   
+<a name="l00135"></a>00135 
+<a name="l00136"></a>00136     <span class="comment">/* Si une famille de noeud existe crée la dans _path */</span>
+<a name="l00137"></a>00137     strncpy(&amp;_pathi[_sizei],<a class="code" href="a00356_a2d8108918d5b1433428c1683731bde8d.html#a2d8108918d5b1433428c1683731bde8d">MED_FAS_ELEME</a>,<a class="code" href="a00356_a6621952e48366ef31c3dcfef3e1bbffe.html#a6621952e48366ef31c3dcfef3e1bbffe">MED_TAILLE_FAS_ENTITE</a>-1);
+<a name="l00138"></a>00138     _pathi[_sizei+(<a class="code" href="a00356_a6621952e48366ef31c3dcfef3e1bbffe.html#a6621952e48366ef31c3dcfef3e1bbffe">MED_TAILLE_FAS_ENTITE</a>-1)]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00139"></a>00139     _datasetexist=H5Lexists( fid, _pathi, H5P_DEFAULT );
+<a name="l00140"></a>00140     <span class="keywordflow">if</span> (_datasetexist) {
+<a name="l00141"></a>00141       strncpy(&amp;_pathf[_sizef],<a class="code" href="a00356_a2d8108918d5b1433428c1683731bde8d.html#a2d8108918d5b1433428c1683731bde8d">MED_FAS_ELEME</a>,<a class="code" href="a00356_a6621952e48366ef31c3dcfef3e1bbffe.html#a6621952e48366ef31c3dcfef3e1bbffe">MED_TAILLE_FAS_ENTITE</a>-1);
+<a name="l00142"></a>00142       _pathf[_sizef+(<a class="code" href="a00356_a6621952e48366ef31c3dcfef3e1bbffe.html#a6621952e48366ef31c3dcfef3e1bbffe">MED_TAILLE_FAS_ENTITE</a>-1)]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00143"></a>00143      _famElId = <a class="code" href="a00350_a95aa2e0a3f07513b5b8e489848d24e00.html#a95aa2e0a3f07513b5b8e489848d24e00">_MEDdatagroupCrOrderCr</a>(fid,_pathf);
+<a name="l00144"></a>00144       <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_famElId &lt; 0, <a class="code" href="a00346_a92354d1153d9e053407f2f8c0dedbda7.html#a92354d1153d9e053407f2f8c0dedbda7">MED_ERR_CREATE</a>,<a class="code" href="a00346_a21b161b9c2e54a5b96e0d0a73aa0940b.html#a21b161b9c2e54a5b96e0d0a73aa0940b">MED_ERR_FAMILY</a>,_pathf);
+<a name="l00145"></a>00145       <span class="keywordflow">if</span> (_famElId&gt;0) _ret=<a class="code" href="a00349_ae3ba55fd16381090e93f0ee8e3f9e6c6.html#ae3ba55fd16381090e93f0ee8e3f9e6c6">_MEDdatagroupFermer</a>(_famElId);
+<a name="l00146"></a>00146       <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_ret,<a class="code" href="a00346_a444c5e2cb5b9f60b769909297300ac14.html#a444c5e2cb5b9f60b769909297300ac14">MED_ERR_CLOSE</a>,<a class="code" href="a00346_a3e3ac48003b7eac5a1aecac139bcc201.html#a3e3ac48003b7eac5a1aecac139bcc201">MED_ERR_DATAGROUP</a>,_pathf);
+<a name="l00147"></a>00147       <a class="code" href="a00326_ace04ed456b49b13ea7c30249029f4788.html#ace04ed456b49b13ea7c30249029f4788">_move_families</a>( fid, _pathi,_pathf);
+<a name="l00148"></a>00148     }
+<a name="l00149"></a>00149 
+<a name="l00150"></a>00150     <span class="comment">/* Création de la famille zéro dans _pathf */</span>
+<a name="l00151"></a>00151     strncpy(&amp;_pathf[_sizef],<a class="code" href="a00357_a34587d1bd5ffbacaf3c0bdb8f93b5b19.html#a34587d1bd5ffbacaf3c0bdb8f93b5b19">MED_FAS_ZERO</a>,<a class="code" href="a00357_af6351201364f8d00d9c3368577d83b9b.html#af6351201364f8d00d9c3368577d83b9b">MED_TAILLE_FAS_ZERO</a>-1);
+<a name="l00152"></a>00152     _pathf[_sizef+(<a class="code" href="a00357_af6351201364f8d00d9c3368577d83b9b.html#af6351201364f8d00d9c3368577d83b9b">MED_TAILLE_FAS_ZERO</a>-1)]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00153"></a>00153     _famZeId = <a class="code" href="a00350_a95aa2e0a3f07513b5b8e489848d24e00.html#a95aa2e0a3f07513b5b8e489848d24e00">_MEDdatagroupCrOrderCr</a>(fid,_pathf);
+<a name="l00154"></a>00154     <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_famZeId &lt; 0, <a class="code" href="a00346_a92354d1153d9e053407f2f8c0dedbda7.html#a92354d1153d9e053407f2f8c0dedbda7">MED_ERR_CREATE</a>,<a class="code" href="a00346_a21b161b9c2e54a5b96e0d0a73aa0940b.html#a21b161b9c2e54a5b96e0d0a73aa0940b">MED_ERR_FAMILY</a>,_pathf);
+<a name="l00155"></a>00155     <span class="keywordflow">if</span> (_famZeId&gt;0) _ret=<a class="code" href="a00349_ae3ba55fd16381090e93f0ee8e3f9e6c6.html#ae3ba55fd16381090e93f0ee8e3f9e6c6">_MEDdatagroupFermer</a>(_famZeId);
+<a name="l00156"></a>00156     <a class="code" href="a00361_a357e063e379bedc35c1d7159715582c1.html#a357e063e379bedc35c1d7159715582c1">MED_ERR_EXIT_IF</a>(_ret,<a class="code" href="a00346_a444c5e2cb5b9f60b769909297300ac14.html#a444c5e2cb5b9f60b769909297300ac14">MED_ERR_CLOSE</a>,<a class="code" href="a00346_a3e3ac48003b7eac5a1aecac139bcc201.html#a3e3ac48003b7eac5a1aecac139bcc201">MED_ERR_DATAGROUP</a>,_pathf);
+<a name="l00157"></a>00157   }
+<a name="l00158"></a>00158 
+<a name="l00159"></a>00159   _pathi[<a class="code" href="a00356_a7252f9a057a8cec38fc0b99eef3c05a9.html#a7252f9a057a8cec38fc0b99eef3c05a9">MED_TAILLE_FAS</a>  ]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00160"></a>00160   _pathf[<a class="code" href="a00356_a7252f9a057a8cec38fc0b99eef3c05a9.html#a7252f9a057a8cec38fc0b99eef3c05a9">MED_TAILLE_FAS</a>+1]=<span class="charliteral">&apos;\0&apos;</span>;
+<a name="l00161"></a>00161   _datasetexist=H5Lexists( fid, _pathf, H5P_DEFAULT );
+<a name="l00162"></a>00162 
+<a name="l00163"></a>00163   <span class="keywordflow">if</span> (_datasetexist ) {
+<a name="l00164"></a>00164     <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>( (H5Ldelete(fid,_pathi, H5P_DEFAULT) &lt; 0) ,<span class="stringliteral">&quot;Delete &quot;</span>,_pathi);
+<a name="l00165"></a>00165     <a class="code" href="a00360_a1490910810b7b26086f3df4911027426.html#a1490910810b7b26086f3df4911027426">EXIT_IF</a>( (H5Gmove(fid, _pathf, _pathi  ) &lt; 0) ,<span class="stringliteral">&quot;Switch to &quot;</span>,_pathf);
+<a name="l00166"></a>00166   }
+<a name="l00167"></a>00167 
+<a name="l00168"></a>00168    <span class="comment">/* _MEDobjetsOuverts(fid); */</span>
+<a name="l00169"></a>00169 
+<a name="l00170"></a>00170    <span class="comment">/* MAJ_version_num(fid,3,1,0); */</span>
+<a name="l00171"></a>00171 
+<a name="l00172"></a>00172 }
+</pre></div></div>
+<hr size="1"/><address style="text-align: right;"><small>Généré le Thu Jan 21 18:06:07 2016 pour MED fichier par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
+</body>
+</html>

@@ -1,0 +1,19 @@
+#
+#------- Sources Fortran
+
+SRCS= \
+declarations_rice2d.f \
+fhc_rice2d.f \
+lecdon_rice2d.f \
+nametrac_rice2d.f \
+point_rice2d.f \
+solar1.f \
+source_rice2d.f \
+thermal_rice2d.f \
+
+LIBS= \
+			$(DEST)/lib/libbief.a \
+			$(DEST)/lib/libhermes.a \
+			$(DEST)/lib/libdamocles.a \
+			$(DEST)/lib/libparallel.a \
+			$(DEST)/lib/libspecial.a \

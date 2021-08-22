@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>MED fichier: Référence du fichier getBlocksOfEntitiesPartition.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Généré par Doxygen 1.6.1 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Documentation&nbsp;MED</span></a></li>
+      <li><a href="pages.html"><span>Guides&nbsp;d'utilisation</span></a></li>
+      <li><a href="modules.html"><span>Guides&nbsp;de&nbsp;référence</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_e4d36c21469a087084d3b546a906990c.html">tests</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_cd2243ef3993e55c3ae226193c314f62.html">parallel</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier getBlocksOfEntitiesPartition.h</h1><code>#include &lt;<a class="el" href="a00332_source.html">med.h</a>&gt;</code><br/>
+<code>#include &quot;<a class="el" href="a00291_source.html">getBlocksOfEntitiesPartition.h</a>&quot;</code><br/>
+<div class="dynheader">
+Graphe des dépendances par inclusion de getBlocksOfEntitiesPartition.h:</div>
+<div class="dynsection">
+<div class="center"><img src="a01274.jpg" border="0" usemap="#getBlocksOfEntitiesPartition_8h_map" alt=""/></div>
+<map name="getBlocksOfEntitiesPartition_8h_map" id="getBlocksOfEntitiesPartition_8h">
+<area shape="rect" id="node3" href="a00332.html" title="med.h" alt="" coords="635,86,694,117"/><area shape="rect" id="node7" href="a00359.html" title="med_proto.h" alt="" coords="669,166,762,197"/><area shape="rect" id="node9" href="a00376.html" title="medC_win_dll.h" alt="" coords="659,326,771,357"/><area shape="rect" id="node11" href="a00532.html" title="medlibrary.h" alt="" coords="25,246,118,277"/><area shape="rect" id="node14" href="a00468.html" title="medfile.h" alt="" coords="142,246,217,277"/><area shape="rect" id="node17" href="a00560.html" title="medmesh.h" alt="" coords="241,246,331,277"/><area shape="rect" id="node20" href="a00439.html" title="medfield.h" alt="" coords="355,246,438,277"/><area shape="rect" id="node23" href="a00426.html" title="medfamily.h" alt="" coords="462,246,555,277"/><area shape="rect" id="node26" href="a00406.html" title="medequivalence.h" alt="" coords="579,246,705,277"/><area shape="rect" id="node29" href="a00736.html" title="medsubdomain.h" alt="" coords="729,246,849,277"/><area shape="rect" id="node32" href="a00701.html" title="medprofile.h" alt="" coords="873,246,966,277"/><area shape="rect" id="node35" href="a00483.html" title="medfilter.h" alt="" coords="990,246,1073,277"/><area shape="rect" id="node38" href="a00550.html" title="medlocalization.h" alt="" coords="1097,246,1219,277"/><area shape="rect" id="node41" href="a00543.html" title="medlink.h" alt="" coords="1243,246,1321,277"/><area shape="rect" id="node44" href="a00682.html" title="medparameter.h" alt="" coords="1345,246,1459,277"/><area shape="rect" id="node47" href="a00511.html" title="medinterp.h" alt="" coords="1483,246,1574,277"/></map>
+</div>
+<div class="dynheader">
+Ce graphe montre quels fichiers incluent directement ou indirectement ce fichier :</div>
+<div class="dynsection">
+<div class="center"><img src="a01275.jpg" border="0" usemap="#getBlocksOfEntitiesPartition_8hdep_map" alt=""/></div>
+<map name="getBlocksOfEntitiesPartition_8hdep_map" id="getBlocksOfEntitiesPartition_8hdep">
+<area shape="rect" id="node3" href="a00281.html" title="filterBlockOfentities.c" alt="" coords="5,86,152,117"/><area shape="rect" id="node5" href="a00290.html" title="getBlocksOfEntitiesPartition.c" alt="" coords="176,86,371,117"/></map>
+</div>
+
+<p><a href="a00291_source.html">Aller au code source de ce fichier.</a></p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Macros</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00291_a8e315da8f14d473c025c8a1f6af2f979.html#a8e315da8f14d473c025c8a1f6af2f979">MESGERR</a>&nbsp;&nbsp;&nbsp;1</td></tr>
+<tr><td colspan="2"><h2>Définition de type</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00291_a78f40b6b8ddccfcfd0bddbd13d3d1a13.html#a78f40b6b8ddccfcfd0bddbd13d3d1a13">GetBlocksOfEntitiesType</a> )(const int myrank, const int nproc, const int nentities, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const start, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const stride, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const count, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *blocksize, int *const lastusedrank, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const lastblocksize)</td></tr>
+<tr><td colspan="2"><h2>Fonctions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00291_a1a1e5d889c1ec1e795b6663cbbac7e39.html#a1a1e5d889c1ec1e795b6663cbbac7e39">getContinuousBlocksOfEntities</a> (const int myrank, const int nproc, const int nentities, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const start, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const stride, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const count, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *blocksize, int *const lastusedrank, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const lastblocksize)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00291_a5e46fdcd4375727565dc777e08881ffa.html#a5e46fdcd4375727565dc777e08881ffa">getCyclicBlocksOfEntities</a> (const int myrank, const int nproc, const int nentities, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const start, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const stride, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const count, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *blocksize, int *const lastusedrank, <a class="el" href="a00332_abc4b2f6b68a545b7b3441b0d3d860629.html#abc4b2f6b68a545b7b3441b0d3d860629">med_size</a> *const lastblocksize)</td></tr>
+</table>
+</div>
+<hr size="1"/><address style="text-align: right;"><small>Généré le Thu Jan 21 18:06:10 2016 pour MED fichier par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
+</body>
+</html>

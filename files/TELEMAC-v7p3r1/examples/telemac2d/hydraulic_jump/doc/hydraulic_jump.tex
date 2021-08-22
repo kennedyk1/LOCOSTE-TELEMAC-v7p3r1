@@ -1,0 +1,155 @@
+\chapter{hydraulic jump}
+
+
+\section{Description of the problem}
+\bigskip
+This test case presents a flow over a bump on the bed with 
+super-critical condition and hydraulic jump.
+It allows to show that \telemac{2d} is able to correctly reproduce 
+the hydrodynamic impact of a changing bed slopes, vertical flow 
+contractions and expansions. Furthermore, It allows to have a good 
+representation of flows computed in steady and transient flow regimes. 
+Finally, with appropriate choice of the mesh resolution, this test case 
+allows also to see that \telemac{2d} produces solutions without wiggles 
+(i.e. oscillations in space at a given time or oscillations in time 
+at a given position). 
+
+\bigskip
+The solution produced by \telemac{2d} in a channel with friction 
+presenting an idealised bump on the bottom  is compared with 
+the analytical solution to this problem. The studied flow regime is 
+sub-critical upstream; a transition to super-critical flow conditions 
+is located on the bump, and the downstream water level imposes the presence 
+of an hydraulic jump in the downstream reach of the channel.
+
+\bigskip
+The geometry dimensions of the channel are 2~m wide and 20.5~m long. 
+It is horizontal with a 4 m long bump in its middle 
+(see Figure \ref{t2d:hydraulic_jump:fig:baty}). The maximum elevation 
+of the bump is 0.2~m (see Figure \ref{t2d:hydraulic_jump:fig:profil}) 
+with the bottom $z_f$ is describe by the equation following :
+\begin{equation*}
+z_f = \left\{
+\begin{array}{rl}
+-0.05(x-10)^2~\text{m}& \text{ if 8 m < x < 12 m} \\
+-0.20~\text{m} & \text{ elsewhere}
+\end{array}
+\right.
+\end{equation*}
+Note that the horizontal viscosity turbulent is constant and equal to zero. 
+However instead of prescribing a zero viscosity, no diffusion step 
+could have been used (keyword DIFFUSION OF VELOCITY prescribed to NO).
+
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/Mesh_topography.png}
+ \caption{Mesh and topography of the channel.}
+ \label{t2d:hydraulic_jump:fig:baty}
+\end{figure}
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bottom_level.png}
+ \caption{Profile of the bump.}
+ \label{t2d:hydraulic_jump:fig:profil}
+\end{figure}
+\section{Initial and boundary conditions}
+\bigskip
+The initial conditions are a null velocity and water level 
+equal to 0.4~m along channel.
+
+\bigskip
+The boundary conditions are:
+\begin{itemize}
+\item  At the channel entrance, the flow rate is $Q = 2~\text{m}^3\text{s}^{-1}$.
+\item  At the channel outlet, the free surface elevation is 
+$z_{s} = 0.4~\text{m}$. Therefore, the depth
+$\displaystyle{h = z_{s}-z_{f} = 0.6~\text{m}}$.
+\item On the bottom Strickler formula with friction coefficient 
+equal to 40~$\text{m}^{1/3}.\text{s}^{-1}$ is imposed.
+\item No friction on lateral walls.
+\end{itemize}
+
+\section{Mesh and numerical parameters}
+\bigskip
+The mesh is regular along channel. It is made up with 
+quadrangles split into two triangles.
+It is composed of 2,620 triangular elements (1,452 nodes) 
+and the size of triangles ranges between 0.25~m and 0.5~m. 
+The triangular elements types are linear triangles 
+(P1, 3 values per element, the corners) for water depth and 
+quadratic triangle (6 values per element, the corners and the center of the edges) 
+for velocities ("t2d\_hydraulic\_jump\_v2p0.case" steering file).
+
+\bigskip
+The time step is 0.02~s for a period of 50~s. In fact, \telemac{2d} is run forward in time until a steady state flow is obtained. The resolution accuracy for the velocity is taken at $10^{-5}$.
+
+\bigskip
+Note that for numerical resolution, GMRES (Generalized Minimal Residual Method) 
+is used for solving the propagation step (option 7). To solve advection, 
+the characteristics scheme is used on velocities (scheme 1) and 
+the conservative PSI scheme is used for the depth (scheme 5). 
+In addition, the treatment of linear system is done with a wave equation.
+To finish, the implicitation coefficient for depth and velocities is equal at 0.6.
+
+\section{Results}
+\bigskip
+As seen in the test case of the section \ref{t2d:bumpcri:sect}, 
+the sub-critical flow upstream the bump and the transition are 
+correctly reproduced with \telemac{2d}.\\
+The prescribed downstream elevation defines a backwater line which 
+takes into account roughness effects on the downstream reach. 
+The super-critical flow issuing from the downstream foot of 
+the bump also generates a water line. The hydraulic jump should be 
+located in a position where the water depths of these two water lines 
+are conjugate, i.e. they are related by the hydraulic jump equation:
+ \begin{equation*}
+ \frac{h_1}{h_2}=\frac{1}{2}\left(\sqrt{1+8 F_{r1}^2}-1\right)
+ \end{equation*}
+where index $1$ relates to the position upstream the jump and index $2$ 
+relates to the position downstream the jump. Let us notice that 
+it is necessary to have bottom friction to have a well-posed problem in 
+this test case. In the contrary, the water lines issuing from the foot of 
+the bump and from the downstream end respectively would be parallel to the bed,
+ and the jump could not occur in the downstream reach.
+
+\bigskip
+The hydraulic jump computed by \telemac{2d} occurs in a position where 
+$h_1=0.18~\text{m}$ , $h_2=0.41~\text{m}$ and $F_{r1} = 1.64$ 
+(see Figures \ref{t2d:hydraulic_jump:fig:h} and \ref{t2d:hydraulic_jump:fig:fr}). 
+These values satisfy with more or less accuracy the hydraulic jump formula.
+In addition, the followings other results are well obtained :
+\begin{itemize}
+\item The output flow rate is equal to the input flow rate thank to flow 
+acceleration after the bump (Figure \ref{t2d:hydraulic_jump:fig:velo}).
+\item The Froude number is equal to 1 at the position of the bump 
+(Figure \ref{t2d:hydraulic_jump:fig:fr}).
+\end{itemize}
+%
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/free_surface.png}
+ \caption{Comparison between analytical solution and \telemac{2d} solution for the free surface elevation.}
+ \label{t2d:hydraulic_jump:fig:h}
+\end{figure}
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/velocity_vector.png}
+ \caption{Velocity field for the steady state flow.}
+ \label{t2d:hydraulic_jump:fig:velo}
+\end{figure}
+%
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/froude_number.png}
+ \caption{Froude number of \telemac{2d}.}
+ \label{t2d:hydraulic_jump:fig:fr}
+\end{figure}
+
+\bigskip
+To conclude, the transition from a super-critical to a sub-critical 
+flow regime through a hydraulic jump is properly reproduced by \telemac{2d}, 
+provided the mesh resolution is fine enough. The hydraulic jump formula is satisfied 
+and the jump is located in the right position.
+
+
+

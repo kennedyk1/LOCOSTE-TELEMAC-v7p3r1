@@ -1,0 +1,143 @@
+\chapter{Sources of tracer under wetting and drying}
+%
+
+% - Purpose & Problem description:
+%     These first two parts give reader short details about the test case,
+%     the physical phenomena involved and specify how the numerical solution will be validated
+%
+\section{Purpose}
+%
+This test demonstrates the behaviour of buoyant tracer released from a source in an intertidal environment. 
+The purposes are to ensure tracer mass conservation (particuarly under wetting and drying), and to 
+raise a flag if new code developments have modified the advection or diffusion of tracers.
+
+\section{Description}
+%
+The model domain is a channel 2000m long and 100m wide, with a sloping bed. Buoyant tracer is added to 
+the model from a source at the middle of the domain (unit flow rate and concentration). The tracer rises to the surface and spreads horizontally, as 
+the water level rises and falls, inundating and exposing part of the bed. Water level variations are defined using a sine curve at the offshore boundary.
+%
+% - Reference:
+%     This part gives the reference solution we are comparing to and
+%     explicits the analytical solution when available;
+%
+% bibliography can be here or at the end
+%\subsection{Reference}
+%
+%
+\subsection{Reference}
+%
+
+%
+% - Geometry and Mesh:
+%     This part describes the mesh used in the computation
+%
+%
+\subsection{Geometry and Mesh}
+%
+\subsubsection{Bathymetry}
+%
+Sloped bed with constant gradient from $z = 0$~m to $z = 2$~m.
+%
+\subsubsection{Geometry}
+%
+Channel length = 2000~m\\
+Channel width = 100~m
+%
+\subsubsection{Mesh}
+%
+1000 triangular elements\\
+606 nodes\\
+6 fixed planes regularly spaced
+%
+% - Physical parameters:
+%     This part specifies the physical parameters
+%
+%
+\subsection{Physical parameters}
+%
+Constant diffusion of velocity:
+\begin{itemize}
+\item Horizontal: $10^{-4}$~m$^2$/s,
+\item Vertical: 1.0$~m$^2$/s.
+\end{itemize}
+Constant diffusion of tracer: 
+\begin{itemize}
+\item Horizontal: 0.01,
+\item Vertical: $10^{-6}$~m$^2$/s.
+\end{itemize}
+Tracer density law specifying a $\beta$ spatial expansion coefficient of
+0.0003~K$^{-1}$ and a standard value of the tracer of 0.0.\\
+Coriolis: no\\
+Wind: no
+%
+% Experimental results (if needed)
+%\subsection{Experimental results}
+%
+% bibliography can be here or at the end
+%\subsection{Reference}
+%
+% Section for computational options
+%\section{Computational options}
+%
+% - Initial and boundary conditions:
+%     This part details both initial and boundary conditions used to simulate the case
+%
+%
+\subsection{Initial and Boundary Conditions}
+%
+\subsubsection{Initial conditions}
+%
+Constant water level at $z = 2$~m\\
+No velocity\\
+Initial value of tracer = 0\\
+%
+\subsubsection{Boundary conditions}
+%
+Elevation and tracer prescribed with free velocity at offshore boundary ($z = 0$~m). All other boundaries closed\\
+Bottom friction: Nikuradse’s formula with roughness length of 0.001~m\\
+Tracer discharge at source: 1.0~m$^3$/s\\
+Tracer value at source: 1.0~g/L or kg/m$^3$
+%
+\subsection{General parameters}
+%
+Time step: 10~s\\
+Simulation duration: 86400~s (1 day)
+%
+% - Numerical parameters:
+%     This part is used to specify the numerical parameters used
+%     (adaptive time step, mass-lumping when necessary...)
+%
+%
+\subsection{Numerical parameters}
+%
+Hydrostatic version\\
+Advection of velocities: Characteristics (default scheme)\\
+Advection of tracers: Leo Postma scheme for tidal flats\\
+Tidal flats enabled with equations solved everywhere and flux limiting.
+%
+\subsection{Comments}
+%
+% - Results:
+%     We comment in this part the numerical results against the reference ones,
+%     giving understanding keys and making assumptions when necessary.
+%
+%
+\section{Results}
+%
+The buoyant tracer rises and is advected onshore by the currents and rising water levels. 
+The water then recedes, exposing the bank and carrying the plume offshore. 
+Analysis of the tracer mass shows that tracer is conserved as the bank inundates and then dries. 
+The simulation demonstrates that:
+\begin{itemize}
+\item a source of buoyant tracer behaves as expected (tracer rises to the surface, is advected with the ambient currents, and pools near the source during periods of weak current),
+\item the value of tracer on a dry node is retained from the last time the node was wet,
+\item tracer mass is conserved under wetting and drying.
+\end{itemize}
+%
+\section{Conclusion}
+%
+\telemac{3d} simulates correctly the buoyancy of an active tracer, and maintains mass balance in intertidal areas.
+%
+
+

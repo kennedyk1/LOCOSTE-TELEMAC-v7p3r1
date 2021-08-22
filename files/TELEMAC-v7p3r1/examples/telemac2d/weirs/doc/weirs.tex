@@ -1,0 +1,164 @@
+\chapter{weirs}
+
+\section{Description of the problem}
+\bigskip
+This test case presents a flow over three successive sills in 
+a rectangular channel treated as singularities. It allows to show 
+that \telemac{2d} is able to treat a number of flow singularities 
+as internal boundary conditions. Moreover, it allows also to check 
+the tracers function for this type of problem in \telemac{2d}.
+
+\bigskip
+The sills may be considered under the traditional approach made 
+in open channel hydraulics through a relation between two superimposed 
+open boundaries, short culverts may be treated as a couple of nodes
+ with respective source and sink terms.\\
+This sills description, which are represented in a channel as internal 
+singularities, was introduced in \telemac{2d} in order to avoid the 
+multiplication of computational nodes and associated reduction in time 
+step when a sill is represented thanks to variations in the bathymetry.\\
+The weir law as traditionally used in channel hydraulics is prescribed 
+through two boundary conditions: one upstream the weir and one downstream. 
+It should be mentioned however that this option gives satisfactory results 
+only if the flow is relatively perpendicular to the weir, which is 
+the case in the present test.
+
+\bigskip
+In this test case, the sills  are so represented as internal 
+singularities, as just indicated.
+The geometry dimensions of rectangular channel are 848~m wide 
+and  3,522~m long. The channel is flat bottom and it is decomposed 
+of four part reaches 848~m long. The three upstream reaches are limited 
+at their downstream end by 3 sills with crest heights 1.8~m (upstream sill), 
+1.6~m and 1.4~m (downstream sill).\\
+Note that the turbulent viscosity is constant and equal to $1~\text{m}^2~\cdot~\text{s}^{-1}$.
+
+\section{Initial and boundary conditions}
+
+\bigskip
+The initial conditions are a null velocity, 
+a water depth of 1.35~m and a tracer value of 50.
+
+\bigskip
+The boundary conditions (Figure \ref{t2d:weirs:fig:geo}) are:
+\begin{itemize}
+\item At the channel entrance, the flow rate is 
+$Q = 600~\text{m}^3\text{s}^{-1}$ and the tracer value is 100.
+\item At the channel outlet, the water depth is 
+$h=1.35~\text{m}$. 
+\item On  bottom friction, the Strickler formula 
+with friction coefficient equal to 
+30~$\text{m}^{1/3}\cdot\text{s}^{-1}$ is imposed.
+\item No friction is taken into account on lateral walls.
+\end{itemize}
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=0.7\textwidth]}{../img/geo.png}
+ \caption{Mesh and topography of the domain.}
+ \label{t2d:weirs:fig:geo}
+\end{figure}
+\section{Numerical parameters}
+\bigskip
+The mesh is regular along the domain. It is generally made up 
+with quadrangles split into two triangles. It is irregular in 
+the upstream reach in order to test the sensitivity on this 
+feature of the flow results above the sill (see Figure \ref{t2d:weirs:fig:geo}).
+It is composed of 870 triangular elements (519 nodes) and 
+the size of triangles ranges between 53~m and 120~m. The triangular 
+elements types are linear triangles (P1, 3 values per element, the corners) 
+for water depth and quasi-bubble triangle (4 values per element, the corners 
+and the element center) for velocities.
+
+\bigskip
+The time step is 150~s for a period of 6,000~s. 
+The resolution accuracy for the velocity is taken at $10^{-10}$.
+ 
+\bigskip
+Note that for numerical resolution, GMRES (Generalized Minimal Residual Method) 
+is used for solving the propagation step (option 7). To solve advection, 
+the characteristics scheme (scheme 1), and the conservative psi scheme (scheme 5)
+is used respectively for the velocities and for the depth. To finish, 
+the implicitation coefficient for depth and velocities is equal at 0.55.\\
+It should also be noted that a tracer is used. The solver for 
+propagation is the conjugate gradient (option 1). For the advection 
+resolution, it's used a conservative N-scheme(scheme 4) and the solver 
+for diffusion of tracer is also the conjugate gradient (option 1).
+
+\section{Results}
+\bigskip
+As it can be seen Figure \ref{t2d:weirs:velocity}, 
+the velocity field remains regular in the different reaches of the channel.
+
+\bigskip
+The water level increases progressively as expected 
+in the three upstream reaches during the simulated period 
+(see Figure \ref{t2d:weirs:fig:z}). The relations between 
+the discharge (per unit of width) on the sill, the water levels 
+upstream and downstream and the sill crest elevation must be respected. 
+They are:
+\begin{itemize}
+\item Free overflow weir:
+\begin{equation*}
+q=\mu \sqrt{2g}\left( z_{up}-z_{sill} \right)^{3/2}
+\end{equation*}
+\item drowned weir :
+ 	\begin{equation*}
+q=\frac{2}{3\sqrt{3}}C_{d} \sqrt{2g}\left( z_{down}-z_{sill} \right)\sqrt{\left( z_{up}-z_{down} \right)}
+\end{equation*}
+\end{itemize}
+The transition from free overflow to drowned condition is defined by:
+\begin{equation}
+  	z_{down} \leq z_{sill}+ \frac{2}{3}\left( z_{up}-z_{sill} \right)
+  	\label{t2d:weirs:eq:1}
+\end{equation}
+Where $z_{up}$, $z_{down}$ and $z_{sill}$ are respectively 
+water level upstream (m), water level downstream (m) and 
+sill crest elevation (m).  $q$ is discharge per unit width 
+($\text{m}^2\cdot\text{s}^{-1}$) and $C_{d}$ is the discharge coefficient 
+(usually between 0.4 and 0.5).\\
+The \telemac{2d} results respect well these relation \eqref{t2d:weirs:eq:1} 
+(Figure  \ref{t2d:weirs:fig:z}). Furthermore the tracer propagation is well
+ carry out through internal singularities (Figure \ref{t2d:weirs:fig:tracer}).
+%
+\begin{figure}[!htbp]
+\begin{minipage}[t]{0.50\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/figure_velo1500s.png}
+\end{minipage}%
+\begin{minipage}[t]{0.50\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/figure_velo3000s.png}
+\end{minipage}
+\begin{minipage}[t]{0.50\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/figure_velo4500s.png}
+\end{minipage}%
+\begin{minipage}[t]{0.50\textwidth}
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/figure_velo6000s.png}
+\end{minipage}
+ \caption{Evolution of velocity field in time.}
+ \label{t2d:weirs:velocity}
+\end{figure}
+
+
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=0.85\textwidth]}{../img/free_surface.png}
+ \caption{Evolution of the free surface elevation in time.}
+ \label{t2d:weirs:fig:z}
+\end{figure}
+
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=0.85\textwidth]}{../img/Tracer.png}
+ \caption{Evolution of the tracer in time.}
+ \label{t2d:weirs:fig:tracer}
+\end{figure}
+
+\bigskip
+To conclude, \telemac{2d} computes adequately weir 
+flows as given by analytical hydraulic laws.
+This type of flow is represented as an internal 
+ singularity in the model.
+%

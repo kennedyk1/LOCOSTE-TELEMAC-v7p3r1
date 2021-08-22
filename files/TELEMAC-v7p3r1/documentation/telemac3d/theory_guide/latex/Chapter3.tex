@@ -1,0 +1,279 @@
+In this chapter, we describe the time-scheme used in TELEMAC-3D in 
+a continuous-space framework. The aim is to help the reader understand
+what comes in the chapter \ref{Chapter4}, where the space-time discretisation
+is described\footnote{It is important to bear in mind that demonstrations 
+of conservation can only be done with the full space-time discretisation.}.
+In TELEMAC-3D, a fractional-steps method is used for the time discretisation.
+An important aspect of the algorithm is that the horizontal and vertical velocities are
+not treated in the same way. Moreover, there are two definitions of the velocity field
+in the algorithm: the one calculated on the basis of the continuity equation so as to ensure
+mass conservation and the one calculated on the basis of the momentum equation. Later on,
+we refer to them as the conservative velocity field (denoted by $\vec{u}^C$) and the momentum
+velocity field (denoted by $\vec{u}$), respectively. 
+We recall that the 2D vector corresponding to the $x$ and $y$
+components of a 3D vector is denoted with a $2D$ subscript. 
+On the other hand, we denote with an $A$ superscript the fields obtained after an advection step.
+%while we denote with a $D$ superscript the fields obtained after an advection-diffusion step.
+The algorithm then consists of several steps, which order depends on the
+option \texttt{DYNAMIC PRESSURE IN WAVE EQUATION}. 
+In TELEMAC-3D, we call wave equation the equation solved to calculate
+the new water depth values. It is indeed an equation of wave propagation
+since we do not solve the coupled system linking $h^{n+1}$ and $\vec{u}^{Cn+1}$,
+but rather write $\vec{u}^{Cn+1}$ as a function of $h^{n+1}$ and introduce
+this formula into the equation on $h^{n+1}$. There are two options in TELEMAC-3D:
+either the dynamic pressure is calculated after the values of $h^{n+1}$ and
+$\vec{u}^{Cn+1}$ are known, or it is calculated once $\vec{u}^{Cn+1}$ has been written 
+as a function of $h^{n+1}$ based on an intermediate velocity, which is
+thereafter corrected through a projection step, and then only $h^{n+1}$ is
+calculated. We list the different steps below, for each value of the key-word.
+
+\section{Dynamic pressure calculated after the wave equation 
+resolution}
+This corresponds to the option \texttt{DYNAMIC PRESSURE IN WAVE EQUATION=NO}, 
+which is the one by default in TELEMAC-3D. The algorithm then consists of 
+the following steps:
+\begin{enumerate}
+\item \textbf{an advection step for the momentum horizontal velocities}, 
+using the conservative velocity for the advection:
+\begin{equation}
+    \dfrac{\vec{u}_{2D}^{A}-\vec{u}_{2D}^n}{\delta t} 
+    + \left(\vec{u}^{Cn}\cdot\Grad\right)\vec{u}_{2D}^{*}=0 \medskip \\
+\end{equation}
+\begin{CommentBlock}{Remarks about the advection term $\left(\vec{u}^{C}\cdot\Grad\right)\vec{u}_{2D}^{*}$:}
+\begin{itemize}
+\item $\vec{u}^{Cn}$ is used as the advecting velocity because it is 
+specifically computed so as to be divergence-free at step 5. 
+When using a conservative advection scheme, this makes it possible to ensure mass-conservation 
+at machine precision, with any discretisation.
+It is a very important feature of TELEMAC-3D, especially for dilution studies where scalar conservation is
+of primary importance\footnote{In the studies, the meshes are usually quite coarse,
+on the one hand because bathymetric data have a limited accuracy, but also to limit
+computational times, so that this is really a key-feature.}.
+\item The value of $\vec{u}^{C}$ from the current time-step, $\vec{u}^{Cn}$, is used for the advection of the velocity,
+while the value of the next time-step, $\vec{u}^{Cn+1}$, is calculated when solving the wave equation.
+However, for the sake of simplicity in the notations, in the next chapter about space-time discretisation
+we will not write $\vec{u}^{Cn}$ or $\vec{u}^{Cn+1}$, but only $\vec{u}^{C}$ to have lighter notations.
+\item the time-discretisation of the advected field $\vec{u}_{2D}$ is not specified yet, which is accounted for by the $*$ superscript. 
+Indeed, in TELEMAC-3D there are various methods for the computation
+of the advection term: the methods of characteristics, distributive schemes or finite elements can be used.
+The basic forms of distributive schemes -- N, PSI, are explicit, while more complex forms can be semi-implicited
+in time. On the other hand, the SUPG scheme is implicit and the characteristics method consists of an exact
+time-integration between two time-steps. This is dealt with in the section \ref{equations de transport}.
+\end{itemize}
+\end{CommentBlock}
+
+\item \textbf{an advection-diffusion step for the momentum vertical velocity}, 
+using the conservative velocity field for the advection and the momentum velocity for the diffusion:
+\begin{equation}
+    \dfrac{\tilde{w}^{aux}-w^n}{\delta t}+
+    \left(\vec{u}^{Cn}\cdot\Grad\right)w^{*}=
+    -g+ \tilde{F}_z+\Div(\nu_Ew^*\cdot\vec{e}_z)
+\end{equation}
+\begin{CommentBlock}{Remark:}
+In this system, the term $\tilde{F}_z$ contains the buoyancy forces, 
+Coriolis force, tidal force, source points inputs and outputs 
+(isolated or linked through the culvert fomulation), rain and evaporation. 
+If present, these terms are treated explicitly.
+\end{CommentBlock}
+Then, the diffusion term can be partially or fully implicited using 
+a coefficient of implicitation for the diffusion $\theta_d$, 
+so that this step reads:
+\begin{equation}
+    \dfrac{\tilde{w}^{aux}-w^n}{\delta t}+
+    \left(\vec{u}^{Cn}\cdot\Grad\right)w^{*}=
+    -g+ \tilde{F}_z+\Div\left(\nu_E\theta_{d}\Grad \tilde{w}^{aux} + \nu_E(1-\theta_{d})\Grad w^n\right)
+\end{equation}
+\begin{CommentBlock}{Remark:}
+When applying the Finite Elements space-discretisation to this step,
+some diffusion boundary terms appear (friction terms), which may actually be treated
+implicitely or explicitely. This is described in the section \ref{etape hydrostatique}.
+\end{CommentBlock}
+
+\item \textbf{a hydrostatic step}, which consists in computing the new depth
+together with the conservative horizontal velocities:
+\begin{equation}\label{eq:hydrostatic_first_system}
+  \left\{\begin{array}{l}
+    \dfrac{\eta^{n+1}-\eta^{n}}{\delta t} 
+    + \nabla_{2D}\cdot \displaystyle{\int_b^\eta\tilde{\vec{u}}_{2D}^{n+1}~dz}=0 \medskip \\
+    \dfrac{\tilde{\vec{u}}_{2D}^{n+1}-\vec{u}_{2D}^{A}}{\delta t}=-g\Grad_{2D}\eta^{n+1}
+    + \tilde{\vec{F}}_{2D}
+    +\BDiv (\nu_E \Grad \vec{u}_{2D}^n)\medskip \\
+  \end{array}\right.
+\end{equation}
+
+This system corresponds to the lines 1, 2 and 4 of \eqref{eq:NS_FS_expanded}, excluding the advection terms
+since they have already been treated in the previous fractional step.
+%We defined an intermediate velocity field $\vec{u}^{aux}$ such as:
+%\begin{equation}
+%  \dfrac{\vec{u}_{2D}^{aux}-\vec{u}_{2D}^{A}}{\delta t}= -g\Grad_{2D}\eta^n
+%     + \tilde{\vec{F}}_{2D}
+%     +\nu_E \left(\theta_d\Lap \vec{u}_{2D}^{aux}+(1-\theta_d)\Lap \vec{u}_{2D}^{n}\right)
+%\end{equation}
+The diffusion term was written here in a fully explicit form for the sake of simplicity but
+the user actually has the choice to partially implicit it using a coefficient $\theta_d$.
+This will be described with more details in the section \ref{momentumvariational}.\\
+
+By replacing $\eta$ by $h + b$ in the second line of \eqref{eq:hydrostatic_first_system}
+and partially impliciting the water depth with a 
+coefficient $\theta_h$, the term $\Grad_{2D}\eta^{n+1}$ of the second line is actually re-written:
+\begin{equation}
+\Grad_{2D}(\theta_h\eta^{n+1}+(1-\theta_h)\eta^n) = \Grad_{2D}\left(\theta_h h^{n+1}+(1-\theta_h)h^n+b\right)
+\end{equation}
+We used the fact that $b$ is considered constant in time here.
+The user also has the choice to partially implicit the velocity field during this step, using a coefficient
+$\theta_u$ in the first line of the system \eqref{eq:hydrostatic_first_system}.
+The system \eqref{eq:hydrostatic_first_system} is then modified and reads:
+\begin{equation}\label{eq:hydrostatic_second_system}
+  \left\{\begin{array}{l}
+    \dfrac{h^{n+1}-h^{n}}{\delta t} 
+    + \nabla_{2D}\cdot \displaystyle{\int_b^\eta\left(\theta_u\tilde{\vec{u}}_{2D}^{n+1}+(1-\theta_u)\vec{u}_{2D}^n\right)~dz}=0 \medskip \\
+    \dfrac{\tilde{\vec{u}}_{2D}^{n+1}-\vec{u}_{2D}^{A}}{\delta t}=-g \theta_h \Grad_{2D}(h^{n+1}-h^n) -g\Grad_{2D}\eta^n
+     + \tilde{\vec{F}}_{2D}
+     +\BDiv(\nu_E \Grad \vec{u}_{2D}^n)\medskip \\
+  \end{array}\right.
+\end{equation}
+For the resolution of this system,
+the expression of $\tilde{\vec{u}}_{2D}^{n+1}$ given by the second 
+line is injected into the first line. This yields a propagation equation on $\eta^{n+1}$.
+The system \eqref{eq:hydrostatic_first_system} is then modified and reads:
+\begin{equation}
+   \left\{\begin{array}{l}
+   \begin{array}{ll}
+    \dfrac{h^{n+1}-h^{n}}{\delta t}+ \nabla_{2D}\cdot \displaystyle{\int_b^\eta
+      -\delta t\theta_ug \theta_h \Grad_{2D}(h^{n+1}-h^n)~dz}= &\medskip \\
+     & \hspace{-7cm}-\nabla_{2D}\cdot \displaystyle{\int_b^\eta
+      \left[\theta_u\vec{u}_{2D}^{aux}+(1-\theta_u)\vec{u}_{2D}^n\right]~dz} \\
+  \end{array}\medskip\\
+  \dfrac{\vec{u}_{2D}^{aux}-\vec{u}_{2D}^{A}}{\delta t}= -g\Grad_{2D}\eta^n
+     + \tilde{\vec{F}}_{2D}
+     +\BDiv\left(\nu_E \theta_d\Grad \vec{u}_{2D}^{aux}+\nu_E(1-\theta_d)\Grad \vec{u}_{2D}^{n}\right)\medskip\\
+    \tilde{\vec{u}}_{2D}^{n+1}=\vec{u}_{2D}^{aux}-g \theta_h \delta t\Grad_{2D}(h^{n+1}-h^n)
+        \end{array}\right.
+\label{eq:wave_equation_time}
+\end{equation}
+where we display the scheme using $\theta_d$ for partial implicitation of the diffusion.
+Solving the first line of this system provides the value of $h^{n+1}$. 
+The field $\vec{u}_{2D}^{Cn+1}$ to be used for the advection at the next time-step is then defined by:
+\begin{equation}
+\vec{u}_{2D}^{Cn+1}=\theta_u\vec{u}_{2D}^{aux}+(1-\theta_u)\vec{u}_{2D}^n
+\label{eq:uc}
+\end{equation}
+so as to be consistent with the conservation of the scalars (see the section
+\ref{masse traceur}).
+\item \textbf{a step of mesh motion} where the new layers elevations are 
+calulcated based on the new values of water depth.
+\item \textbf{a pressure step} for computing the dynamic pressure and calculating the momentum velocity field:
+\begin{equation}
+  \left\{\begin{array}{l}
+    \Lap p_d^{n+1} = \dfrac{\rho}{\delta t}\Div \tilde{\vec{u}}^{n+1} \medskip \\
+    \dfrac{\vec{u}^{n+1}-\tilde{\vec{u}}^{n+1}}{\delta t} = -\dfrac{1}{\rho}\Grad p_d^{n+1}
+  \end{array}\right.
+\end{equation}
+where $\tilde{\vec{u}}^{n+1}$ is defined by:
+%denotes the non divergence-free vector of components $(u^C, v^C, w^C)$.
+\begin{equation}
+\tilde{\vec{u}}^{n+1}=\vec{u}_{2D}^{aux}-\delta tg\theta_h\Grad_{2D}(h^{n+1}-h^n)+\tilde{w}^{aux}\vec{e}_z
+\end{equation}
+
+\begin{CommentBlock}{Remark:}
+This step corresponds to the resolution of the Navier--Stokes equations using a Chorin-Temam type 
+projection method (see the section \ref{sec:Chorin}) where $\tilde{\vec{u}}^{n+1}$ is the predicted velocity field.
+\end{CommentBlock}
+
+\item a step for the \textbf{computation of the conservative vertical velocity}:
+\begin{equation}
+  \dfrac{\partial w^{Cn+1}}{\partial z}=-\dfrac{\partial u^{Cn+1}}{\partial x}-\dfrac{\partial v^{Cn+1}}{\partial y}, ~w^{C}|_b=0
+\end{equation}
+\item \textbf{a final advection-diffusion step for scalars} 
+(including $k$ and $\epsilon$ when the $k-\epsilon$ turbulence model is used), 
+using the conservative velocity field for the advection:
+\begin{equation}\label{eq:keps_discreteTime}
+  \left\{
+    \begin{array}{l}
+      \dfrac{k^{n+1}-k^n}{\delta t} +\vec{u}^{Cn+1}\cdot\Grad k^{*}= \mathbb{P}^n + \mathbb{G}^n - \epsilon^n \dfrac{k^{n+1}}{k^n} + \Div(\nu_{k}^n\theta_d\Grad k^{n+1}+\nu_{k}^n(1-\theta_d)\Grad k^{n}) \smallskip \\
+      \dfrac{\epsilon^{n+1}-\epsilon^n}{\delta t} +\vec{u}^C\cdot\Grad \epsilon^{*}= \dfrac{\epsilon^n}{k^n}\left(C_{\epsilon_1}\mathbb{P}^n
+        +C_{\epsilon_3}\mathbb{G}^n-C_{\epsilon_2,Y}^n\epsilon^{n+1}\right)+\Div(\nu_{\epsilon}^n\theta_d\Grad \epsilon^{n+1}+\nu_{\epsilon}^n(1-\theta_d)\Grad \epsilon^n)
+    \end{array}
+  \right.
+\end{equation}
+See the section \ref{sec:kepsequations} for the definitions of $\mathbb{P}$, $\mathbb{G}$, $\mu_{k}$, $\mu_{\epsilon}$, etc. 
+$\nu_T^{n+1}$ is then calculated through the equation \eqref{eq:nut} 
+and for remaining scalars (temperature, salinity, etc), the following time-discretised equation is solved:
+\begin{equation}
+  \dfrac{T^{n+1}-T^n}{\delta t}+\vec{u}^{Cn+1}\cdot\Grad T^{*} = F_{source}+\Div(K_T^{n+1}\theta_d\Grad T^{n+1}+K_T^{n+1}(1-\theta_d)\Grad T^n)
+\end{equation}
+
+%\textcolor{red}{Termes source explicites / implicites ??} 
+
+\begin{CommentBlock}{Hydrostatic model}
+In TELEMAC-3D, it is possible to solve the Navier--Stokes equations with the assumption 
+of hydrostatic pressure: the pressure step (step 5) is then entirely skipped.
+However, we highly recommend the use the non-hydrostatic option given the poor results
+obtained with the hydrostatic option on some cases, in particular when active scalars have a significant
+effect on the flow or for wave simulations.
+\end{CommentBlock}
+\end{enumerate}
+
+\section{Dynamic pressure calculated during the wave equation
+resolution}\label{sec:dynamicpressureinwaveequation}
+This corresponds to the option \texttt{DYNAMIC PRESSURE IN WAVE EQUATION=YES}.
+The algorithm is then modified compared to the one above:
+\begin{enumerate}
+\item \textbf{the advection step for the momentum horizontal velocities} is unchanged;
+\item \textbf{the advection-diffusion step for the momentum vertical velocity}
+is also unchanged;
+\item \textbf{the hydrostatic step}, is modified. The equations to be solved
+now read:
+\begin{equation}\label{eq:hydrostatic_third_system}
+  \left\{\begin{array}{l}
+    \dfrac{h^{n+1}-h^{n}}{\delta t} 
+    + \nabla_{2D}\cdot \displaystyle{\int_b^\eta\left(\theta_u\vec{u}_{2D}^{n+1}+(1-\theta_u)\vec{u}_{2D}^n\right)~dz}=0 \medskip \\
+    \begin{array}{ll}\dfrac{\vec{u}_{2D}^{n+1}-\vec{u}_{2D}^{n}}{\delta t}&=-g \theta_h \Grad_{2D}(h^{n+1}-h^n) -g\Grad_{2D}\eta^n
+     + \tilde{\vec{F}}_{2D}\medskip \\
+     &+\BDiv(\nu_E \theta_d\Grad \tilde{\vec{u}}_{2D}^{aux}+\nu_E(1-\theta_d)\Grad \vec{u}_{2D}^{n})
+     -\dfrac{1}{\rho}\Grad p_d^n
+  \end{array}
+\end{array}\right.
+\end{equation}
+First, a predicted velocity field $\tilde{\vec{u}}^{aux}$ is calculated:
+\begin{equation}
+  \dfrac{\tilde{\vec{u}}_{2D}^{aux}-\vec{u}_{2D}^{A}}{\delta t}= -g\Grad_{2D}\eta^n
+     + \tilde{\vec{F}}_{2D}
+     +\BDiv(\nu_E \theta_d\Grad \tilde{\vec{u}}_{2D}^{aux}+\nu_E(1-\theta_d)\Grad \vec{u}_{2D}^{n})
+\end{equation}
+The projection method is then applied so as to calculate the dynamic pressure 
+at this stage and to find a divergence-free velocity field $\vec{u}^{aux}$:
+\begin{equation}
+  \left\{\begin{array}{l}
+    \Lap p_d^{n+1} = \dfrac{\rho}{\delta t}\Div \tilde{\vec{u}}^{aux} \medskip \\
+    \dfrac{\vec{u}^{aux}-\tilde{\vec{u}}^{aux}}{\delta t} = -\dfrac{1}{\rho}\Grad p_d^{n+1}
+  \end{array}\right.
+\end{equation}
+
+The expression of $\vec{u}_{2D}^{aux}$ is then used to replace $\vec{u}_{2D}^{n+1}$
+in the first line of \eqref{eq:hydrostatic_third_system}:
+\begin{equation}
+  \begin{array}{ll}
+    \dfrac{h^{n+1}-h^{n}}{\delta t}+ \nabla_{2D}\cdot \displaystyle{\int_b^\eta
+      -\delta t\theta_u
+            g \theta_h \Grad_{2D}(h^{n+1}-h^n) 
+      ~dz}= &\medskip \\
+
+     & \hspace{-7cm}-\nabla_{2D}\cdot \displaystyle{\int_b^\eta
+      \left[\theta_u\vec{u}_{2D}^{aux}+(1-\theta_u)\vec{u}_{2D}^n\right]~dz}
+  \end{array}
+\label{eq:wave_equation_time2}
+\end{equation}
+Solving this system provides the value of $h^{n+1}$. The value of $\vec{u}_{2D}^{Cn+1}$ is then obtained through:
+\begin{equation}
+\vec{u}_{2D}^{Cn+1}=\theta_u\vec{u}_{2D}^{aux}+(1-\theta_u)\vec{u}_{2D}^n
+\end{equation}
+%by solving the second line of \eqref{eq:hydrostatic_second_system}.
+
+\item \textbf{a step of mesh motion}, which is unchanged;
+
+\item a step for the \textbf{computation of the conservative vertical velocity},
+which is unchanged;
+\item \textbf{a final advection-diffusion step for scalars}, also unchanged.
+\end{enumerate}
+

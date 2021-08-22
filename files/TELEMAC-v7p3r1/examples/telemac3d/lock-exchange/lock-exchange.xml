@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!-- Validation and verification of test cases, given a list of CAS files
+-->
+<validation xref="lock-exchange" rank="3" >
+
+<!-- Extras and Meta Data ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /!\ This section is being ignored at the moment -->
+   <deco xref="default">
+      <look format="png" colourbar="jet.xml" />
+      <data title="lock-exchange" author="A.Leroy" contact="www.opentelemac.org" />
+   </deco>
+   <deco xref="vect">
+      <look colour="jet.xml" />
+   </deco>
+   <deco xref="line">
+      <look colour="k" />
+   </deco>
+   <deco xref="PlotVert">
+      <look aspect="1" size="(20,10)" roi="(0;-4)(30;0)"/>
+   </deco>
+   <deco xref="PlotHoriz">
+      <look size="(20,5)" roi="(0;0)(30;1.2)" />
+   </deco>
+
+<!-- Actions on CAS files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /!\ do="cas;princi" are being ignored at the moment
+-->
+   <action xref="1"
+       do="translate;run;cas;princi"
+       code="telemac3d" target="t3d_lock-exchange.cas"
+       title="lock-exchange scalar mode"
+   />
+       <action xref="2"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac3d" target="t3d_lock-exchange.cas"
+       title="lock-exchange parallel mode"
+   />
+
+<!-- Check on Reference File ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <cast xref="ref-1" config="oneofall" time="[-1]" type="2d:">
+      <v1 vars=":map" target="1:T3DRES" />
+      <v2 vars=":map" target="f3d_lock-exchange.slf" />
+      <v3 vars="mapdiff(v1,v2)" />
+      <return title="Comparison with the last time frame of the reference file."
+         fail="checkval(v3,[1.E-7,1.E-7,1.E-7,1.E-7,1.E-7])" />
+   </cast>
+   <cast xref="ref-2" config="oneofall" time="[-1]" type="2d:">
+      <v4 vars=":map" target="2:T3DRES" />
+      <v5 vars=":map" target="f3d_lock-exchange.slf" />
+      <v6 vars="mapdiff(v4,v5)" />
+      <return title="Comparison with the last time frame of the reference file."
+         fail="checkval(v6,[1.E-7,1.E-7,1.E-7,1.E-7,1.E-7])" />
+   </cast>
+   <cast xref="cas-parall13" config="oneofall" time="[-1]" type="2d:">
+      <v7 vars=":map" target="1:T3DRES" />
+      <v8 vars=":map" target="2:T3DRES" />
+      <v9 vars="mapdiff(v7,v8)" />
+      <return title="Comparison between sequential and parallel run."
+         fail="checkval(v9,[1.E-7,1.E-7,1.E-7,1.E-7,1.E-7])" />
+   </cast>
+
+<!-- Actions on output files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /!\ This section is being ignored at the moment -->
+
+<!-- plot2d ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+   <plot2d xref="doc/img/lock_mesh_vertical" type="v-section" extract="(0;1)(30;1)" config="oneofall" time="[-1]" deco="PlotVert" >
+      <layer vars="elevation z:mesh" target="1:T3DRES" />
+   </plot2d>
+   <plot2d xref="doc/img/lock_mesh_horizontal" type="p-section" extract="[]#[-1]" config="oneofall" time="[-1]" deco="PlotHoriz" >
+      <layer vars="elevation z:mesh" target="1:T3DRES" />
+   </plot2d>
+   <plot2d xref="doc/img/lock_initial_salinity" type="v-section" config="oneofall" time="[0]" deco="PlotVert">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="1:T3DRES" />
+   </plot2d>
+   <plot2d xref="doc/img/lock-exchange_dpwaveq_PSI2_5corr" type="v-section" config="oneofall" time="[-1]" deco="PlotVert">
+      <layer vars="salinity:map" extract="(0;1)(30;1)" target="1:T3DRES" />
+   </plot2d>
+
+
+</validation>

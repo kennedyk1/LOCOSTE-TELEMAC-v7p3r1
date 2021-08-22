@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+<!-- Validation and verification of test cases, given a list of CAS files
+-->
+<validation xref="bumpflu" rank="3" >
+
+<!-- Decos and Meta Data ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /!\ This section is being ignored at the moment -->
+   <deco xref="default">
+      <look format="png" colourbar="jet.xml" />
+      <data title="Sub-critical flow over a bump" author="R.Ata" contact="s.bourban@hrwallingford.com" />
+   </deco>
+   <deco xref="free_surface">
+      <look 
+         title="Free surface level profil along (0.0;1.0),(20.0;1.0) at $t=10.0 s$" 
+         xlabel='Profil abcissa ($m$)' 
+         ylabel='Free surface level ($m$)'
+         ylim='(1.70, 1.82)'
+         axes.grid="True"
+         legend="True"
+         legend.ncol="2"
+         legend.position="lower center"
+         legend.borderaxespad="-5"
+         author="A.REBAI" 
+      />
+   </deco>
+   <deco xref="C_Analytical">
+      <look 
+         label='Analytical solution'
+      />
+   </deco>
+   <deco xref="C_Telemac">
+      <look 
+         label='TELEMAC-2D'
+      />
+   </deco>
+   <deco xref="Froude_number">
+      <look 
+         title="Froude number profil along (0.0;1.0),(20.0;1.0) at $t=10.0 s$"
+         xlabel='Profil abcissa $[m]$'
+         ylabel='Froude number $[m]$' 
+         ylim='(0.48, 0.64)'
+         axes.grid="True"
+         legend="True"
+         legend.ncol="2"
+         legend.position="lower center"
+         legend.borderaxespad="-5"
+         author="A.REBAI" 
+      />
+   </deco>
+   <deco xref="Bottom">
+      <look 
+         title="Bottom level profil along (0.0;1.0),(20.0;1.0) at $t=10.0 s$" 
+         xlabel='Profil abcissa $[m]$'
+         ylabel='Bottom $[m]$' 
+         ylim='(-0.2, 0.0)'
+         axes.grid="True"
+         author="A.REBAI" 
+      />
+   </deco>  
+   <deco xref="C_Bottom">
+      <look 
+         fill_between='True'
+         facecolor='grey'
+         color='black'
+      />
+   </deco>  
+   <deco xref="M_Bottom">
+      <look 
+         cmap="jet" 
+         levels="np.linspace(-0.2,0.0,8)"
+         colorbar="True"
+         title_colorbar="Bottom level $[m]$"
+         shrink="0.7"
+         orientation="horizontal"
+         pad="0.2"
+      />
+   </deco>   
+   <deco xref="Velocity_contour">
+      <look 
+         title="Velocity vectors at $t=10.0s$" 
+         set="xlabel('X $[m]$');ylabel('Y $[m]$')"
+         author="A.REBAI" 
+      />
+   </deco>
+   <deco xref="M_Velocity_contour">
+      <look 
+         cmap="jet" 
+         levels="np.linspace(2.2,2.6,11)"
+         colorbar="True"
+         title_colorbar="Velocity $[m/s]$"
+         shrink="0.7"
+         orientation="horizontal"
+         pad="0.2"
+      />
+   </deco>
+   <deco xref="Velocity_arrow">
+      <look 
+         color='gray' 
+         grid_delta="(2;0.5)"
+         units='width'
+         width='0.003'
+         linewidths='0.01'
+         key="yes" 
+         key_x='0.1' 
+         key_y='-0.1' 
+         key_length='1' 
+         key_label="1 $m.s^{-1}$"
+         key_color="black"
+         labelpos="S"
+         coordinates="axes"
+      />
+   </deco>
+   <deco xref="M_Bottom_contour">
+      <look 
+         cmap="jet"
+         levels="np.linspace(-0.3,0.1,11)"
+         colorbar="True"
+         title_colorbar="Bottom $[m]$"
+         shrink="0.7"
+         orientation="horizontal"
+         pad="0.2"
+      />
+   </deco>  
+   <deco xref="Bottom_contour">
+      <look 
+         title="Bottom level at $t=0.0s$" 
+         set="xlabel('X $[m]$');ylabel('Y $[m]$')"
+         author="A.REBAI" 
+      />
+   </deco>
+
+<!-- Actions on CAS files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /!\ do="cas;princi" are being ignored at the moment <look roi="(7;0.25)(13.5;1.75)" />
+-->
+   <action xref="1"
+       do="translate;run;cas;princi"
+       code="telemac2d" target="t2d_bumpflu.cas"
+       title="bumpflu scalar mode"
+   />
+    <action xref="2"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac2d" target="t2d_bumpflu.cas"
+       title="bumpflu parallel mode"
+   />
+
+<!-- Check on Reference File ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <cast xref="ref-1" config="oneofall" time="[-1]" type="2d:">
+      <v1 vars=":map" target="1:T2DRES" />
+      <v2 vars=":map" target="f2d_bumpflu.slf" />
+      <v3 vars="mapdiff(v1,v2)" />
+      <return title="Comparison with the last time frame of the reference file."
+           fail="checkval(v3,[1e-8,1e-8,1e-8,1e-8,1e-9,1e-9,1e-9,1e-9,1e-9,1e-9,1e-9])" />
+
+   </cast>
+   <cast xref="ref-2" config="oneofall" time="[-1]" type="2d:">
+      <v4 vars=":map" target="2:T2DRES" />
+      <v5 vars=":map" target="f2d_bumpflu.slf" />
+      <v6 vars="mapdiff(v4,v5)" />
+      <return title="Comparison with the last time frame of the reference file."
+         fail="checkval(v6,[1e-8,1e-8,1e-8,1e-8,1e-9,1e-9,1e-9,1e-9,1e-9,1e-9,1e-9])" />
+   </cast>
+   <cast xref="cas-parall" config="oneofall" time="[-1]" type="2d:">
+      <v7 vars=":map" target="1:T2DRES" />
+      <v8 vars=":map" target="2:T2DRES" />
+      <v9 vars="mapdiff(v7,v8)" />
+      <return title="Comparison between sequential and parallel run."
+         fail="checkval(v9,[1e-8,1e-8,1e-8,1e-8,1e-9,1e-9,1e-9,1e-9,1e-9,1e-9,1e-9])" />
+   </cast>
+
+<!-- Actions on output files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   -->
+   <!-- Save 2 time histories into the CSV file "figure1   ".
+      - Locations: extraction at node 703 and at point (0,1)
+      - Variables: extraction of SURFACE LIBRE
+      - Duration:  extraction from time start (0) to end of time (-1)
+      - File:      extraction from xref 1:T2DRES above
+
+   <save1d xref="figure1" type="history" config="together" time="[0:-1]" deco="default" >
+      <layer vars="surface libre:line" extract="703;(0;1)" target="1:T2DRES" />
+   </save1d>
+   -->
+   <!-- Save a profile along a line into the CSV file "figure2.csv".
+      - Locations: extraction along the line defined by the 2 points (0;0.93) and (21;1.07)
+      - Variables: extraction of SURFACE LIBRE, FOND and VITESSE
+      - Snapshots: extraction at end of time (-1)
+      - File:      extraction from xref 1:T2DRES above
+      - TODO:  deal with several variables of name VITESSE with a calculation action
+      - NOTE:  the key extract, can also be moved up a level to the tag saved1d
+   <save1d xref="figure2" type="v-section" config="oneofall" time="[-1]" >
+      <layer vars="surface libre:line;fond:line" extract="(0;0.93):(21;1.07)" target="1:T2DRES" />
+      <layer vars="vitesse:line" extract="(0;0.93):(21;1.07)" target="1:T2DRES" />
+   </save1d>
+   -->
+
+<!-- Plot from SELAFIN file ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   -->
+   <!-- Plot a profile along a line into the PNG file "free_surface.png".
+ -->
+  
+   <plot1d xref="img/free_surface" type="v-section" extract="(0;1.0):(20;1.0)" config="oneofall" time="[-1]" deco="free_surface" size="(12;9)">
+      <layer vars="EXACT ELEVATION:line" target="1:T2DRES"  deco="C_Analytical"/>
+      <layer vars="free surface:line" target="1:T2DRES"  deco="C_Telemac"/>
+   </plot1d>
+   <!-- Plot a profile along a line into the PNG file "froude_number.png".
+-->
+
+   <plot1d xref="img/froude_number" type="v-section" extract="(0;1.0):(20;1.0)" config="oneofall" time="[-1]" deco="Froude_number" size="(12;9)">
+      <layer vars="EXACT FROUDE:line" target="1:T2DRES" deco="C_Analytical"/>
+      <layer vars="FROUDE NUMBER:line" target="1:T2DRES"  deco="C_Telemac"/>
+   </plot1d>
+   <!-- Plot a profile along a line into the PNG file "bottom_level.png".
+   -->
+   <plot1d xref="img/bottom_level" type="v-section" extract="(0;1.0):(20;1.0)" config="oneofall" time="[-1]" deco="Bottom" size="(12;9)">
+      <layer vars="BOTTOM:line" target="1:T2DRES" deco="C_Bottom"/>
+   </plot1d>
+
+   <!-- Plot a coloured surface and quiver into the PNG file "velocity_vector.png".
+-->
+
+   <plot2d xref="img/velocity_vector" config="oneofall" time="[-1]" size="(12;5)" deco="Velocity_contour">
+      <layer vars="VELOCITY:map" target="1:T2DRES" deco="M_Velocity_contour"/>
+      <layer vars="VELOCITY:vector" target="1:T2DRES" deco="Velocity_arrow"/>
+   </plot2d>
+   <!-- Plot a mesh into the PNG file "figure7.png".
+      - Locations: extraction for the entire mesh
+      - File:      extraction from file 1:T2DGEO above
+  --> 
+   <plot2d xref="img/Mesh_topography" config="oneofall" size="(12;5)" time="[0]" deco="Bottom_contour" >
+      <layer vars="BOTTOM:map" target="1:T2DRES" deco="M_Bottom_contour"/>
+      <layer vars="BOTTOM:mesh" target="1:T2DRES"/>
+   </plot2d>
+
+</validation>

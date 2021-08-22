@@ -1,0 +1,29 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$a00345.html" title="med_config.h" alt="" coords="985,246,1084,277"/>
+<area shape="rect" id="node5" href="$a00357.html" title="med_outils.h" alt="" coords="1280,86,1376,117"/>
+<area shape="rect" id="node80" href="$a00333.html" title="med21.h" alt="" coords="1488,86,1560,117"/>
+<area shape="rect" id="node82" href="$a00351.html" title="med_hdfi21.h" alt="" coords="1111,86,1209,117"/>
+<area shape="rect" id="node85" href="$a00303.html" title="MAJ_21_22.h" alt="" coords="1712,86,1813,117"/>
+<area shape="rect" id="node7" href="$a00332.html" title="med.h" alt="" coords="1167,246,1225,277"/>
+<area shape="rect" id="node54" href="$a00362.html" title="med_vargs.h" alt="" coords="1059,166,1155,197"/>
+<area shape="rect" id="node59" href="$a00355.html" title="med_misc.h" alt="" coords="1339,166,1432,197"/>
+<area shape="rect" id="node67" href="$a00350.html" title="med_hdfi.h" alt="" coords="1229,166,1315,197"/>
+<area shape="rect" id="node70" href="$a00361.html" title="med_utils.h" alt="" coords="1549,166,1637,197"/>
+<area shape="rect" id="node11" href="$a00359.html" title="med_proto.h" alt="" coords="853,326,947,357"/>
+<area shape="rect" id="node13" href="$a00376.html" title="medC_win_dll.h" alt="" coords="844,486,956,517"/>
+<area shape="rect" id="node15" href="$a00532.html" title="medlibrary.h" alt="" coords="5,406,99,437"/>
+<area shape="rect" id="node18" href="$a00468.html" title="medfile.h" alt="" coords="123,406,197,437"/>
+<area shape="rect" id="node21" href="$a00560.html" title="medmesh.h" alt="" coords="221,406,312,437"/>
+<area shape="rect" id="node24" href="$a00439.html" title="medfield.h" alt="" coords="336,406,419,437"/>
+<area shape="rect" id="node27" href="$a00426.html" title="medfamily.h" alt="" coords="443,406,536,437"/>
+<area shape="rect" id="node30" href="$a00406.html" title="medequivalence.h" alt="" coords="560,406,685,437"/>
+<area shape="rect" id="node33" href="$a00736.html" title="medsubdomain.h" alt="" coords="709,406,829,437"/>
+<area shape="rect" id="node36" href="$a00701.html" title="medprofile.h" alt="" coords="853,406,947,437"/>
+<area shape="rect" id="node39" href="$a00483.html" title="medfilter.h" alt="" coords="971,406,1053,437"/>
+<area shape="rect" id="node42" href="$a00550.html" title="medlocalization.h" alt="" coords="1077,406,1200,437"/>
+<area shape="rect" id="node45" href="$a00543.html" title="medlink.h" alt="" coords="1224,406,1301,437"/>
+<area shape="rect" id="node48" href="$a00682.html" title="medparameter.h" alt="" coords="1325,406,1440,437"/>
+<area shape="rect" id="node51" href="$a00511.html" title="medinterp.h" alt="" coords="1464,406,1555,437"/>
+<area shape="rect" id="node64" href="$a00348.html" title="med_exit_if.h" alt="" coords="1347,246,1445,277"/>
+<area shape="rect" id="node75" href="$a00346.html" title="med_err.h" alt="" coords="1469,246,1549,277"/>
+</map>

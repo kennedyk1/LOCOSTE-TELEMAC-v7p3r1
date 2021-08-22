@@ -1,0 +1,59 @@
+\chapter{Theoretical aspects}
+
+ \waqtel offers the use of 6 water quality (WAQ) processes. These processes generate source terms that are added to the advection-diffusion equation resolved in Telemac-2d. These processes are the following:
+
+\begin{itemize}
+\item  O2 module:  which gives the evolution of oxygen O2 in the flow and accounts for the interaction with the organic load and ammoniacal load. This module is simple since it does not take into consideration all the complexity of biological phenomena linked to the production, the elimination and the transport of oxygen. For more details about this process, reader is invited to the following manual and references therein (\cite{El-Kadi2012}).
+
+\item  Biomass module:  it allows the computation of the algal biomass. It estimates the vegetal colonization as a function of several parameters such as sunshine, water temperature, ratio of renewing of water etc. This module introduces and uses 5 tracers:
+
+\begin{enumerate}
+\item  phytoplanktonic biomass (PHY)
+
+\item  dissolved mineral phosphorus PO${}_{4}$
+
+\item  degradable phosphorus assimilated by phytoplankton (POR)
+
+\item  dissolved mineral nitrogen assimilated by phytoplankton (NO${}_{3}$ )
+
+\item  degradable nitrogen assimilated by phytoplankton (NOR)
+\end{enumerate}
+
+\item  Eutro module:  this module describes the oxygenation of a river. It is much more complex than the O${}_{2}$ module since it takes into account vegetal photosynthesis and nutrients and their interactions with phytoplankton. This module introduces 8 tracers:
+\begin{enumerate}
+\item  phosphorus assimilated by phytoplankton (POR)
+
+\item  dissolved oxygen O${}_{2}$
+
+\item  phytoplanktonic biomass (PHY)
+
+\item  dissolved mineral phosphorus (PO${}_{4}$)
+
+\item  degradable dissolved mineral nitrogen assimilated by phytoplankton (NO${}_{3}$)
+
+\item  degradable nitrogen assimilated by phytoplankton (NOR)
+
+\item  ammoniacal load (NH${}_{4}$)
+
+\item  organic load (L)
+\end{enumerate}
+
+     These tracers are in mg/l, except biomass which is given in $\mu$g.
+
+\item  Micropol module:  this module gives the evolution of micro-pollutants (radio-elements or heavy metals) in the main locations in river flows i.e. water, suspended load and bed sediments. This module introduces 5 tracers:
+\begin{enumerate}
+\item  suspended sediments (SS)
+
+\item  bed sediments (BS), which are considered fix (not advected neither dispersed)
+
+\item  micro-pollutant species in dissolved form
+
+\item  part absorbed by suspended sediments
+
+\item  part absorbed by bed sediments
+\end{enumerate}
+
+\item  Thermic module: this module computes the evolution of water temperature as a function of heat exchange balance with atmosphere. Only the exchanges with atmosphere are considered, those with lateral boundaries and with the bed are neglected or have to be given in the boundary conditions file.
+\item The Aquatic Ecodynamics library (AED2): this library is fully developed by an australian consortium (see website for more information http://aed.see.uwa.edu.au/research/models/AED/ ).
+
+\end{itemize}

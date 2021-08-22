@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!-- Validation and verification of test cases, given a list of CAS files
+-->
+<validation xref="gouttedo" rank="2" author="Y.audouin">
+
+<!-- Extras and Meta Data ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /!\ This section is being ignored at the moment -->
+   <deco xref="default">
+      <look format="png" colourbar="jet.xml" />
+      <data title="gouttedo" author="telemac2d" contact="www.opentelemac.org" />
+   </deco>
+   <deco xref="vect">
+      <look colour="jet.xml" />
+   </deco>
+   <deco xref="line">
+      <look colour="k" />
+   </deco>
+
+<!-- Actions on CAS files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /!\ do="cas;princi" are being ignored at the moment
+   <action xref="srf2med_geo"
+     do="converter.py mesh.slf -b mesh.cli -o mesh.med" code="exec"
+     target="mesh.slf" deprefs="mesh.cli"
+     title="Convertion from Serafin to Med geometry + boundary"
+   />
+   <action xref="srf2med_r2d"
+     do="converter.py r2d.slf -o r2d.slf.med" code="exec"
+     target="r2d.slf"
+     title="Convertion from Serafin to Med 2d result file only"
+   />
+   <action xref="srf2med_r3d"
+     do="converter.py r3d.slf -o r3d.slf.med" code="exec"
+     target="r3d.slf"
+     title="Convertion from Serafin to Med 2d result file only"
+   />
+   <action xref="srf2cgns_geo"
+     do="converter.py mesh.slf -b mesh.cli -o mesh.cgns" code="exec"
+     target="mesh.slf" deprefs="mesh.cli"
+     title="Convertion from Serafin to CGNS geometry + boundary"
+   />
+   <action xref="srf2cgns_r2d"
+     do="converter.py r2d.slf -o r2d.cgns" code="exec"
+     target="r2d.slf"
+     title="Convertion from Serafin to CGNS 2d result file only"
+   />
+   <action xref="srf2cgns_r3d"
+     do="converter.py r3d.slf -o r3d.cgns" code="exec"
+     target="r3d.slf"
+     title="Convertion from Serafin to CGNS 2d result file only"
+   />
+   <action xref="srf2vtk_r2d"
+     do="converter.py r2d.slf -o r2d.vtk" code="exec"
+     target="r2d.slf"
+     title="Convertion from Serafin to VTK 2d result file only"
+   />
+   <action xref="srf2vtk_r3d"
+     do="converter.py r3d.slf -o r3d.vtk" code="exec"
+     target="r3d.slf"
+     title="Convertion from Serafin to VTK 2d result file only"
+   />
+   <action xref="med2srf_geo"
+     do="converter.py mesh.med -b mesh.bnd -o mesh.slf" code="exec"
+     target="mesh.med" deprefs="mesh.bnd"
+     title="Convertion from MED to Serafin geometry + boundary"
+   />
+   <action xref="med2srf_r2d"
+     do="converter.py r2d.med -o r2d.slf" code="exec"
+     target="r2d.med"
+     title="Convertion from MED to Serafin 2d result file only"
+   />
+   <action xref="med2srf_r3d"
+     do="converter.py r3d.med -o r3d.slf" code="exec"
+     target="r3d.med"
+     title="Convertion from MED to Serafin 2d result file only"
+   />
+-->
+<!-- Check on Reference File ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Actions on output files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /!\ This section is being ignored at the moment -->
+
+<!-- plot1d ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   -->
+
+
+<!-- plot2d ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+
+</validation>

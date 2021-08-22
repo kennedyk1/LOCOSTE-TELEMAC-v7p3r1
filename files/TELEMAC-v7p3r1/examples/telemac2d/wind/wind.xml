@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<!-- Validation and verification of test cases, given a list of CAS files
+-->
+<validation xref="wind" rank="2" >
+
+<!-- Extras and Meta Data ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /!\ This section is being ignored at the moment -->
+   <deco xref="default">
+      <look format="png" colourbar="jet.xml" />
+      <data title="wind" author="R.Ata" contact="www.opentelemac.org" />
+   </deco>
+   <deco xref="free_surface">
+      <look 
+         title="Free surface level profil along (0.0;50.0),(500.0;50.0) at $t=600.0 s$" 
+         xlabel='Profil abcissa ($m$)' 
+         ylabel='Altitude ($m$)'
+         ylim='(0., 2.6)'
+         xlim='(0., 500.)'
+         axes.grid="True"
+         legend="False"
+         legend.ncol="2"
+         legend.position="lower center"
+         legend.borderaxespad="-5"
+         author="A.REBAI" 
+      />
+   </deco>
+   <deco xref="C_SL">
+      <look 
+         fill_between='True'
+         fill_min = '0.'
+         facecolor='blue'
+         color='black'
+      />
+   </deco>  
+
+   <deco xref="Bottom_contour">
+      <look 
+         set="xlabel('X $[m]$');ylabel('Y $[m]$')"
+         author="A.REBAI" 
+      />
+   </deco>
+   
+   <deco xref="contourSL">
+      <look 
+         title="$t=600.0s$" 
+         title_fontsize='18'
+         set="xlabel('X $[m]$');ylabel('Y $[m]$')"
+         author="A.REBAI" 
+      />
+   </deco>
+   <deco xref="M_SL_contour">
+      <look 
+         cmap="jet" 
+         levels="np.linspace(-0.6, 0.6, 9)"
+         colorbar="True"
+         title_colorbar="Free surface level $[m]$"
+         shrink="0.6"
+         orientation="horizontal"
+         pad="0.2"
+      />
+   </deco>
+
+   <deco xref="Velocity_contour">
+      <look 
+         title="$t=600.0s$" 
+         title_fontsize='18'
+         set="xlabel('X $[m]$');ylabel('Y $[m]$')"
+         author="A.REBAI" 
+      />
+   </deco>
+   <deco xref="M_Velocity_contour">
+      <look 
+         cmap="jet" 
+         levels="np.linspace(4.5, 5.5, 11)"
+         colorbar="True"
+         title_colorbar="Wind intensity $[m/s]$"
+         shrink="0.6"
+         orientation="horizontal"
+         pad="0.2"
+      />
+   </deco>
+   <deco xref="Velocity_arrow">
+      <look 
+         color='grey' 
+         units='width'
+         width='0.003'
+         grid_delta="(25;10)"
+         linewidths='0.01'
+         key="yes" 
+         key_x='0.1' 
+         key_y='-0.1' 
+         key_length='5' 
+         key_label="5 $m.s^{-1}$"
+         key_color="black"
+         labelpos="S"
+         coordinates="axes"
+      />
+   </deco>
+
+
+<!-- Actions on CAS files ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /!\ do="cas;princi" are being ignored at the moment
+-->
+   <action xref="1"
+       do="translate;run;cas;princi"
+       code="telemac2d" target="t2d_wind.cas"
+       title="wind scalar mode"
+   />
+   <action xref="2"
+       do="translate;run;cas;princi" ncsize="4"
+       code="telemac2d" target="t2d_wind.cas"
+       title="wind parallel mode"
+   />
+<!-- Check on Reference File ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <cast xref="ref-1" config="oneofall" time="[-1]" type="2d:">
+      <v1 vars=":map" target="1:T2DRES" />
+      <v2 vars=":map" target="f2d_wind.slf" />
+      <v3 vars="mapdiff(v1,v2)" />
+      <return title="Comparison with the last time frame of the reference file."
+         fail="checkval(v3,[])" />
+   </cast>
+   <cast xref="ref-2" config="oneofall" time="[-1]" type="2d:">
+      <v4 vars=":map" target="2:T2DRES" />
+      <v5 vars=":map" target="f2d_wind.slf" />
+      <v6 vars="mapdiff(v4,v5)" />
+      <return title="Comparison with the last time frame of the reference file."
+         fail="checkval(v6,[])" />
+   </cast>
+   <cast xref="cas-parall" config="oneofall" time="[-1]" type="2d:">
+      <v7 vars=":map" target="1:T2DRES" />
+      <v8 vars=":map" target="2:T2DRES" />
+      <v9 vars="mapdiff(v7,v8)" />
+      <return title="Comparison between sequential and parallel run."
+         fail="checkval(v9,[])" />
+   </cast>
+
+<!-- plot1d ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   -->
+<!-- /!\ Being ignored at the moment. Cf. <telemac2d>/.../011_bumpflu/bumpflu.xml
+-->
+   <plot1d xref="img/free_surface1D" type="v-section" extract="(0;50.0):(500.;50.0)" config="oneofall" time="[-1]" deco="free_surface" size="(12;9)">
+      <layer vars="WATER DEPTH:line" target="2:T2DRES"  deco="C_SL"/>
+   </plot1d>
+
+<!-- plot2d ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+<!-- /!\ Being ignored at the moment. Cf. <telemac2d>/.../011_bumpflu/bumpflu.xml
+-->
+   <plot2d xref="img/free_surface2D" config="oneofall" time="[-1]" size="(14;5)" deco="contourSL">
+      <layer vars="free surface:map" target="1:T2DRES" deco="M_SL_contour"/>
+   </plot2d>
+
+   <plot2d xref="img/Mesh" config="oneofall" size="(12;5)" time="[0]" deco="Bottom_contour" >
+      <layer vars="depth:mesh" target="1:T2DRES"/>
+   </plot2d>
+
+   <plot2d xref="img/vector" config="oneofall" size="(12;5)" time="[-1]" deco="Velocity_contour" >
+      <layer vars="wind:map" target="1:T2DRES" deco="M_Velocity_contour"/>
+      <layer vars="wind:vector" target="1:T2DRES" deco="Velocity_arrow"/>
+   </plot2d>
+
+</validation>

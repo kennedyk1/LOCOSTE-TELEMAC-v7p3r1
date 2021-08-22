@@ -1,0 +1,84 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Telemac Documentation
+%  Example of the TelemacDoc class
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+\documentclass[TelApy]{../../data/TelemacDoc} % Default font size and left-justified equations
+%\documentclass[Telemac2D,french]{TelemacDoc} % Default font size and left-justified equations in french
+
+\begin{document}
+
+\let\cleardoublepage\clearpage
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+\title{TelApy}
+\subtitle{User Manual}
+\version{\telmaversion}
+\author{Cedric Goeury, Yoann Audouin and Fabrice Zaoui}
+\date{\today}
+\maketitle
+\clearpage
+
+
+%----------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+
+\thispagestyle{empty}
+
+\TelemacCopyright{}
+
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+
+\pagestyle{empty} % No headers
+
+\tableofcontents% Print the table of contents itself
+
+%\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
+
+\pagestyle{fancy} % Print headers again
+
+%----------------------------------------------------------------------------------------
+%	Hereafter all the chapters
+%----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%	CHAPTER 1 : INTRODUCTION
+%----------------------------------------------------------------------------------------
+\input{latex/chap1.tex}
+%----------------------------------------------------------------------------------------
+%	CHAPTER 2 : TelApy module description
+%----------------------------------------------------------------------------------------
+\input{latex/chap2.tex}
+%\input{latex/api-t2d.tex}
+%----------------------------------------------------------------------------------------
+%	CHAPTER 3 : Getting started with TelApy module
+%----------------------------------------------------------------------------------------
+\input{latex/chap3.tex}
+%----------------------------------------------------------------------------------------
+%	CHAPTER 4 : Developper manual
+%----------------------------------------------------------------------------------------
+\input{latex/chap4.tex}
+%----------------------------------------------------------------------------------------
+%	CHAPTER 5 : Conclusions and outlooks
+%----------------------------------------------------------------------------------------
+\input{latex/chap5.tex}
+%----------------------------------------------------------------------------------------
+%	Bibliography
+%----------------------------------------------------------------------------------------
+\bibliographystyle{plainnat}
+\bibliography{../../data/biblio}
+
+\end{document}

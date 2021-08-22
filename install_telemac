@@ -1,0 +1,144 @@
+###################################################
+##  Script File to Install TELEMAC dependencies  ##
+###################################################
+
+###################################################
+# To use, just type on terminal:  source install_telemac
+###################################################
+
+###################################################
+# CREATED BY ENG. KENNEDY MOTA 22/08/2021
+# TESTED BY PABLO SILVA (FURG - Federal University of Rio Grande)
+###################################################
+
+user=$(whoami)
+
+if [ $user = "root" ]
+then
+clear
+echo "Please, do not execute the script as root!"
+else
+
+sudo apt-get update
+sudo apt-get -y install gdebi subversion python gfortran libopenmpi-dev openmpi-bin python3-pip cmake python-dev libmed* python3-med flex bison git
+sudo pip3 install numpy scipy matplotlib python-dev-tools
+
+mv files ~/LOCOSTE-TELEMAC
+cd ~/LOCOSTE-TELEMAC/
+
+
+sudo chmod -R 777 *
+
+##PARA INSTALAR O METIS
+cd ~/LOCOSTE-TELEMAC/TELEMAC-v7p3r1/optionals/metis-5.1.0/
+sudo mkdir -p /usr/metis-5.1.0
+sudo cmake -D CMAKE_INSTALL_PREFIX=/usr/metis-5.1.0 .
+sudo make
+sudo make install
+
+##PARA INSTALAR O HDF5
+cd ~/LOCOSTE-TELEMAC/
+cd hdf5-1.8.14
+sudo mkdir -p /usr/hdf5
+./configure --prefix=/usr/hdf5
+sudo make
+sudo make install
+
+##PARA INSTALAR O MEDFichier
+#cd ~/telemac-mascaret/
+#wget http://files.salome-platform.org/Salome/other/med-3.2.0.tar.gz
+#tar -xf med-3.2.0.tar.gz
+#rm -f med-3.2.0.tar.gz
+#cd med-3.2.0
+#sudo mkdir -p /usr/med-3.2.0
+#./configure --prefix=/usr/med-3.2.0 --with-hdf5=/usr/hdf5
+#sudo make
+#sudo make install
+
+##PARA PARALELISMO
+##INSTALAR O SCOTCH
+cd ~/LOCOSTE-TELEMAC/scotch/src
+sudo mkdir -p /usr/scotch
+sudo ln -s Make.inc/Makefile.inc.x86-64_pc_linux2 Makefile.inc
+sudo make libscotch
+sudo make scotch
+sudo make prefix=/usr/scotch install
+
+##INSTALAR O PARMETIS
+cd ~/LOCOSTE-TELEMAC/parmetis-4.0.3
+sudo mkdir -p /usr/parmetis
+sudo make config prefix=/usr/parmetis
+sudo make install
+
+#INSTALAR O AE2
+cd ~/LOCOSTE-TELEMAC/
+sudo gdebi glm_3.0.1-0_amd64.deb
+
+##FINALMENTE INSTALAR O TELEMAC
+sudo mv TELEMAC-v7p3r1 /usr/
+sudo chmod -R 777 /usr/TELEMAC-v7p3r1/
+sudo chmod -R 777 /usr/hdf5
+sudo chmod -R 777 /usr/metis-5.1.0
+sudo chmod -R 777 /usr/parmetis
+sudo chmod -R 777 /usr/scotch
+
+
+/usr/TELEMAC-v7p3r1/configs/pysource.gfortranHPC.sh
+/usr/TELEMAC-v7p3r1/scripts/python27/config.py
+/usr/TELEMAC-v7p3r1/scripts/python27/compileTELEMAC.py
+mkdir -p ~/TELEMAC-v7p3r1
+sudo ln -s /usr/TELEMAC-v7p3r1/scripts/python27/* ~/TELEMAC-v7p3r1
+cd ~/TELEMAC-v7p3r1
+
+
+sudo rm -r ~/LOCOSTE-TELEMAC
+
+### ADD OS SCRIPTS PYTHON NO ARQUIVO .BASHRC PARA FACILITAR CHAMADA
+
+echo "" >> ~/.bashrc
+echo "" >> ~/.bashrc
+echo "" >> ~/.bashrc
+echo "#### CONFIGURACAO DOS SCRIPTS TELEMAC ###" >> ~/.bashrc
+echo "alias alter.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/alter.py\"" >> ~/.bashrc
+echo "alias artemis.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/artemis.py\"" >> ~/.bashrc
+echo "alias chop.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/chop.py\"" >> ~/.bashrc
+echo "alias compactTELEMAC.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/compactTELEMAC.py\"" >> ~/.bashrc
+echo "alias compileTELEMAC.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/compileTELEMAC.py\"" >> ~/.bashrc
+echo "alias config.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/config.py\"" >> ~/.bashrc
+echo "alias converter.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/converter.py\"" >> ~/.bashrc
+echo "alias diff.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/diff.py\"" >> ~/.bashrc
+echo "alias docTELEMAC.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/docTELEMAC.py\"" >> ~/.bashrc
+echo "alias doxygenTELEMAC.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/doxygenTELEMAC.py\"" >> ~/.bashrc
+echo "alias estel3d.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/estel3d.py\"" >> ~/.bashrc
+echo "alias i2s.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/i2s.py\"" >> ~/.bashrc
+echo "alias merge.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/merge.py\"" >> ~/.bashrc
+echo "alias plotXML.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/plotXML.py\"" >> ~/.bashrc
+echo "alias postel3d.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/postel3d.py\"" >> ~/.bashrc
+echo "alias runcode.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/runcode.py\"" >> ~/.bashrc
+echo "alias runKENUE.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/runKENUE.py\"" >> ~/.bashrc
+echo "alias runSELAFIN.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/runSELAFIN.py\"" >> ~/.bashrc
+echo "alias saveXML.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/saveXML.py\"" >> ~/.bashrc
+echo "alias scan.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/scan.py\"" >> ~/.bashrc
+echo "alias sisyphe.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/sisyphe.py\"" >> ~/.bashrc
+echo "alias stbtel.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/stbtel.py\"" >> ~/.bashrc
+echo "alias telemac2d.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/telemac2d.py\"" >> ~/.bashrc
+echo "alias telemac3d.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/telemac3d.py\"" >> ~/.bashrc
+echo "alias tomawac.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/tomawac.py\"" >> ~/.bashrc
+echo "alias translateTELEMAC.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/translateTELEMAC.py\"" >> ~/.bashrc
+echo "alias validateTELEMAC.py=\"/usr/TELEMAC-v7p3r1/scripts/python27/validateTELEMAC.py\"" >> ~/.bashrc
+echo "#### FIM DA CONFIGURACAO DOS SCRIPTS TELEMAC ###" >> ~/.bashrc
+echo "" >> ~/.bashrc
+echo "" >> ~/.bashrc
+
+### CARREGA OS SCRIPTS
+source ~/.bashrc
+
+echo ""
+echo ""
+echo "execute the bellow command to test TELEMAC installation:"
+echo ""
+echo "telemac2d.py /usr/TELEMAC-v7p3r1/examples/telemac2d/gouttedo/t2d_gouttedo.cas --ncsize=4"
+echo ""
+echo ""
+
+fi

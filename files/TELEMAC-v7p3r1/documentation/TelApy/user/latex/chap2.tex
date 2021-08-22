@@ -1,0 +1,560 @@
+\chapter{  TelApy module description}
+\label{ch:TelApy_description}
+
+As mentioned in the introduction part (section \ref{ch:intro}), the \TelApy
+module is used to control the APIs of \telemacsystem in the \python programming
+language. The \telemacsystem APIs are developed in \fortran. However, it is
+relatively easy to use these \fortran routines directly in \python using the
+"f2py" tool of the \python Scipy library \cite{Peterson2009}. This tool will
+make it possible to compile \fortran code to make it accessible and usable in
+\python. This compilation step is directly integrated into the compilation of
+the \telemacsystem and is thus transparent to the user. Moreover, in order to
+make the \TelApy module more user friendly, a \python wrapper has been developed
+in order to encapsulate and simplify the different API \python calls. This set
+of transformation constitutes the \TelApy module.
+
+The first section of this chapter is dedicated to the \fortran API of
+\telemacsystem. Then, the \python \TelApy module is presented.
+
+\section{ \telemacsystem \fortran API description}
+%--------------------------------------------------------------------------------
+%
+An API (Application Programming Interface) is a library allowing to control the
+execution of a program. Here is part of the definition from Wikipedia:\\
+
+"In computer programming, an application programming interface (API) specifies
+a software component in terms of its operations, their inputs and outputs and
+underlying types. Its main purpose is to define a set of functionalities that
+are independent of their respective implementation, allowing both definition
+and implementation to vary without compromising each other.
+
+In addition to accessing databases or computer hardware, such as hard disk
+drives or video cards, an API can be used to ease the work of programming
+graphical user interface components, to allow integration of new features into
+existing applications (a so-called "plug-in API"), or to share data between
+otherwise distinct applications. In practice, many times an API comes in the
+form of a library that includes specifications for routines, data structures,
+object classes, and variables." \\
+
+The API’s main goal is to have control on a simulation while running a case.
+For example, it must allow the user to stop the simulation at any time step,
+retrieve some variables values and change them. In order to make this possible,
+a \fortran structure called instance is used in the API. This informatic
+struture is described in the paragraph \ref{subsec:instan}. The instance
+structure gives direct access to the physical memory of variables, and allows
+therefore the variable control (see paragraph \ref{subsec:var}). Furthermore,
+based on modifications in \telemacsystem main subroutines, it is possible to
+run hydraulic case time step by time step. This will be
+presented in the paragraph \ref{subsec:exec}. And finaly, the parallelism is
+evoked (paragraph \ref{subsec:para}).
+All \fortran routines are available in the directory "api" of \telemacsystem
+sources.
+
+\begin{WarningBlock}{Warning:}
+\centering
+ In the following sections, all presented API routines are related to
+ \telemac{2D}. However, the API implementation of \telemacsystem modules is
+ generic that is to say based on the same structure (in the following routines
+ the sequence "t2d" related to \telemac{2D} module can be replace by "sis"
+ related to \sisyphe module for instance).
+\end{WarningBlock}
+
+\subsection{Instanciation}
+\label{subsec:instan}
+An instance is an informatic structure that gathers all the variables alterable
+by the API. The definition of the "instance" structure is made in a \fortran
+module dedicated to this purpose and is composed of:
+
+\begin{itemize}
+\item An index defining the instance I.D.
+\item A string which can contain error messages.
+\item Some pointers to the concerned module variables. This is what makes it
+  possible to manipulate the variables of the module by having a direct access
+  to their memory location. The list of variables that can be accessed is given
+  in the Table \ref{var_access}. Not all variables within \telemac{2D} are
+  there. However adding a new variable is pretty easy, the 5 steps procedure is
+  described in section \ref{var_add}.
+\end{itemize}
+
+\begin{table}[!H]
+\begin{center}
+\begin{tabular}{|cc|}
+\hline
+ Variable name & Definition \tabularnewline
+\hline
+\hline
+MODEL.TIME & Current time\tabularnewline
+MODEL.BCFILE & Boundary condition file \tabularnewline
+MODEL.AT &  Current time\tabularnewline
+MODEL.BCFILE& Boundary condition file name\tabularnewline
+MODEL.BND\_TIDE& Option for tidal boundary conditions\tabularnewline
+MODEL.BOTTOMELEVATION& Level of the bottom\tabularnewline
+MODEL.CHESTR& Strikler on point\tabularnewline
+MODEL.FAIR& Fair on point\tabularnewline
+MODEL.COTE& Prescribed elevation value\tabularnewline
+MODEL.CPL\_PERIOD& Coupling period with sisyphe\tabularnewline
+MODEL.DEBIT& Discharge on frontier\tabularnewline
+MODEL.DEBUG& Activating debug mode\tabularnewline
+MODEL.FLUX\_BOUNDARIES& Flux at boundaries\tabularnewline
+MODEL.GEOMETRYFILE& Name of the geomery file\tabularnewline
+MODEL.METEOFILE& Name of the binary atmospheric file\tabularnewline
+MODEL.FO2FILE& Name of the formatted data file 2\tabularnewline
+MODEL.LIQBCFILE& Name of the liquid boundaries file\tabularnewline
+MODEL.GRAPH\_PERIOD& Graphical output period\tabularnewline
+MODEL.HBOR& Boundary value on h for each boundary point\tabularnewline
+MODEL.IKLE& Connectivity table between element and nodes\tabularnewline
+MODEL.INCWATERDEPTH& Increase in the the depth of the water\tabularnewline
+MODEL.KP1BOR& Points following and preceding a boundary point\tabularnewline
+MODEL.LIHBOR& Boundary type on h for each boundary point\tabularnewline
+MODEL.LISTIN\_PERIOD& Listing output period\tabularnewline
+MODEL.LIUBOR& Boundary type on u for each boundary point\tabularnewline
+MODEL.LIVBOR& Boundary type on v for each boundary point\tabularnewline
+MODEL.LT& Current time step\tabularnewline
+MODEL.COMPLEO& Graphic output counter\tabularnewline
+MODEL.NBOR& Global number of boundary points\tabularnewline
+MODEL.NELEM& Number of element in the mesh\tabularnewline
+MODEL.NELMAX& Maximum number of elements envisaged\tabularnewline
+MODEL.NPOIN& Number of point in the mesh\tabularnewline
+MODEL.NPTFR& Number of boundary points\tabularnewline
+MODEL.NTIMESTEPS& Number of time steps\tabularnewline
+MODEL.NUMLIQ& Liquid boundary numbers\tabularnewline
+MODEL.POROSITY& Porosity\tabularnewline
+MODEL.RESULTFILE& Name of the result file\tabularnewline
+MODEL.SEALEVEL& Coefficient to calibrate sea level\tabularnewline
+MODEL.TIDALRANGE& Coefficient to calibrate tidal range\tabularnewline
+MODEL.UBOR& Boundary value on u for each boundary point\tabularnewline
+MODEL.VBOR& Boundary value on v for each boundary point\tabularnewline
+MODEL.VELOCITYU& Velocity on u\tabularnewline
+MODEL.VELOCITYV& Velocity on v\tabularnewline
+MODEL.WATERDEPTH& Depth of the water\tabularnewline
+MODEL.X& X coordinates for each point of the mesh\tabularnewline
+MODEL.XNEBOR& Normal X to 1d boundary points\tabularnewline
+MODEL.Y& Y coordinates for each point of the mesh\tabularnewline
+MODEL.YNEBOR& Normal Y to 1d boundary points\tabularnewline
+MODEL.EQUATION& Name of the equation used\tabularnewline
+\hline
+\end{tabular}
+\caption{Accessible variables through the API\label{var_access}}
+\end{center}
+\end{table}
+
+In addition to the instance definition, the module includes all routines needed
+to manipulate it (creation, deletion, and so on).
+
+\subsection{Variable control}
+\label{subsec:var}
+The way in which the instance is defined (pointers) allows manipulation of
+variables during the simulation. So, to get information on the variables the
+following set of functions has been implemented:
+
+\begin{itemize}
+
+\item get the list of variables reachable with the API:
+\begin{lstlisting}
+subroutine get_var_list_t2d(varname, varinfo, ierr)
+!
+character(len=*), intent(out) :: varname(nb_var_t2d)
+character(len=*), intent(out) :: varinfo(nb_var_t2d)
+integer, intent(out) :: ierr
+!
+end subroutine
+\end{lstlisting}
+\begin{itemize}
+\item \textbf{varname}: An array  of dimension \verb!nb_var_t2d! containing
+  strings of size \verb!t2d_var_len!, which gives the list of the variable
+  names.
+\item \textbf{varinfo}: An array  of dimension \verb!nb_var_t2d! containing
+  strings of size \verb!t2d_var_len!, which gives a short description for
+  each variable.
+\item \textbf{ierr}: 0 if everything went smoothly an error index otherwise.
+\end{itemize}
+
+\item get the type of a variable.
+
+\begin{lstlisting}
+subroutine get_var_type_t2d(varname, vartype,
+                            readonly, ndim, ierr)
+!
+character(len=t2d_var_len),  intent(in)  :: varname
+character(len=t2d_type_len), intent(out) :: vartype
+integer,                     intent(out) :: readonly
+integer,                     intent(out) :: ndim
+integer,                     intent(out) :: ient
+integer,                     intent(out) :: jent
+integer,                     intent(out) :: kent
+integer,                     intent(out) :: getpos
+integer,                     intent(out) :: setpos
+integer,                     intent(out) :: ierr
+!
+end subroutine get_var_type_t2d
+\end{lstlisting}
+%
+\begin{itemize}
+\item \textbf{varname}: The name of the variable.
+\item \textbf{vartype}: The type of the variable (DOUBLE, INTEGER, STRING,
+  BOOLEAN).
+\item \textbf{readonly}: 0 if the variable can be only read, and 1 if it can be
+  write as well.
+\item \textbf{ndim}: Number of dimensions of the variable (maximum is 3 and for
+  a scalar the number of dimension is 0)
+\item \textbf{ient}: 1 if the index corresponds to a mesh point
+\item \textbf{jent}: 1 if the index corresponds to a mesh point
+\item \textbf{kent}: 1 if the index corresponds to a mesh point
+\item \textbf{getpos}: give the function position after which one the variable
+  information can be "get"
+\item \textbf{setpos}: give the function position after which one the variable
+  information can be "set"
+\item \textbf{ierr}: 0 if everything went smoothly, an error index otherwise.
+\end{itemize}
+
+\item get the size of a variable.
+
+\begin{lstlisting}
+subroutine get_var_size_t2d(id, varname,
+                            dim1, dim2, dim3, ierr)
+!
+  integer,               intent(in) :: id
+  character(len=t2d_var_len), intent(in)  :: varname
+  integer,               intent(out) :: dim1
+  integer,               intent(out) :: dim2
+  integer,               intent(out) :: dim3
+  integer,               intent(out) :: ierr
+!
+end subroutine get_var_size_t2d
+\end{lstlisting}
+%
+\begin{itemize}
+\item \textbf{id}: The id of the instance.  
+\item \textbf{varname}: The name of the variable.
+\item \textbf{dim1}: Size of the first dimension.
+\item \textbf{dim2}: Size of the second dimension.
+\item \textbf{dim3}: Size of the third dimension.
+\item \textbf{ierr}: 0 if everything went smoothly, an error index otherwise.
+\end{itemize}
+%
+\begin{CommentBlock}{Comment:}
+\centering
+If the desired variable is a scalar then, it has no first, second or third
+dimension and \verb!dim1!, \verb! dim2!, \verb! dim3! are equal to zero.
+\end{CommentBlock}
+
+\item get/set the value of a variable for a given index.
+
+These functions depend on the variable type. However, the concept is the same
+for all kind of types. Moreover, the type distinction is removed in TelApy based
+on \python benefits. Therefore, for these reasons, the next routine header is
+focused only on the double type variable. The information for the other routine
+are available in the \fortran file section of API in the \telemacsystem.
+
+\begin{lstlisting}
+subroutine get_double_t2d
+  (id, varname, value, global_num,
+   index1, index2, index3, ierr)
+!
+  integer,           intent(in)  :: id
+  character(len=t2d_var_len), intent(in)  :: varname
+  double precision,  intent(out) :: value
+  integer,           intent(in)  :: index1
+  integer,           intent(in)  :: index2
+  integer,           intent(in)  :: index3
+  logical,           intent(in)  :: global_num
+  integer,           intent(out) :: ierr
+!
+end subroutine get_double_t2d
+\end{lstlisting}
+
+\begin{lstlisting}
+subroutine set_double_t2d
+  (id, varname, value, global_num,
+   index1, index2, index3, ierr)
+!
+  integer,           intent(in)  :: id
+  character(len=t2d_var_len), intent(in)  :: varname
+  double precision,  intent(in)  :: value
+  integer,           intent(in)  :: index1
+  integer,           intent(in)  :: index2
+  integer,           intent(in)  :: index3
+  logical,           intent(in)  :: global_num
+  integer,           intent(out) :: ierr
+!
+end subroutine set_double_t2d
+\end{lstlisting}
+
+\begin{itemize}
+\item \textbf{id}: the id of the instance.
+\item \textbf{varname}: The name of the variable.
+\item \textbf{value}: Contains the value to be read/written.
+\item \textbf{index1}: Index of the first dimension (For array of at least one
+  dimension, not used otherwise).
+\item \textbf{index2}: Index of the second dimension (For array of at least two
+  dimension, not used otherwise).
+\item \textbf{index3}: Index of the third dimension (For array of at least
+  three dimension, not used otherwise).
+\item \textbf{global\_num}: Logical to know if the given indexes are given in
+  mesh global numbering
+\item \textbf{ierr}: 0 if everything went smoothly, an error index otherwise.
+\end{itemize}
+
+\end{itemize}
+
+\subsection{Computation control}
+\label{subsec:exec}
+The computation control is carried out using some specific routines to launch
+the simulation. These routines constitute a decomposition of the main program
+of each \telemacsystem modules corresponding to the following different
+computation steps:
+
+\begin{itemize}
+\item Configuration setup. This function initialises the instance and the
+  listing output. The instance, characterised by the \textbf{id} integer parameter,
+  represents a run of \telemac{2D}.
+
+\begin{lstlisting}
+subroutine run_set_config_t2d(id,lu,lng,ierr)
+!
+  integer, intent(out) :: id
+  integer, intent(in)  :: lu, lng
+  integer, intent(out) :: ierr
+!
+end subroutine run_set_config_t2d
+\end{lstlisting}
+
+\begin{itemize}
+\item \textbf{id}: Contains the id of the instance.
+\item \textbf{lu}: Defines the output canal for \telemac{2D} (6 will be the
+  standard output).
+\item \textbf{lng}: Defines the output language of \telemac{2D} (1 For French,
+  2 for English).
+\item \textbf{ierr}: 0 if everything went smoothly an error index otherwise.
+\end{itemize}
+
+\begin{CommentBlock}{Comment:}
+\centering
+In further version, the API will be able to have multiple instances running at
+the same time. In the current version you can only have one instance at a time.
+\end{CommentBlock}
+
+\item Reading the \telemac{2D} steering file. This function reads the case file and
+  set the variable of the \telemac{2D} steering file accordingly.
+
+\begin{lstlisting}
+subroutine run_read_case_t2d(id,cas_file, dico_file, ierr)
+!
+  integer, intent(out) :: id
+  character(len=144), intent(in)  :: cas_file
+  character(len=144), intent(in)  :: dico_file
+  integer, intent(out) :: ierr
+!
+end subroutine run_read_case_t2d
+\end{lstlisting}
+
+\begin{itemize}
+\item \textbf{id}: The id of the instance.
+\item \textbf{cas\_file}: Path to the steering file.
+\item \textbf{dico\_file}: Path to the \telemac{2D} dictionary.
+\item \textbf{ierr}: 0 if everything went smoothly, an error index otherwise.
+\end{itemize}
+
+\begin{WarningBlock}{Warning:}
+\centering
+With the API we are not using the temporary folder (this folder was created by
+the \python environment and all the file declared in the steering file
+where copied and renamed inside that folder) which means that the name and path
+given in the steering file will be used.
+\end{WarningBlock}
+
+\item Memory allocation. This function run the allocation of all the data
+  needed in \telemac{2D}. Any modifications to quantities of \telemac{2D}
+  should be done before the call to that function.
+
+\begin{lstlisting}
+subroutine run_allocation_t2d(id,ierr)
+!
+  integer, intent(in)  :: id
+  integer, intent(out) :: ierr
+!
+end subroutine run_allocation_t2d
+\end{lstlisting}
+
+\begin{itemize}
+\item \textbf{id}: The id of the instance.
+\item \textbf{ierr}: 0 if everything went smoothly, an error index otherwise.
+\end{itemize}
+
+\item Initialization. This function will do the setting of the initial
+  conditions of \telemac{2D} It corresponds to the time-step 0 of a
+  \telemac{2D} run.
+
+\begin{lstlisting}
+subroutine run_init_t2d(id,ierr)(id,ierr)
+!
+  integer, intent(in)  :: id
+  integer, intent(out) :: ierr
+!
+end subroutine run_run_init_t2d
+\end{lstlisting}
+
+\begin{itemize}
+\item \textbf{id}: The id of the instance.
+\item \textbf{ierr}: 0 if everything went smoothly an error index otherwise.
+\end{itemize}
+
+
+\item Computation function that runs one time-step of \telemac{2D}. To compute
+  all time steps, a loop on this function must be done.
+
+\begin{lstlisting}
+subroutine run_timestep_t2d(id,ierr)
+!
+  integer, intent(in)  :: id
+  integer, intent(out) :: ierr
+!
+end subroutine run_timestep_t2d
+\end{lstlisting}
+
+
+\begin{itemize}
+\item \textbf{id}: The id of the instance.
+\item \textbf{ierr}: 0 if everything went smoothly, an error index otherwise.
+\end{itemize}
+
+\item Finalization. This function concludes the run of \telemac{2D} and will
+  deallocate all the arrays and delete the instance. To start a new execution
+  of \telemac{2D} the function RUN\_SET\_CONFIG must be run again.
+
+
+\begin{lstlisting}
+subroutine run_finalize_t2d(id,ierr)
+!
+  integer, intent(in)  :: id
+  integer, intent(out) :: ierr
+!
+end subroutine run_finalize_t2d
+\end{lstlisting}
+
+\begin{itemize}
+\item \textbf{id}: The id of the instance.
+\item \textbf{ierr}: 0 if everything went smoothly an error index otherwise.
+\end{itemize}
+
+\end{itemize}
+
+For each routine defined above, the identity number of the instance is used as
+an input argument allowing all computation variables to be linked with the
+corresponding instance pointers. These routines are then called in the same
+order to insure a correct execution of the computation in the API main
+program.
+
+\subsection{Parallelisation}
+\label{subsec:para}
+All steps associated with parallel computation must be performed by the user
+when he chooses to launch his calculation on several processors. In this case,
+after initializing the MPI environment, the user must partition the input files
+(geometry file, boundary conditions files, and so on) using the \fortran
+function "partel". Then, when the calculation is complete, it is necessary to
+merge each subdomains result files using the "gretel" routine of the
+\telemacsystem. The MPI environment can then be closed.
+
+\section{TelApy module}
+
+It is relatively easy to use the \fortran API routines directly in \python using
+the "f2py" tool of the \python Scipy library. This tool will make it possible
+to compile \fortran code such as it is accessible and usable in \python. For more
+details on this tool, the interested reader can refer directly to
+\cite{Peterson2009}. However, using the advantage of the \python language, it
+is possible to implement a wrapper in order to provide user friendly function
+of the \fortran API. Thus, a \python overlay was developed in order to
+encapsulate and simplify the different API \python calls. The different \python
+functions written to simplify the use of API are available in the directory
+"$HOMETEL/scripts/python27/TelAPy/$".
+A \doxygen documentation is available and allows the user to visualize \python
+classes, functions that can be used as well as its input and output variables
+and so on.
+
+In order to launch the \doxygen documentation, the user needs to copy and paste
+the link "$HOME$\-$TEL/documentation/TelAPy/doxygen/html/index.html$" into his
+favorite internet browser. Then, the user can navigate in the \doxygen
+environment in order to find information. For example, if the package list
+widget is selected, then, all \python tools are visible such as:
+
+\begin{itemize}
+\item TelApy
+\begin{itemize}
+\item api
+\begin{itemize}
+\item api\_module: The generic \python class for \telemacsystem APIs
+\item generate\_study: Automatic generator of \telemacsystem API template \python
+\item hermes: Input and Output library allowing to write and read different
+  \telemacsystem formats
+\item sis: The \sisyphe \python class for APIs
+\item t2d: The \telemac{2D} \python class for APIs
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item tools
+\begin{itemize}
+\item genop: Optimization tool based on genetic algorithms
+\item newop: Optimization tool based onthe SciPy minimizer function
+\item polygon: Function allowing to give point indices which are in a polygon
+  defined by the user
+\end{itemize}
+\end{itemize}
+\end{itemize}
+
+Then, if some information are desired on a specific class as for example
+"api\_module", by clicking on this class, all function contained in it are listed
+as follow:
+
+\begin{itemize}
+\item \verb+def _init_+: Constructor for api module
+\item \verb+def set_case+: Read the steering file and run allocation
+\item \verb+def init_state_default+: Initialize the state of the model Telemac
+  2D with the values of discharges and water levels as indicated by the steering
+  file
+\item \verb+def run_one_time_step+: Run one the time step
+\item \verb+def run_all_time_steps+: Run all the time steps
+\item \verb+def get_mesh+: Get the 2D mesh of triangular cells
+\item \verb+def get_node+: Get the nearest node number for the coordinates
+  (xval, yval)
+\item \verb+def get_elem+: Get the triangle where the point (xval, yval) is
+\item \verb+def show_mesh+: Show the 2D mesh with topography
+\item \verb+def list_variables+: List the names and the meaning of available
+  variables and parameters
+\item \verb+def get+: Get the value of a variable of \telemacsystem modules
+\item \verb+def set+: Set the value of a variable of \telemacsystem modules
+\item \verb+def get_array+: Retrieves all the values from a variable into a
+  numpy array
+\item \verb+def set_array+: Changes all the values from a variable into a numpy
+  array
+\item \verb+def get_on_polygon+: Retrieves values for point within the polygon
+  poly. Warning: this works only on array that are of size NPOIN
+\item \verb+def set_on_polygon+: Set a varname value on all points that are
+  within the polygon poly Warning this works only on array that are of size
+  NPOIN
+\item \verb+def get_on_range+: Retrieves the values of the variable on the
+  range given as argument
+\item \verb+def set_on_range+: set the values of the variable on the range
+  given as argument
+\item \verb+def get_error_message+: Get the error message from the \fortran
+  sources
+\item \verb+def finalize+: Delete the \telemacsystem instance
+\item \verb+def generate_var_info+: Returns a dictionary containing specific
+  information for each variable
+\end{itemize}
+
+For each of the previous functions all information concerning the inputs and
+outputs are available such as for example for the "set" fonction which allows
+to get the value of the variable of \telemacsystem module:
+
+\begin{lstlisting}[language=Python]
+def set(self,varname,value,i=0,j=0,k=0,global_num=True)
+\end{lstlisting}
+
+\begin{itemize}
+\item \textbf{varname}: Name of the variable
+\item \textbf{i}: index otherwise.index of the first dimension
+\item \textbf{j}: index otherwise.index of the second dimension
+\item \textbf{k}: index otherwise.index of the third dimension
+\item \textbf{global\_num}: are the index on local/global numbering variable
+  value
+\end{itemize}

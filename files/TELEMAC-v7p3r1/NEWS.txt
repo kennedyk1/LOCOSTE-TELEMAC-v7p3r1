@@ -1,0 +1,189 @@
+Release V7P3R1 (  /  /18)
+===========================
+Bug fixes
+---------------------
+
+- Fix in HERMES: Error in check of argument of get_mesh_coord
+- Fix in converter: When converting a 3D file in VTK ouput had Z set to 0.0 now it is given the proper value
+- Fix in rescan: Optimization of rescan (done by Judicael)
+- Fix in hermes: Error in get_data_values when reading less data than what is in the field
+- Defaut endian output is big_endian but can be now define to little edian by adding -DLITTLE_ENDIAN
+- Fix for TELEMAC2D: bug in the convergence feature with ditributive schemes
+- Fix in SISYPHE: Coefficient for the Engelund and Hansen formula(s) assigned to the standard value
+- Fix in WAQTEL: Wrong index for work arrays T2_1 (in calcs3d_o2 and calcs3d_eutro)
+- Fix in waq2d_thermic example: 1 wrong keyword (ASCII ATMOSPHERIC DATA FILE instead of FORMATTED DATA FILE 1)
+and 1 wrong value for 1 keyword (2 instead of the default one) since 2016!
+- Fix in WAQTEL: Variable computed too late in the CALCS2D_THERMIC.
+The computation of P_VAP_SAT is moved before its use for the computation of PATMC
+- Fix in TELEMAC-3D: Wrong MESH for one operation on structures (MESH3D rather than MESH2D)
+when modelling drogues in spherical coordinates
+- Fix in WAQTEL: Wrong definition of source terms (explicit/implicit) in CALCS3D_O2 changed in r10016
+
+
+Release V7P3R0 (22/12/17)
+===========================
+
+- all modules: FORTRAN FILE can be a folder that contains several files,
+  not a single file (but still possible)
+- TELEMAC-2D/TELEMAC-3D: fix the culvert formulation 1 so that
+  it falls back to the siphon formulation in that specific case.
+- TELEMAC-2D/TELEMAC-3D: sources can also be assigned with global node numbers
+- TELEMAC-2D/TELEMAC-3D: Lambert 93 projection when modelling tide.
+- TELEMAC-2D/TELEMAC-3D: Adding 7 extra harmonic constituents,
+  for FES2014 tidal database (M3, M8, Msf, N4, S1, Sa, SSa).
+- TELEMAC-3D: remove the option DIFFUS. This option was meant
+  to remove the diffusion but it actually did not
+  remove the diffusion on U,V. Besides, it could happen that when using
+  DIFFUS=NO the source terms were not included in W and the tracers.
+  We thus chose to remove this option altogether. From now on, to
+  disable the diffusion the user can only set a zero diffusion coefficient.
+- TELEMAC-3D: remove the option OPTDIF to keep only one formulation
+  (OPTDIF could take the values 1 or 2 but the
+  option 2 did not seem to bring improvements compared to the option 1.
+  It was was not used in any test-case, neither documented so we only kept
+  the option 1 in the code)
+- TELEMAC-3D: modular CONDIM and BORD3D subroutines (initial conditions
+  and boundary conditions). Simplification of the CONDIM subroutine
+  (initial conditions + mesh transformation), now split into several
+  subroutines which do various and separated treatments (e.g. initial
+  conditions for water depths, velocities, tracers... or mesh
+  transformation different from the classical sigma transformation).
+  The user only needs to fill one short file per variable. No need to
+  keep the whole CONDIM subroutine.
+  For BORD3D, every specific treatment is implemented in a separate
+  subroutine USER_BORD3D called by BORD3D (see examples to fill).
+- ARTEMIS: Creation of free surface elevation (time/space varying) files.
+- ARTEMIS: Removing the need to code within BORH (using LECLIM and
+the BOUNDARY CONDITION FILE instead).
+- ARTEMIS: Automated calculation of the phase for incident boundaries
+  (in PHBOR), starting from the "node of attack" of the offshore wave,
+  iteratively computed along both sides away from the attack node
+  along the rest of the incident boundary.
+- STBTEL: Now refining the boundary conditions as well as the mesh
+  Available through the script convertert.py as well
+- Addons: Adding vim-syntax for .cas and .dico files
+- TELEMAC-2D: change computation of wall distance (used in
+  Spalart-Allmaras turbulence model). The wall distance (WDIST) is now
+  computed in parallel with a laplacian operator.
+- TELEMAC-2D: new framework for automatic convergence studies
+- TELEMAC-3D: coupling with the water quality library AED2.
+- TOMAWAC: Automatic imposed spectrum on nested mesh.
+- TOMAWAC: In order to better take into account boundary conditions Limwac is called at the end of the loop in time instead of beginning.
+- TELEMAC-2D: I/O criteria of result file now homogenous with FE or FV (steered by time-step and
+period for graphic output)
+- TELEMAC-2D: Activation of source terms for FV (Mass and Momentum): so far only partially
+implemented for mass source terms.
+- TELEMAC-2D: New turbulence model (Spalart-Allmaras)
+
+New keywords:
+All modules:
+For Automatic Differentiation (AD)
+- AD NUMBER OF DERIVATIVES (AD NOMBRE DE DERIVEES)
+- AD NAMES OF DERIVATIVES (AD NOMS DES DERIVEES)
+- AD NUMBER OF DIRECTIONS (AD NOMBRE DE DIRECTIONS)
+- AD SYMBOLIC LINEAR SOLVER (AD SOLVEUR LINEAIRE SYMBOLIQUE)
+- AD LINEAR SOLVER RESET DERIVATIVES
+(AD REMISE A ZERO DES DERIVEES DU SOLVEUR LINEAIRE)
+- AD LINEAR SOLVER DERIVATIVE CONVERGENCE
+(AD CONVERGENCE DES DERIVEES POUR LE SOLVEUR LINEAIRE)
+
+TELEMAC-2D/TELEMAC-3D:
+Keyword to assign global node numbers to sources:
+GLOBAL NUMBERS OF SOURCE NODES (NUMEROS GLOBAUX DES NOEUDS DES SOURCES)
+Keyword to give the coordinates of the result file in longitude-latitude
+if the geometry file is also given in longitude-latitude:
+RESULT FILE IN LONGITUDE-LATITUDE (FICHIER RESULTAT EN LONGITUDE-LATITUDE)
+File to provide for the conversion in Lambert 93 for tides. It is
+located in the tide examples of T2D (gr3df97a.txt):
+LAMBERT 93 CONVERSION FILE (FICHIER DE CONVERSION LAMBERT 93)
+
+TELEMAC-3D:
+New keyword to compute the wind drag coefficient more accurately (FAIR):
+- COEFFICIENT OF WIND INFLUENCE VARYING WITH WIND SPEED
+(COEFFICIENT D INFLUENCE DU VENT DEPENDANT DE LA VITESSE DU VENT)
+
+SISYPHE:
+SECONDARY CURRENTS FILE (FICHIER DE COURANTS SECONDAIRES)
+
+ARTEMIS:
+FREE SURFACE ANIMATION (ANIMATION DE LA SURFACE LIBRE)
+AMPLITUDE AND PHASE FILE (FICHIER DES PHASES ET AMPLITUDES)
+AMPLITUDE AND PHASE FILE FORMAT
+(FORMAT DU FICHIER DES PHASES ET AMPLITUDES)
+
+TOMAWAC:
+- FILE WITH COORDINATES OF SPECTRA TO IMPOSE
+- FILE WITH COORDINATES OF SPECTRA TO WRITE
+- IMPOSED SPECTRA FILE
+- IMPOSED SPECTRA FILE FORMAT
+- TAKING INTO ACCOUNT SOURCE TERMS ON IMPOSED BOUNDARIES
+- TIME SHIFT OF IMPOSED SPECTRA FILE
+- TIME UNIT OF IMPOSED SPECTRA FILE
+
+Deleted keywords:
+TELEMAC-3D:
+- OPTION FOR THE DIFFUSION (OPTION POUR LA DIFFUSION), mnemo OPTDIF
+- DIFFUSION STEP (ETAPE DE DIFFUSION), mnemo DIFFUS
+- PROPAGATION STEP (ETAPE DE PROPAGATION), mnemo PROP
+
+TOMAWAC:
+- BINARY FILE 1 BINARY
+- CURRENTS FILE BINARY
+- DEFAULT EXECUTABLE
+- DEFAULT PARALLEL EXECUTABLE
+- DESCRIPTION OF LIBRARIES
+- GEOMETRY FILE BINARY
+- GLOBAL RESULT FILE BINARY
+- PREVIOUS COMPUTATION FILE BINARY
+- PUNCTUAL RESULTS FILE BINARY
+- TIDAL WATER LEVEL FILE BINARY
+- WINDS FILE BINARY
+
+Documentation:
+TELEMAC-3D:
+- New theory guide for TELEMAC-3D. The previous release notes were removed
+and shall be re-introduced in future versions to track version-specific changes.
+
+Release V7P2R0 (31 Dec 2016)
+===========================
+
+Features
+---------------------
+
+- TELEMAC-2D: Add Spalart-Allmaras turbulence model.
+- TelApy: Add the first structure for PYTHON API of TELEMAC.
+- TELEMAC-3D: Add a new advection scheme (less diffusive scheme
+  as in TELEMAC-2D).
+- TELEMAC: Add possibility to prescribe space and time varying meteo
+  conditions based on a file (ASCII ATMOSPHERIC DATA FILE and
+  BINARY ATMOSPHERIC DATA FILE keywords).
+- SISYPHE: Liquid boundaries file for bed load discharge.
+- Replacing DredgeSim with Nestor.
+- TELEMAC-2D: Add a new rainfall-runoff model. An example of use is given in
+  the pluie test case.
+- Automatic detection of Little/Big Endian for Serafin File
+  (needs FORTRAN Gnu extension).
+- TELEMAC-2D: Adding a deall_telemac2d subroutine that dallocates all that was
+  allocated by point_telemac2d. Same thing for bief_all* and do on. This is
+  mainly for API as in normal run the Fortran is cleaning on its own.
+- TELEMAC-2D and 3D: new option for culvert modeling, change in the culvert parameters file.
+- Adding NEWS file that contains the major modifications in the code.
+- Integration of the MASCARET source code into the TELEMAC-MASCARET system
+  (script mascaret.py to run code).
+- TELEMAC-2D and 3D: possibility to read space-time varying meteo data from a
+  binary file.
+- TELEMAC-3D: possiblity to read space-time varying open boundary conditions
+  from a binary file.
+
+Addons
+---------------------
+
+- New version of ParaView plugin (SerafinReader) which allows to read Serafin
+  file in Paraview.
+
+Documentation
+---------------------
+
+- New developer guide in documentation/Misc/developer_guide.
+- LaTeX documentation in folder documentation.
+

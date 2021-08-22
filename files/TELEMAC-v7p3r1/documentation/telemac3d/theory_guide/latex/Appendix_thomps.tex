@@ -1,0 +1,711 @@
+The original method \cite{thompson} uses the theory of
+characteristics, linearised in a direction normal to the boundary,
+in the framework of the Saint-Venant equations. Here the depth-averaged
+velocity is denoted by $\vec{U}$, with components $U$ and $V$:
+\begin{equation}
+\left\{\begin{array}{l}
+U = \dfrac{1}{h}\displaystyle{\int_b^\eta}u dz \smallskip \\
+V = \dfrac{1}{h}\displaystyle{\int_b^\eta}v dz \smallskip
+\end{array}\right.
+\end{equation}
+
+\textit{A detailed explanation of the original technique:} \smallskip
+
+We explain here in more detail what is said in Reference \cite{hervouet007} page
+105 to 108. We neglect diffusion and start from the conservative form of
+Saint-Venant equations, put in the following form taken from Reference \cite%
+{hervouet007} at page 31, using the fact that the free surface $\eta$ is the
+bottom topography plus the depth $h$:
+
+\begin{equation}\label{svt}
+\left\{\begin{array}{l}
+\dfrac{\partial h}{\partial t}+\Div(h\vec{U})=Sce \medskip \\
+\dfrac{\partial (hU)}{\partial t}+\dfrac{\partial }{\partial x}(hUU+g\dfrac{%
+h^{2}}{2})+\dfrac{\partial }{\partial y}(hUV)=-gh\dfrac{\partial b}{%
+\partial x}+hF_{x} \medskip \\
+\dfrac{\partial (hV)}{\partial t}+\dfrac{\partial }{\partial x}(hUV)+\dfrac{%
+\partial }{\partial y}(hVV+g\dfrac{h^{2}}{2})=-gh\dfrac{\partial b}{%
+\partial y}+hF_{y}  
+\end{array}\right.
+\end{equation}
+
+Let $F$, $G_{x}$, $G_{y}$ and $S(F)$ be:
+
+\begin{equation*}
+F=\left( 
+\begin{array}{c}
+h \\ 
+hU \\ 
+hV%
+\end{array}
+\right)
+\end{equation*}
+
+\begin{equation*}
+G_{x}=\left( 
+\begin{array}{c}
+hU \\ 
+hU^{2}+g\dfrac{h^{2}}{2} \\ 
+hUV%
+\end{array}
+\right) \text{ and }G_{y}=\left( 
+\begin{array}{c}
+hV \\ 
+hUV \\ 
+hV^{2}+g\dfrac{h^{2}}{2}%
+\end{array}
+\right)
+\end{equation*}
+
+\begin{equation*}
+S(F)=\left( 
+\begin{array}{c}
+Sce \smallskip\\ 
+-gh\dfrac{\partial b}{\partial x}+hF_{x} \smallskip\\ 
+-gh\dfrac{\partial b}{\partial y}+hF_{y}%
+\end{array}
+\right)
+\end{equation*}
+
+The Saint-Venant equations \eqref{svt} can then be written in the following form:
+
+\begin{equation*}
+\dfrac{\partial F}{\partial t}+\dfrac{\partial G_{x}}{\partial x}+\dfrac{%
+\partial G_{y}}{\partial y}=S(F)
+\end{equation*}
+
+The Thompson method as implemented so far in Telemac consists in considering
+a local system of coordinates based on a local normal vector $%
+\vec{n}$ (normal to the boundary) and a local tangent vector $%
+\vec{t}$. If the new system of coordinates is denoted $\xi $ and 
+$\zeta $, we have:
+
+\begin{equation*}
+\vec{n}=\left( 
+\begin{array}{c}
+\dfrac{\partial \xi }{\partial x} \smallskip\\ 
+\dfrac{\partial \xi }{\partial y}%
+\end{array}
+\right) ~\text{and~}\vec{t}=\left( 
+\begin{array}{c}
+\dfrac{\partial \zeta }{\partial x} \smallskip\\ 
+\dfrac{\partial \zeta }{\partial y}%
+\end{array}
+\right) =\left( 
+\begin{array}{c}
+-\dfrac{\partial \xi }{\partial y} \smallskip\\ 
+\dfrac{\partial \xi }{\partial x}%
+\end{array}
+\right)
+\end{equation*}
+
+We keep these notations here, but the directions $\vec{n}$ and ~$%
+\vec{t}$ may not be linked to the boundary.
+
+The components of the velocity in the new system will be denoted by $U_{\xi }$ and 
+$U_{\zeta }$. We have:
+
+\begin{equation*}
+\left( 
+\begin{array}{c}
+U_{\xi } \smallskip\\ 
+U_{\zeta }%
+\end{array}
+\right) =\left( 
+\begin{array}{cc}
+\dfrac{\partial \xi }{\partial x} & \dfrac{\partial \xi }{\partial y} \smallskip\\ 
+\dfrac{\partial \zeta }{\partial x} & \dfrac{\partial \zeta }{\partial y}%
+\end{array}
+\right) \left( 
+\begin{array}{c}
+U \smallskip\\ 
+V%
+\end{array}
+\right) =\left( 
+\begin{array}{c}
+U\dfrac{\partial \xi }{\partial x}+V\dfrac{\partial \xi }{\partial y} \smallskip\\ 
+-U\dfrac{\partial \xi }{\partial y}+V\dfrac{\partial \xi }{\partial x}%
+\end{array}
+\right)
+\end{equation*}
+
+and:
+
+\begin{equation*}
+\left( 
+\begin{array}{c}
+U \smallskip\\ 
+V%
+\end{array}
+\right) =\left( 
+\begin{array}{cc}
+\dfrac{\partial \xi }{\partial x} & -\dfrac{\partial \xi }{\partial y} \smallskip\\ 
+\dfrac{\partial \xi }{\partial y} & \dfrac{\partial \xi }{\partial x}%
+\end{array}
+\right) \left( 
+\begin{array}{c}
+U_{\xi } \smallskip\\ 
+U_{\zeta }%
+\end{array}
+\right) =\left( 
+\begin{array}{c}
+U_{\xi }\dfrac{\partial \xi }{\partial x}-U_{\zeta }\dfrac{\partial \xi }{%
+\partial y} \smallskip\\ 
+U_{\xi }\dfrac{\partial \xi }{\partial y}+U_{\zeta }\dfrac{\partial \xi }{%
+\partial x}%
+\end{array}
+\right)
+\end{equation*}
+
+We first want to put the system in the form:
+
+\begin{equation}
+\dfrac{\partial F}{\partial t}+A_{x}\dfrac{\partial F}{\partial x}+B_{y}\dfrac{%
+\partial F}{\partial x}=S(F)  \label{svtsyst}
+\end{equation}
+
+where $A_{x}$ and $B_{y}$ are matrices. For this goal:
+
+In Equation \ref{svt}:
+
+$\dfrac{\partial }{\partial x}(g\dfrac{h^{2}}{2})$ is written $c^{2}\dfrac{%
+\partial h}{\partial x}$
+
+$\dfrac{\partial }{\partial x}(hUU)$ is written $U^{2}\dfrac{\partial h}{%
+\partial x}+h\dfrac{\partial U^{2}}{\partial x}=U^{2}\dfrac{\partial h}{%
+\partial x}+2Uh\dfrac{\partial U}{\partial x}=U^{2}\dfrac{\partial h}{\partial
+x}+2U\dfrac{\partial (hU)}{\partial x}-2U^{2}\dfrac{\partial h}{\partial x}$
+
+$\dfrac{\partial }{\partial y}(hUV)$ is written $V\dfrac{\partial }{\partial y}%
+(hU)+hU\dfrac{\partial V}{\partial y}=V\dfrac{\partial }{\partial y}(hU)+U%
+\dfrac{\partial (hV)}{\partial y}-UV\dfrac{\partial h}{\partial y}$
+
+$\dfrac{\partial }{\partial y}(g\dfrac{h^{2}}{2})$ is written $c^{2}\dfrac{%
+\partial h}{\partial y}$
+
+$\dfrac{\partial }{\partial x}(hVV)$ is written $-V^{2}\dfrac{\partial h}{%
+\partial y}+2V\dfrac{\partial (hV)}{\partial y}$
+
+$\dfrac{\partial }{\partial x}(hUV)$ is written $Vd\dfrac{\partial }{\partial x}%
+(hU)+U\dfrac{\partial (hV)}{\partial x}-UV\dfrac{\partial h}{\partial x}$
+
+We effectively get to Equation \ref{svtsyst} with:
+
+\begin{equation}
+A_{x}=\left( 
+\begin{array}{ccc}
+0 & 1 & 0 \smallskip\\ 
+c^{2}-U^{2} & 2U & 0 \smallskip\\ 
+UV & V & U%
+\end{array}
+\right) \text{ and }B_{y}=\left( 
+\begin{array}{ccc}
+0 & 0 & 1 \smallskip\\ 
+UV & V & U \smallskip\\ 
+c^{2}-V^{2} & 0 & 2V%
+\end{array}
+\right)
+\end{equation}
+
+Now we change the coordinates by writing that for every function $f$ we have:
+
+\begin{equation*}
+\dfrac{\partial f}{\partial x}=\dfrac{\partial \xi }{\partial x}\dfrac{%
+\partial f}{\partial \xi }+\dfrac{\partial \zeta }{\partial x}\dfrac{\partial
+f}{\partial \zeta }\text{ and }\dfrac{\partial f}{\partial y}=\dfrac{\partial
+\xi }{\partial y}\dfrac{\partial f}{\partial \xi }+\dfrac{\partial \zeta }{%
+\partial y}\dfrac{\partial f}{\partial \zeta }
+\end{equation*}
+
+It gives us a system in the form:
+
+\begin{equation}
+\dfrac{\partial F}{\partial t}+A_{\xi }\dfrac{\partial F}{\partial \xi }%
++B_{\zeta }\dfrac{\partial F}{\partial \zeta }=S(F)
+\end{equation}
+with:
+
+\begin{equation*}
+A_{\xi }=\dfrac{\partial \xi }{\partial x}A_{x}+\dfrac{\partial \xi }{%
+\partial y}B_{y}\text{ and }B_{\zeta }=\dfrac{\partial \zeta }{\partial x}%
+A_{x}+\dfrac{\partial \zeta }{\partial y}B_{y}=-\dfrac{\partial \xi }{%
+\partial y}A_{x}+\dfrac{\partial \xi }{\partial x}B_{y}
+\end{equation*}
+which gives:
+
+\begin{equation}
+A_{\xi }=\left( 
+\begin{array}{ccc}
+0 & \dfrac{\partial \xi }{\partial x} & \dfrac{\partial \xi }{\partial y} \smallskip\\ 
+\dfrac{\partial \xi }{\partial x}(c^{2}-U^{2})-\dfrac{\partial \xi }{%
+\partial y}UV & 2U\dfrac{\partial \xi }{\partial x}+V\dfrac{\partial \xi }{%
+\partial y} & U\dfrac{\partial \xi }{\partial y}\smallskip \\ 
+\dfrac{\partial \xi }{\partial y}(c^{2}-V^{2})-\dfrac{\partial \xi }{%
+\partial x}UV & V\dfrac{\partial \xi }{\partial x} & U\dfrac{\partial \xi }{%
+\partial x}+2V\dfrac{\partial \xi }{\partial y}%
+\end{array}
+\right) \text{ }
+\end{equation}
+and:
+
+\begin{equation}
+B_{_{\zeta }}=\left( 
+\begin{array}{ccc}
+0 & -\dfrac{\partial \xi }{\partial y} & \dfrac{\partial \xi }{\partial x}
+\smallskip\\ 
+-\dfrac{\partial \xi }{\partial y}(c^{2}-u^{2})-\dfrac{\partial \xi }{%
+\partial x}UV & -2U\dfrac{\partial \xi }{\partial y}+V\dfrac{\partial \xi }{%
+\partial x} & U\dfrac{\partial \xi }{\partial x} \smallskip\\ 
+\dfrac{\partial \xi }{\partial x}(c^{2}-V^{2})+\dfrac{\partial \xi }{%
+\partial y}UV & -V\dfrac{\partial \xi }{\partial y} & -U\dfrac{\partial \xi 
+}{\partial y}+2V\dfrac{\partial \xi }{\partial x}%
+\end{array}
+\right)
+\end{equation}
+or even, still denoting $U_{\xi }$ as the normal component of velocity and $%
+U_{\zeta }$ the tangential component:
+
+\begin{equation}
+A_{\xi }=\left( 
+\begin{array}{ccc}
+0 & \dfrac{\partial \xi }{\partial x} & \dfrac{\partial \xi }{\partial y} \\ 
+\dfrac{\partial \xi }{\partial x}c^{2}-UU_{\xi } & U\dfrac{\partial \xi }{%
+\partial x}+U_{\xi } & U\dfrac{\partial \xi }{\partial y} \\ 
+\dfrac{\partial \xi }{\partial y}c^{2}-VU_{\xi } & V\dfrac{\partial \xi }{%
+\partial x} & U_{\xi }+V\dfrac{\partial \xi }{\partial y}%
+\end{array}
+\right) \text{ }
+\end{equation}
+and:
+
+\begin{equation}
+\text{ }B_{_{\zeta }}=\left( 
+\begin{array}{ccc}
+0 & -\dfrac{\partial \xi }{\partial y} & \dfrac{\partial \xi }{\partial x}
+\\ 
+-\dfrac{\partial \xi }{\partial y}c^{2}-UU_{\zeta } & -U\dfrac{\partial \xi 
+}{\partial y}+U_{\zeta } & U\dfrac{\partial \xi }{\partial x} \\ 
+\dfrac{\partial \xi }{\partial x}c^{2}-UU_{\zeta } & -V\dfrac{\partial \xi }{%
+\partial y} & U_{\zeta }+V\dfrac{\partial \xi }{\partial x}%
+\end{array}
+\right)
+\end{equation}
+
+Subsequently, we ignore the variations along the direction $\zeta $ and try
+to solve the system:
+
+\begin{equation}
+\dfrac{\partial F}{\partial t}+A_{\xi }\dfrac{\partial F}{\partial \xi }=S(F)
+\end{equation}
+An open question is: which part of $S(F)$ should be kept in this equation ?
+We discard $Sce$, $F_{x}$ and $F_{y}$, and keep only the variations of
+bottom along the direction $\xi $. It gives
+
+\begin{equation}
+S_{\xi }(F)=\left( 
+\begin{array}{c}
+0 \\ 
+-gh\dfrac{\partial \xi }{\partial x}\dfrac{\partial b}{\partial \xi } \\ 
+-gh\dfrac{\partial \xi }{\partial y}\dfrac{\partial b}{\partial \xi }%
+\end{array}
+\right)
+\end{equation}
+
+For the time being, we call it $S_{\xi }(F)$ whatever its value and go on
+with the diagonalisation of $A_{\xi }$.
+
+Now $A_{\xi }$ is diagonalized as $A_{\xi }=L^{-1}\Lambda L$ with:
+
+\begin{equation*}
+L=\left( 
+\begin{array}{ccc}
+U_{\zeta } & \dfrac{\partial \xi }{\partial y} & -\dfrac{\partial \xi }{%
+\partial x} \\ 
+c-U_{\xi } & \dfrac{\partial \xi }{\partial x} & \dfrac{\partial \xi }{%
+\partial y} \\ 
+c+U_{\xi } & -\dfrac{\partial \xi }{\partial x} & -\dfrac{\partial \xi }{%
+\partial y}%
+\end{array}
+\right)
+\end{equation*}
+and:
+
+\begin{equation*}
+\Lambda =\left( 
+\begin{array}{ccc}
+U_{\xi } & 0 & 0 \\ 
+0 & U_{\xi }+c & 0 \\ 
+0 & 0 & U_{\xi }-c%
+\end{array}
+\right)
+\end{equation*}
+
+This can be controlled by checking that $LA_{\xi }=\Lambda L$.
+
+By stating that $dW=LdF$, we then get back to the diagonalized system:
+
+\begin{equation}
+\dfrac{\partial W}{\partial t}+\Lambda \dfrac{\partial W}{\partial \xi }%
+=LS_{\xi }  \label{equacaract}
+\end{equation}
+each of whose lines is a simple transport equation with source term.
+Thompson proposes to consider that $L$ is constant in the vicinity of a
+boundary point, and to write $W=\overline{L}F$, where:
+
+\begin{equation}
+\overline{L}=\left( 
+\begin{array}{ccc}
+\overline{U_{\zeta }} & \dfrac{\partial \xi }{\partial y} & -\dfrac{\partial
+\xi }{\partial x} \\ 
+\overline{c}-\overline{U_{\xi }} & \dfrac{\partial \xi }{\partial x} & 
+\dfrac{\partial \xi }{\partial y} \\ 
+\overline{c}+\overline{U_{\xi }} & -\dfrac{\partial \xi }{\partial x} & -%
+\dfrac{\partial \xi }{\partial y}%
+\end{array}
+\right)
+\end{equation}
+the overbar values being considered as constant (these are the values
+deduced from the local conditions: h, U and V at the original starting point
+of the characteristics). The Riemann invariants of the vector $W$ are thus:
+
+\begin{itemize}
+\item $W_{1}=h(\overline{U_{\zeta }}-U_{\zeta })$ \ \ \ (advection with
+velocity $U_{\xi }$).
+
+\item $W_{2}=h(\overline{c}+U_{\xi }-\overline{U_{\xi }})$ \ \ \
+(advection with velocity $U_{\xi }+c$).
+
+\item $W_{3}=h(\overline{c}-U_{\xi }+\overline{U_{\xi }})$ \ \ \
+(advection with velocity $U_{\xi }-c$).
+\end{itemize}
+
+\noindent and to which can be added, if a tracer $T$ also has to be
+considered:
+
+\begin{itemize}
+\item $W_{4}=h(T-\overline{T})$ \ \ \ (advection with velocity $U_{\xi }$).
+\end{itemize}
+
+Pure advection is treated with the method of characteristics. To be more
+precise, a first advection is done with velocity $U_{\xi }.\ $This is done
+backwards in time. For every boundary point of Thompson type, we compute the
+backward trajectory and find, at what is called the foot of the
+characteristic curve (starting point of the trajectory which will arrive at
+the boundary point after $\Delta t$), the values of depth and components of
+velocity which we call $\widetilde{h}_{1}$, $\widetilde{U}_{1}$, $\widetilde{%
+V}_{1}$ and $\widetilde{T}_{1}$. If we neglect the source terms and take the
+invariants at this foot of characteristic pathline, we have:
+
+\begin{itemize}
+\item $W_{1}=h(\overline{U_{\zeta }}-U_{\zeta })=\widetilde{W}_{1}=%
+\widetilde{h}_{1}(\overline{U_{\zeta }}-\widetilde{U}_{\zeta 1})$ with $%
+\overline{U_{\zeta }}=-U\dfrac{\partial \xi }{\partial y}+V\dfrac{\partial
+\xi }{\partial x}$ and $\widetilde{U}_{\zeta 1}=-\widetilde{U}\dfrac{%
+\partial \xi }{\partial y}+\widetilde{V}\dfrac{\partial \xi }{\partial x}$
+
+\item $W_{4}=h(T-\overline{T})=\widetilde{h}(\widetilde{T}_{1}-\overline{T}) 
+$ with $\overline{T}=T$
+\end{itemize}
+
+then, after an advection with velocity $U_{\xi }+c$ , i.e.\ with results
+now called $\widetilde{h}_{2}$, $\widetilde{U}_{2}$ and $\widetilde{V}_{2}$:
+
+\begin{itemize}
+\item $W_{2}=h(\overline{c}+U_{\xi }-\overline{U_{\xi }})=\widetilde{W}%
+_{2}=\widetilde{h}_{2}(\overline{c}+\widetilde{U}_{\xi 2}-\overline{U_{\xi
+}})$ with $\overline{c}=\sqrt{gh}$, $\overline{U_{\xi }}=U\dfrac{\partial
+\xi }{\partial x}+V\dfrac{\partial \xi }{\partial y}$ and $\widetilde{U}%
+_{\xi 2}=\widetilde{U}_{2}\dfrac{\partial \xi }{\partial x}+\widetilde{V}%
+_{2}\dfrac{\partial \xi }{\partial y}$.
+\end{itemize}
+
+then, after an advection with velocity $U_{\xi }-c$, i.e.\ with yet other
+values denoted $\widetilde{h}_{3}$, $\widetilde{U}_{3}$ and $\widetilde{V}%
+_{3}$:
+
+\begin{itemize}
+\item $W_{3}=h(\overline{c}-U_{\xi }+\overline{U_{\xi }})$ $=$\ $%
+\widetilde{W}_{3}=$\ $\widetilde{h}_{3}(\overline{c}-\widetilde{U}_{\xi 3}+%
+\overline{U_{\xi }})$\ with $\overline{c}=\sqrt{gh}$, $\overline{U_{\xi }}%
+=U\dfrac{\partial \xi }{\partial x}+V\dfrac{\partial \xi }{\partial y}$ and $%
+\widetilde{U}_{\xi 3}=\widetilde{U}_{3}\dfrac{\partial \xi }{\partial x}+%
+\widetilde{V}_{3}\dfrac{\partial \xi }{\partial y}$.
+\end{itemize}
+
+All this is valid only if the backwards characteristic goes inside the
+domain.\ This can be checked by the fact that $\vec{U}_{conv}.%
+\vec{n}>0$, where $\vec{U}_{conv}$\ is the advection
+velocity field (i.e.\ based on $U_{\xi }$, $U_{\xi }+c$ or $U_{\xi }-c$,
+respectively for $W_{1}$, $W_{2}$ and $W_{3}$). If $\vec{U}%
+_{conv}.\vec{n}<0$, all variables with a tilde will be based on
+the boundary conditions prescribed by the user. For example, $\widetilde{U}%
+_{\zeta 1}$ may be taken equal to $-U_{bor}\dfrac{\partial \xi }{\partial y}%
++V_{bor}\dfrac{\partial \xi }{\partial x}$, where $U_{bor}$ and $V_{bor}$
+are the prescribed components of the velocity field.
+
+Source terms will be considered later. Once the Riemann invariants are
+known, the primitive variables can be restored by the following formulae:
+
+\begin{equation}
+h=\dfrac{W_{2}+W_{3}}{2\overline{c}}  \label{equ1}
+\end{equation}
+
+\begin{equation}
+h(U-\overline{U})=\dfrac{\partial \xi }{\partial y}W_{1}+\dfrac{\partial \xi 
+}{\partial x}(W_{2}-W_{3})  \label{equ2}
+\end{equation}
+
+\begin{equation}
+h(V-\overline{V})=\dfrac{\partial \xi }{\partial y}(W_{2}-W_{3})-\dfrac{%
+\partial \xi }{\partial x}W_{1}  \label{equ3}
+\end{equation}
+
+\begin{equation}
+h(T-\overline{T})=-W_{4}  \label{equ4}
+\end{equation}
+
+Equation \ref{equ1}\ can be used to eliminate h from the 3 others, it yields:
+
+\begin{equation}
+h=\dfrac{W_{2}+W_{3}}{2\overline{c}}
+\end{equation}
+
+\begin{equation}
+hU=\dfrac{W_{2}+W_{3}}{2\overline{c}}\overline{U}+\dfrac{\partial \xi }{%
+\partial y}W_{1}+\dfrac{\partial \xi }{\partial x}(W_{2}-W_{3})
+\end{equation}
+
+\begin{equation}
+hV=\dfrac{W_{2}+W_{3}}{2\overline{c}}\overline{V}+\dfrac{\partial \xi }{%
+\partial y}(W_{2}-W_{3})-\dfrac{\partial \xi }{\partial x}W_{1}
+\end{equation}
+
+\begin{equation}
+hT=\dfrac{W_{2}+W_{3}}{2\overline{c}}\overline{T}-W_{4}
+\end{equation}
+
+This form is not the most practical but readily gives, if necessary or for
+checking:
+
+\begin{equation}
+\overline{L}^{-1}=\left( 
+\begin{array}{ccc}
+0 & \dfrac{1}{2\overline{c}} & \dfrac{1}{2\overline{c}} \\ 
+\dfrac{\partial \xi }{\partial y} & \dfrac{1}{2}\dfrac{\partial \xi }{%
+\partial x}+\dfrac{\overline{U}}{2\overline{c}} & -\dfrac{1}{2}\dfrac{\partial
+\xi }{\partial x}+\dfrac{\overline{U}}{2\overline{c}} \\ 
+-\dfrac{\partial \xi }{\partial x} & \dfrac{1}{2}\dfrac{\partial \xi }{%
+\partial y}+\dfrac{\overline{V}}{2\overline{c}} & -\dfrac{1}{2}\dfrac{\partial
+\xi }{\partial y}+\dfrac{\overline{V}}{2\overline{c}}%
+\end{array}
+\right)
+\end{equation}
+
+We will favour the following formulas for the implementation:
+
+\begin{equation}
+h=\dfrac{W_{2}+W_{3}}{2\overline{c}}
+\end{equation}
+
+\begin{equation}
+U=\dfrac{\dfrac{\partial \xi }{\partial y}W_{1}+\dfrac{\partial \xi }{%
+\partial x}(W_{2}-W_{3})}{h}+\overline{U}
+\end{equation}
+
+\begin{equation}
+V=\dfrac{-\dfrac{\partial \xi }{\partial x}W_{1}+\dfrac{\partial \xi }{%
+\partial y}(W_{2}-W_{3})}{h}+\overline{V}
+\end{equation}
+
+\begin{equation}
+T=-\dfrac{W_{4}}{h}+\overline{T}
+\end{equation}
+
+If we do not neglect source terms, they have to be integrated along the
+characteristic curve. Assuming a constant $\overline{L}$ as done before we
+have:
+
+\begin{equation}
+\left( 
+\begin{array}{c}
+W_{1} \\ 
+W_{2} \\ 
+W_{3}%
+\end{array}
+\right) =\left( 
+\begin{array}{c}
+\widetilde{W}_{1} \\ 
+\widetilde{W}_{2} \\ 
+\widetilde{W}_{3}%
+\end{array}
+\right) +\Delta t\left( 
+\begin{array}{c}
+\overline{U_{\zeta }}~Sce+\dfrac{\partial \xi }{\partial y}(-gh\dfrac{%
+\partial \xi }{\partial x}\dfrac{\partial b}{\partial \xi }+hF_{x})-%
+\dfrac{\partial \xi }{\partial x}(-gh\dfrac{\partial \xi }{\partial y}\dfrac{%
+\partial b}{\partial \xi }+hF_{y}) \\ 
+(\overline{c}-\overline{U_{\xi }})Sce+\dfrac{\partial \xi }{\partial x}(-gh%
+\dfrac{\partial \xi }{\partial x}\dfrac{\partial b}{\partial \xi }%
++hF_{x})+\dfrac{\partial \xi }{\partial y}(-gh\dfrac{\partial \xi }{\partial
+y}\dfrac{\partial b}{\partial \xi }+hF_{y}) \\ 
+(c+U_{\xi })Sce-\dfrac{\partial \xi }{\partial x}(-gh\dfrac{\partial \xi }{%
+\partial x}\dfrac{\partial b}{\partial \xi }+hF_{x})-\dfrac{\partial \xi 
+}{\partial y}(-gh\dfrac{\partial \xi }{\partial y}\dfrac{\partial b}{%
+\partial \xi }+hF_{y})%
+\end{array}
+\right)
+\end{equation}
+
+Neglecting again $Sce$, $F_{x}$ and $F_{y}$, we are left with:
+
+\begin{equation*}
+\left( 
+\begin{array}{c}
+W_{1} \\ 
+W_{2} \\ 
+W_{3}%
+\end{array}
+\right) =\left( 
+\begin{array}{c}
+\widetilde{W}_{1} \\ 
+\widetilde{W}_{2} \\ 
+\widetilde{W}_{3}%
+\end{array}
+\right) -gh\Delta t\left( 
+\begin{array}{c}
+0 \\ 
+\dfrac{\partial b}{\partial \xi } \\ 
+-\dfrac{\partial b}{\partial \xi }%
+\end{array}
+\right)
+\end{equation*}
+
+Though the source terms could be treated in an explicit way, we do the
+following approximation: $\dfrac{\partial b}{\partial \xi }$ is
+approximated as $\dfrac{b-\widetilde{Z}_{f}}{(U+c)\Delta t}$, i.e. the
+variation of $b$ along the (backwards) characteristic curve divided by
+the length of the curve, then $U$ is neglected so that we have $\dfrac{%
+\partial b}{\partial \xi }\simeq \dfrac{b-\widetilde{Z}_{f}}{c\Delta
+t}$, and eventually $-gh\Delta t\dfrac{\partial b}{\partial \xi }\ $is
+simplified into $-c(\widetilde{Z}_{f}-b)$. It gives the following new
+formulas for $W_{2}$ and $W_{3}$: 
+\begin{equation*}
+W_{2}=\overline{c}(\widetilde{h}_{2}+\widetilde{Z}_{f2}-b)+\widetilde{h}%
+_{2}(\widetilde{U}_{\xi 2}-\overline{U_{\xi }})
+\end{equation*}
+\begin{equation*}
+W_{3}=\overline{c}(\ \widetilde{h}_{3}+\widetilde{Z}_{f3}-b)+\ 
+\widetilde{h}_{3}(-\widetilde{U}_{\xi 3}+\overline{U_{\xi }})
+\end{equation*}
+
+
+In Thompson publication finite differences are employed to solve the 3
+advection problems of the method, this was done mainly because at that time
+regular grids were common practice. Eric David, at Sogreah, then resorted to
+the method of characteristics itself to solve these problems on unstructured
+grids. At that time (1999) it precluded parallelism. Then Jacek Jankowski
+(BAW Karlsruhe) wrote an amazing parallel version of the method of
+characteristics (module \textquotedblright streamline\textquotedblright\ in
+library BIEF). More recently, module streamline was adapted by Christophe
+Denis (Sinetics, EDF\ R\&D) for dealing with a list of points that are not
+necessarily linked to mesh nodes, to enable the treatment of particles on
+one hand, and Thompson boundary points on the other hand. This was not the
+end of the story.\ As a matter of fact, the advection fields requested by
+Thompson boundary points depend on the starting point, and these specific
+fields must be defined for the whole domain.\ In parallel this implies that
+every Thompson boundary point has to send its advection fields to all
+processors, in case its characteristic pathlines would go to another
+sub-domain. This was considered too cumbersome, a dead end.\ Moreover, the
+Thompson theory leads to the fact that two nearby boundary points may have
+their characteristics pathlines crossing, because linearisation was done in
+two different directions.\ This is somewhat against the nature of
+characteristics that do not cross unless they carry the same invariant. For
+all these reasons it was considered that the theory had to be modified.\ It
+seems natural that the linearisation direction should be the direction of
+the flow. It is what is attempted here. \smallskip
+%We shall first fully explain what
+%was done in previous versions, and then we shall move to the new idea. \smallskip
+
+\textit{The new theory:} \\ \smallskip
+
+Linearisation in the direction of the flow: \\
+
+All what has been said in previous section is valid up to version 6.0 if we
+choose for $\vec{n}$ the outward normal vector to the boundary.\
+The problem is that in this case the 3 advections fields depend on the
+boundary point under treatment.\ This was heavy in scalar mode, where points
+with the same normal were grouped for optimization and shared the same
+advection field. It becomes even more heavy in parallel because these
+advection fields should be built for the whole domain, which implies that
+for every Thompson point, its normal vector must be exported to all
+sub-domains. It also appears very strange that characteristics of the same
+family stemming from two different points may cross because they have a
+different original direction.
+
+The new theory consists in choosing advection fields that would not depend
+on a given boundary point.\ It seems very natural to choose, instead of the
+outward normal vector $\vec{n}$, the direction of the velocity
+field itself. We have then:
+
+\begin{equation}
+\vec{n}=\left( 
+\begin{array}{c}
+\dfrac{\partial \xi }{\partial x} \\ 
+\dfrac{\partial \xi }{\partial y}%
+\end{array}
+\right) =\left( 
+\begin{array}{c}
+\dfrac{U}{\sqrt{U^{2}+V^{2}}} \\ 
+\dfrac{V}{\sqrt{U^{2}+V^{2}}}%
+\end{array}
+\right)  \label{newtheory}
+\end{equation}
+
+An important consequence of this choice is that the velocity $\overline{U}%
+_{\zeta }$ is always 0 by definition, which would lead to $W_{1}=0$. This is
+true in fact only if we consider that the direction $\vec{n}$
+changes along characteristics, it is false if we keep the original $%
+\vec{n}$, which would be consistent with the linearisation
+leading to $\overline{L}$. Tests show that it is better to consider that $%
+U_{\zeta }$ is indeed not 0, thus sticking to the linearisation. A
+possibility that remains to be tested would be considering that $U_{\zeta }$
+is indeed 0, and taking the norm of velocity for the component $U_{\xi }$.
+
+In any case there is an obvious problem when there is no velocity, the
+direction where to apply the celerity $c$ is then undefined. A first idea is
+to cancel also the celerity $c$ in this case, so that all variables will
+keep their original value. This is not possible, because a velocity equal to
+0 for a given boundary point would then trigger that the depth and velocity
+at this point remain unchanged.\ This is valid only if there is no wave
+approaching the point, i.e. no velocity and no free surface slope. When
+there is a free surface slope, it seems then natural to choose the direction
+of the vector $-g\,\vec{grad}(\eta)$, which is the driving term
+in momentum equation that will create velocity at the next time step. This
+happens to be very important in tests, especially the gaussian hill test
+case.
+
+Depth and velocity fields for interpolation:\\
+
+An unexpected problem occured in the results, showing that the tests $%
+\vec{U}_{conv}.\vec{n}>0$, to decide whether we should
+take e.g. the depth $h$ or the prescribed depth $h_{bor}$ for computing $%
+\widetilde{h}$, could happen to be wrong.\ As a matter of fact the method of
+characteristics itself is able to check if the pathline goes out of the
+domain, and in this case it stops and interpolates at this exit point. In a
+corner the average $\vec{n}$ of the corner point may lead to a
+different decision, thus leading to wrongly choose for example $h$ instead
+of $h_{bor}$. Any case where the value $\vec{U}_{conv}.%
+\vec{n}$ is very close to 0 will lead to a random choice, and
+then to large differences if $h$ and $h_{bor}$\ are very different. It was
+thus decided to discard the tests $\vec{U}_{conv}.\vec{%
+n}>0$ and to use interpolation fields of $h$, $U$ and $V$ that already
+contain the prescribed boundary conditions. A characteristic pathline that
+exits a Thompson boundary will thus find naturally that $\widetilde{h}%
+=h_{bor}$, without resorting to testing $\vec{U}_{conv}.%
+\vec{n}$.\ A\ drawback is that for small Courant numbers, when
+the characteristics pathlines will not go far from boundaries, their
+interpolated values will be influenced by the prescribed values of the
+boundary.\ When prescribed values are correct, which is generally the case
+with box models and measurements, this could be also an advantage. With this
+new approach there can be no discontinuity of choice due to a truncation
+error.

@@ -1,0 +1,28 @@
+!                    *****************
+                     SUBROUTINE FHC_RICE2D
+!                    *****************
+     &(HWI,DH,U,TWW)
+
+      USE DECLARATIONS_RICE2D, ONLY: XNU,CWI1,CIW1,ATA,XKWP
+      IMPLICIT NONE
+      DOUBLE PRECISION HWI,DH,U,TWW,RE
+
+!C THIS IS TO DETERMINE ICE-WATER HEAT EXCHANGE COEFFICIENT
+      RE = U * DH / XNU
+      IF(DH.LE.0.001.AND.DH.GT.0.0) THEN
+        HWI=1394.0
+        RETURN
+      ENDIF
+!--- LAMINAR FLOW
+      IF(RE.LT.2200.0) THEN
+        HWI=ATA*XKWP/DH
+!--- TURBULENT FLOW
+      ELSEIF(TWW.GT.0.0) THEN ! WATER TEMP.>0.0
+        HWI=CWI1*U**0.8/DH**0.2 ! CWI1 = 1448
+      ELSE ! WATER TEMP.<0.0
+        HWI=CIW1*U**0.8/DH**0.2 ! CIW1 = 1118
+      ENDIF
+
+      RETURN
+
+      END SUBROUTINE FHC_RICE2D

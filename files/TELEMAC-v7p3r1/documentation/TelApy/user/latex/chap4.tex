@@ -1,0 +1,143 @@
+\chapter{Developer manual}
+\label{ch:hydrod:sim}
+
+This section will described firstly how the API is implemented in \fortran.
+The first section will describe the instance type used in the API. This
+structure shows all variables accessible by the \fortran API. Then, a
+section is dedicated to guidelines and advices to allow a user to add access to
+a new variable from \telemac{2D} to the API.
+Then the second part is focused on the Python guidelines and convention 
+of the TelApy module.
+%
+\section{Instance}
+%
+As already explained in section \ref{ch:TelApy_description}, in order to
+control the data used by \telemac{2D} a \fortran Structure called "instance" containing all global variables of \telemac{2D} is used. A part of this strucrure is presented below.
+In addition, some functions, described below, are available in order to handle
+that structure. All the instance functions can be found in the module
+\verb!m_instance_t2d!.
+
+\begin{lstlisting}[language=Fortran]
+type instance_t2d
+   ! run position
+   integer myposition
+   ! list of all the variable for model
+   type(bief_obj), pointer :: hbor
+   type(bief_obj), pointer :: ubor
+   type(bief_obj), pointer :: vbor
+   type(bief_obj), pointer :: u
+   type(bief_obj), pointer :: v
+   type(bief_obj), pointer :: chestr
+   double precision, pointer :: flux_boundaries(:)
+   double precision, pointer :: cote(:)
+   double precision, pointer :: debit(:)
+!
+   type(bief_mesh), pointer :: mesh
+!
+   type(bief_obj), pointer :: lihbor
+   type(bief_obj), pointer :: liubor
+   type(bief_obj), pointer :: livbor
+   type(bief_obj), pointer :: numliq
+!
+   integer,        pointer :: nit
+   integer,        pointer :: lt
+!
+   type(bief_file), pointer :: t2d_files(:)
+   integer :: maxlu_t2d
+   integer :: maxkey
+   integer, pointer :: t2dres
+   integer, pointer :: t2dgeo
+   integer, pointer :: t2dcli
+!
+   character(len=144), pointer :: coupling
+!
+   type(bief_obj), pointer :: te5
+   type(bief_obj), pointer :: zf
+   type(bief_obj), pointer :: h
+   type(bief_obj), pointer :: dh
+!
+   integer, pointer :: debug
+!
+   end type ! model_t2d
+\end{lstlisting}
+
+During the use of the API, two arrays are available in order to keep track the
+used instances.
+\begin{lstlisting}
+INTEGER, PARAMETER :: MAX_INSTANCES=10
+TYPE(INSTANCE_T2D), POINTER :: INSTANCE_LIST(:)
+LOGICAL, ALLOCATABLE :: USED_INSTANCE(:)
+\end{lstlisting}
+
+Where \verb!INSTANCE_LIST! will contain all the instances used and
+\verb!USED_INSTANCE! tells you if the id is used.
+
+\subsection{Instance functions}
+
+In addition to the instance definition, the API includes all routines needed to
+manipulate it:
+
+\begin{itemize}
+\item \verb!CHECK_INSTANCE_T2D!. This function just checks that the id number
+  is valid (between 1 and max\_instances).
+\item \verb!CREATE_INSTANCE_T2D!. This function creates new instance and
+  returns the id of that instance.
+\item \verb!DELETE_INSTANCE_T2D!. This function deletes the instance and make
+  the id available.
+\end{itemize}
+%
+\subsection{How to add access to a new variable}
+\label{var_add}
+%
+In order to add access to a new variable via the API, the following steps must
+be done:
+
+\begin{enumerate}
+\item Get the name of the variable in \verb!declarations_telemac2d! and add ",
+  target" in its declaration.
+\item Add that variable in the instance structure (file
+  \verb!m_instance_t2d.f!).
+\item Add the initialisation in \verb!create_instance_t2d!.
+\item Add the variable in the get/set function that befits it.
+\item Add the size of the variable in \verb!get_var_size_t2d_d!.
+\item Add the type of the variable in \verb!get_var_type_t2d_d!.
+\item Add the variable in \verb!GET_VAR_LIST_T2D_D!.
+\item Increase the value of \verb!t2d_nb_var! in \verb!m_handle_var.f!.
+\end{enumerate}
+
+%
+%--------------------------------------------------------------------------------
+\section{Coding Convention}
+%--------------------------------------------------------------------------------
+%
+\begin{WarningBlock}{Warning:}
+\centering
+Be careful, the node numbering is dependent of the convention code used.
+When \fortran API are used the node numbering is considered from
+$1$ to $npoin$ and in python is considered from $0$ to $(npoin-1)$
+\end{WarningBlock}
+
+\subsection{\fortran part of API}
+
+The \fortran part of \telemacsystem API is submitted to the main rules presented
+in the developer guide.
+
+\subsection{TelApy module}
+
+The Python part is developed with the python convention "PEP 8". The aim of
+PEP 8 guidelines used in the TelApy module is to improve the readability of
+code and make it consistent across the wide spectrum of Python code. A style
+guide is about consistency. Consistency with this style guide is important.
+Consistency within a project is more important. Consistency within one module
+or function is the most important.
+
+The PEP 8 convention coding can be easily checked using the Pylint code
+analyser \url{https://www.pylint.org}. Pylint is a tool that checks for
+errors in Python code, tries to enforce a coding standard and looks for code
+smells. It can also look for certain type errors, it can recommend suggestions
+about how particular blocks can be refactored and can offer you details about
+the code’s complexity. Pylint will display a number of messages as it analyzes
+the code and it can also be used for displaying some statistics about the
+number of warnings and errors found in different files. The messages are
+classified under various categories such as errors and warnings.
+

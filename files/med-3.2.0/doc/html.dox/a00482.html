@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>MED fichier: Référence du fichier medfilter.f</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Généré par Doxygen 1.6.1 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Documentation&nbsp;MED</span></a></li>
+      <li><a href="pages.html"><span>Guides&nbsp;d'utilisation</span></a></li>
+      <li><a href="modules.html"><span>Guides&nbsp;de&nbsp;référence</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_5dd6e84f739ad96c16a708db73465b58.html">src</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_b67b6786efc527414dbeeb49e3416ccd.html">fi</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier medfilter.f</h1>
+<p><a href="a00482_source.html">Aller au code source de ce fichier.</a></p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Fonctions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">subroutine&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01059_gaa66afba0490f4d46eb35bdca621a7a8c.html#gaa66afba0490f4d46eb35bdca621a7a8c">mfrcre</a> (fid, nent, nvent, ncent, cs, swm, stm, pname, fltas, flta, flt, cret)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Crée une selection d'entités grâce a un tableau d'index <em>filterarray</em> de taille <em>filterarraysize</em>. Initialisé en sortie de fonction, le filtre <em>filter</em> sera utilisé pour lire/écrire des valeurs associées à ces entités. Ces valeurs peuvent être des coordonnées, des connectivités des valeurs de champs résultats mais aussi des numéros de familles, des noms ou numéros optionnels.  <a href="a01059_gaa66afba0490f4d46eb35bdca621a7a8c.html#gaa66afba0490f4d46eb35bdca621a7a8c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">subroutine&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01059_gabc69b90f5af8c5aca1dbd4b685b5a953.html#gabc69b90f5af8c5aca1dbd4b685b5a953">mfrall</a> (nflt, flt, cret)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Alloue un tableau de filtres de taille <em>nfilter</em>.  <a href="a01059_gabc69b90f5af8c5aca1dbd4b685b5a953.html#gabc69b90f5af8c5aca1dbd4b685b5a953"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">subroutine&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01059_gad95791e5fe16d7d6c7b99ef5f39923e2.html#gad95791e5fe16d7d6c7b99ef5f39923e2">mfrdea</a> (nflt, flt, cret)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Desalloue un tableau de filtre de taille <em>nfilter</em>.  <a href="a01059_gad95791e5fe16d7d6c7b99ef5f39923e2.html#gad95791e5fe16d7d6c7b99ef5f39923e2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">subroutine&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01059_ga160e0f69194873d2265bc7eed58cf74c.html#ga160e0f69194873d2265bc7eed58cf74c">mfrblc</a> (fid, nent, nvent, ncent, cs, swm, stm, pname, start, stride, count, bsize, lbsize, flt, cret)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Crée un filtre en selectionnant par blocs les entités pour lesquelles on veut lire/écrire des valeurs. Cette sélection permet une lecture/écriture avancée vers/depuis les emplacements mémoire sélectionnés. Elle s'utilise aussi bien en mode séquentiel qu'en mode parallèle (un ou plusieurs processus).  <a href="a01059_ga160e0f69194873d2265bc7eed58cf74c.html#ga160e0f69194873d2265bc7eed58cf74c"></a><br/></td></tr>
+</table>
+</div>
+<hr size="1"/><address style="text-align: right;"><small>Généré le Thu Jan 21 18:06:28 2016 pour MED fichier par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
+</body>
+</html>

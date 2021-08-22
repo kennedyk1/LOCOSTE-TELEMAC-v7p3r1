@@ -1,0 +1,154 @@
+\chapter{bumpcri}
+%
+\label{t2d:bumpcri:sect}
+%
+\section{Description of the problem}
+\bigskip
+This test case presents a flow over a bump on the bed 
+with super-critical condition.
+It allows to show that \telemac{2d} is able to correctly 
+reproduce the hydrodynamic impact of a changing bed slopes, 
+vertical flow contractions and expansions. Furthermore, 
+it allows to have a good representation of flows computed in 
+steady and transient flow regimes. \\
+The solution produced by \telemac{2d} in a frictionless channel 
+presenting an idealised bump on the bottom  is compared with the analytical 
+solution to this problem.  Flow conditions are such that the bump 
+generates a transition from sub-critical (fluvial) to super-critical 
+(torrential) flow for this problem.
+
+\bigskip
+The geometry dimensions of the channel are 2~m wide and 
+20.5~m long. It is horizontal with a 4~m long bump in 
+its middle (see Figure \ref{t2d:bumpcri:fig:baty}). 
+The maximum elevation of the bump is 0.2~m (see Figure \ref{t2d:bumpcri:fig:profil}) 
+with the bottom $z_f$ describes by the following equation :
+\begin{equation*}
+z_f = \left\{
+\begin{array}{rl}
+  -0.05(x-10)^2~\text{m}& \text{ if 8 m < x < 12 m} \\
+-0.20~\text{m} & \text{ elsewhere}
+\end{array}
+\right.
+\end{equation*}
+Note that the horizontal viscosity turbulent is constant and equal to zero. 
+However instead of prescribing a zero viscosity, no diffusion step could 
+have been used (keyword DIFFUSION OF VELOCITY prescribed to NO).
+%
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/Mesh_topography.png}
+ \caption{Mesh and topography of the channel.}
+ \label{t2d:bumpcri:fig:baty}
+\end{figure}
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/bottom_level.png}
+ \caption{Profile of the bump.}
+ \label{t2d:bumpcri:fig:profil}
+\end{figure}
+%
+\section{Initial and boundary conditions}
+\bigskip
+The initial conditions are a null velocity and an analytical solution 
+(Equation \eqref{t2d:bumpcri:eq:ha}) for the water depth.
+
+\bigskip
+The boundary conditions are:
+\begin{itemize}
+\item At the channel entrance, the flow rate is $Q = 0.6~\text{m}^3\text{s}^{-1}$ 
+(note that  $\displaystyle{q=\frac{Q}{B}}$, $B$ being the channel 
+width and the depth is  $\displaystyle{h = z_{s}-z_{f} = 0.5~\text{m}}$, 
+with the free surface elevation $z_{s}$).
+\item At the channel outlet, the free velocity and free water level are 
+imposed on the liquid boundary.
+\item No friction is taken into account on the bottom and on the lateral walls.
+\end{itemize}
+
+\section{Mesh and numerical parameters}
+\bigskip
+The mesh is regular, with a higher resolution in the middle of the channel. 
+It is made up with quadrangles split into two triangles.
+It is composed of 2,620 triangular elements (1,452 nodes) and the size 
+of triangles ranges between 0.25~m and 0.5~m. The triangular elements types 
+are linear triangles (P1) for velocities and for water depth.
+
+\bigskip
+The time step is 0.03~s for a period of 30~s. In fact, \telemac{2d} is 
+run forward in time until a steady state flow is obtained. The resolution 
+accuracy for the velocity is taken at $10^{-5}$.
+
+\bigskip
+Note that for numerical resolution, the conjugate gradient on a normal 
+equation is used for solving the propagation step (option 1).
+Furthermore the treatment of linear system is done with a wave equation. 
+To solve advection, the characteristics scheme is used for the velocities 
+(scheme 1) and the conservative PSI scheme is used for the depth (scheme 5, mandatory). 
+To finish, the implicitation coefficient for depth and velocities is equal at 1.
+
+\section{Results}
+
+\bigskip
+From an analytical point of view, the critical depth is :
+\begin{equation*}
+h_c=\left(\frac{q_{c}^2}{g}\right)^{1/3}
+\end{equation*}
+This value is obtained above the bump.
+No friction on the bottom thus allows to write the Bernoulli 
+equation between the bump and any point A of abscissa $x_A$:
+\begin{equation*}
+  z_{fA}+h_{A}+ \frac{q_{A}^{2}}{2gh_{A}^{2}}=z_{fc}+E_{c}
+\end{equation*}
+where the corresponding specific water depth energy $E_c$ is:
+\begin{equation*}
+E_c=h_c+\frac{q_{c}^2}{2gh_c^2}=\frac{3}{2}h_c
+\end{equation*}
+Therefore, water depth $h_A$ is given analytically by:	
+\begin{equation}
+h_A^3+(z_A-z_c-E_c)h_A^2+\frac{q_{A}^2}{2g}=0
+\label{t2d:bumpcri:eq:ha}
+\end{equation} 
+
+\bigskip
+At the foot of the bump, positive solutions are $h_{upstream}=0.49535~\text{m}$ 
+and $h_{downstream}=0.49535~\text{m}$. These solutions are respectively 
+the upstream sub-critical and downstream super-critical water depths. 
+Corresponding free surface elevations are $ z_{s~upstream} = 0.29535~\text{m}$ 
+and $z_{s~downstream} = - 0.094~\text{m}$.
+
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/velocity_vector.png}
+ \caption{Velocity field for the steady state flow.}
+ \label{t2d:bumpcri:fig:velo}
+\end{figure}
+
+\bigskip
+Numerical results are compared with the analytical solution, when the 
+state flow is steady (Figure \ref{t2d:bumpflu:fig:velo}). 
+Furthermore, the computed Froude number is also compared with the 
+analytical solution $\displaystyle F_{r}=\frac{q}{h\sqrt{gh}}$.
+The solution produced by \telemac{2d} is in close agreement with 
+the analytical solution as shown on the Figures \ref{t2d:bumpcri:fig:h} 
+and \ref{t2d:bumpcri:fig:fr}. 
+
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/free_surface.png}
+ \caption{Comparison between analytical solution and \telemac{2d} 
+ solution for the free surface elevation.}
+ \label{t2d:bumpcri:fig:h}
+\end{figure}
+\begin{figure}[!htbp]
+ \centering
+ \includegraphicsmaybe{[width=\textwidth]}{../img/froude_number.png}
+ \caption{Comparison between analytical solution and \telemac{2d} 
+ solution for the Froude number.}
+ \label{t2d:bumpcri:fig:fr}
+\end{figure}
+
+\bigskip
+To conclude, this transition from a sub-critical to a super-critical flow 
+regime over a bump in a channel without friction is adequately reproduced by 
+\telemac{2d}, provided the mesh resolution is fine enough. This transition 
+occurs at critical depth as announced by channel flow hydraulics.

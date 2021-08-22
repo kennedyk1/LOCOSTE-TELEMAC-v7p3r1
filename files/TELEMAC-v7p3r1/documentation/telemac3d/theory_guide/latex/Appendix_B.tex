@@ -1,0 +1,96 @@
+La réecriture des équations dans le domaine transformé est détaillée dans \cite{hervouet007} (\textit{p 18-23}). Dans cette annexe on ajoute quelques indications pour détailler les calculs et les techniques utilisées.
+\section*{Les dérivées partielles dans le maillage transformé}
+\begin{itemize}
+\item On commence par les équations (2.69)-(2.72) (\textit{page 19}) qui donnent l'expression des dérivées partielles d'une fonction quelconque dans le maillage fixe. On détaille par exemple la réecriture de $\left(\frac{\partial f}{\partial x}\right)_{y,z,t}$, les autres dérivées se font de la même façon. 
+\begin{align*}
+\left(\frac{\partial f}{\partial x}\right)_{y,z,t} = &
+	\left(\frac{\partial f}{\partial x^*}\right)_{y,z^*,t} \left(\frac{\partial x^*}{\partial x}\right)_{y,z,t}
+	+\left(\frac{\partial f}{\partial y^*}\right)_{x,z^*,t} \left(\frac{\partial y^*}{\partial x}\right)_{y,z,t}	
+	+\left(\frac{\partial f}{\partial z^*}\right)_{x,y,t}\left(\frac{\partial z^*}{\partial x}\right)_{y,z,t}
+\end{align*}
+Or $x^* = x$ et $y^* = y$, donc $\left(\frac{\partial x^*}{\partial x}\right)_{y,z,t}=1$ et  $\left(\frac{\partial y^*}{\partial x}\right)_{y,z,t}=0$. D'où le résultat :
+\begin{align*}
+\left(\frac{\partial f}{\partial x}\right)_{y,z,t} = &
+	\left(\frac{\partial f}{\partial x}\right)_{y,z^*,t}
+	+\left(\frac{\partial f}{\partial z^*}\right)_{x,y,t}\left(\frac{\partial z^*}{\partial x}\right)_{y,z,t}
+\end{align*}
+\item Dans le cas particulier où $f=z$, on retrouve les équations (2.73)-(2.75) qui seront d'une grande utilité pour la suite des développements. Pour la première dérivée partielle, par exemple, on a:
+\begin{align*}
+\left(\frac{\partial z}{\partial x}\right)_{y,z,t} = &
+	\left(\frac{\partial z}{\partial x}\right)_{y,z^*,t}
+	+\left(\frac{\partial z}{\partial z^*}\right)_{x,y,t}\left(\frac{\partial z^*}{\partial x}\right)_{y,z,t}
+\end{align*} 
+Or $\left(\frac{\partial z}{\partial x}\right)_{y,z,t}=0$ et $\left(\frac{\partial z}{\partial z^*}\right)_{x,y,t} = \Delta z $. Donc :
+\begin{align*}
+\left(\frac{\partial z^*}{\partial x}\right)_{y,z,t}= & - \frac{1}{\Delta z} 
+\left(\frac{\partial z}{\partial x}\right)_{y,z^*,t} 
+\end{align*} 
+\end{itemize}
+\subsection*{Vitesse du maillage}
+Dans cette partie on donne des relations entre la vitesse du maillage $W_{mesh} = \left(\frac{\partial z}{\partial t}\right)_{x^*,y^*,z^*}$, et la vitesse du maillage transformé $W^*_{mesh} = \left(\frac{\partial z^*}{\partial t}\right)_{x,y,z}$.
+\begin{itemize}
+\item Equation (2.78)
+\begin{align*}
+W_{mesh} + \Delta z W^*_{mesh} = & \left(\frac{\partial z}{\partial t}\right)_{x^* =x,y^* =y,z^*} + \Delta z \left(\frac{\partial z^*}{\partial t}\right)_{x,y,z} \\
+=& \left(\frac{\partial z}{\partial t}\right)_{x,y,z^*} + \Delta z \left( - \frac{1}{\Delta z} \left(\frac{\partial z}{\partial t}\right)_{x,y,z^*} \right) = 0
+\end{align*} 
+\item Equation (2.80)
+\begin{align*}
+\frac{\partial}{\partial t} \left(\frac{\partial z^*}{\partial z}\right) +\frac{\partial}{\partial z} \left(\frac{\partial z^*}{\partial t}\right) =& 0
+\end{align*}
+Or $\frac{\partial z^*}{\partial z} = \frac{1}{\Delta z} $ et $\frac{\partial z^*}{\partial t} = W^*_{mesh}$
+Donc,
+\[\frac{\partial}{\partial t} \left(\frac{1}{\Delta z} \right) +\frac{\partial}{\partial z} \left( W^*_{mesh} \right) = 0 \]
+En utilisant l'équation précédente, 
+\[\frac{\partial}{\partial t} \left(\frac{1}{\Delta z} \right) +\frac{\partial}{\partial z} \left(\frac{ W_{mesh}}{\Delta z} \right) = 0\]
+Finalement,
+\[\frac{\partial}{\partial t} \left(\frac{1}{\Delta z} \right) +\Div \left(\frac{ \vec{W}_{mesh}}{\Delta z} \right) = 0 \]
+\end{itemize}
+\section*{Termes de convection}
+Il faut faire très attention aux termes de convecion qui, en plus d'être soumis à l'écoulement du fluide, sont définis sur des points en mouvement. 
+On commence par définir les vitesses dans le maillage fixe:
+\begin{align*}
+U^* =& \frac{d x^*}{d t} = \frac{d x}{d t} = U \\
+V^* =& \frac{d y^*}{d t} = \frac{d y}{d t} =  V \\
+W^* =& \frac{d z^*}{d t} = \left(\frac{\partial z^*}{\partial t}\right)_{x,y,z} + U \left(\frac{\partial z^*}{\partial x}\right)_{y,z,t} +V \left(\frac{\partial z^*}{\partial y}\right)_{x,z,t}+ W \left(\frac{\partial f}{\partial z}\right)_{x,y,t}
+\end{align*}
+En utilisant ces expressions et les dérivées partielles données par les équations (2.69)-(2.72), on obtient:
+\begin{align*}
+\frac{d f}{d t} =& \left(\frac{\partial f}{\partial t}\right)_{x,y,z} + U \left(\frac{\partial f}{\partial x}\right)_{y,z,t} +V \left(\frac{\partial f}{\partial y}\right)_{x,z,t}+ W \left(\frac{\partial f}{\partial z}\right)_{x,y,t}\\
+=&\left(\frac{\partial f}{\partial t}\right)_{x,y,z^*} + U \left(\frac{\partial f}{\partial x}\right)_{y,z^*,t} + V \left(\frac{\partial f}{\partial y}\right)_{x,z^*,t} + W^*\left(\frac{\partial f}{\partial z^*}\right)_{x,y,t}
+\end{align*}
+D'autre part (en gardant la dérivée partielle par rapport à $t$ dans le maillage réel),
+\begin{align*}
+\frac{d f}{d t} 
+=& \left(\frac{\partial f}{\partial t}\right)_{x,y,z}
+ + U\left(\frac{\partial f}{\partial x}\right)_{y,z^*,t} + U \left(\frac{\partial f}{\partial z^*}\right)_{x,y,t}\left(\frac{\partial z^*}{\partial x}\right)_{y,z,t} \\
++& V  \left(\frac{\partial f}{\partial y}\right)_{x,z^*,t}
++V \left(\frac{\partial f}{\partial z^*}\right)_{x,y,t}\left(\frac{\partial z^*}{\partial y}\right)_{x,z,t} + W \left(\frac{\partial f}{\partial z^*}\right)_{x,y,t}\left(\frac{\partial z^*}{\partial z}\right)_{x,y,t} \\
+=& \left(\frac{\partial f}{\partial t}\right)_{x,y,z} +  U \left(\frac{\partial f}{\partial x}\right)_{y,z^*,t} + V \left(\frac{\partial f}{\partial y}\right)_{x,z^*,t} \\
++& \left(\frac{\partial f}{\partial z^*}\right)_{x,y,t} \left[ U \left(\frac{\partial z^*}{\partial x}\right)_{y,z,t} +V \left(\frac{\partial z^*}{\partial y}\right)_{x,z,t}+ W \left(\frac{\partial f}{\partial z}\right)_{x,y,t} \right] \\
+\end{align*}
+Or $ U \left(\frac{\partial z^*}{\partial x}\right)_{y,z,t} +V \left(\frac{\partial z^*}{\partial y}\right)_{x,z,t}+ W \left(\frac{\partial f}{\partial z}\right)_{x,y,t} = W^* - \left(\frac{\partial z^*}{\partial t}\right)_{x,y,z}$ et $\left(\frac{\partial z^*}{\partial t}\right)_{x,y,z} = W^*_{mesh}$.\\
+Donc on a les trois écritures suivantes pour la dérivée par rapport au temps :
+\begin{align*}
+\frac{d f}{d t} =& \left(\frac{\partial f}{\partial t}\right)_{x,y,z} + U \left(\frac{\partial f}{\partial x}\right)_{y,z,t} +V \left(\frac{\partial f}{\partial y}\right)_{x,z,t}+ W \left(\frac{\partial f}{\partial z}\right)_{x,y,t}\\
+=&\left(\frac{\partial f}{\partial t}\right)_{x,y,z^*} + U \left(\frac{\partial f}{\partial x}\right)_{y,z^*,t} + V \left(\frac{\partial f}{\partial y}\right)_{x,z^*,t} + W^*\left(\frac{\partial f}{\partial z^*}\right)_{x,y,t}\\
+=& \left(\frac{\partial f}{\partial t}\right)_{x,y,z} +  U \left(\frac{\partial f}{\partial x}\right)_{y,z^*,t} + V \left(\frac{\partial f}{\partial y}\right)_{x,z^*,t} + (W^* -W^*_{mesh} )\left(\frac{\partial f}{\partial z^*}\right)_{x,y,t}
+\end{align*}
+La première et la troisième équation donnent la relation suivante :
+\begin{align*}
+U \left(\frac{\partial f}{\partial x}\right)_{y,z,t} +V \left(\frac{\partial f}{\partial y}\right)_{x,z,t}+ W \left(\frac{\partial f}{\partial z}\right)_{x,y,t} = U \left(\frac{\partial f}{\partial x}\right)_{y,z^*,t} + V \left(\frac{\partial f}{\partial y}\right)_{x,z^*,t} + (W^* -W^*_{mesh} )\left(\frac{\partial f}{\partial z^*}\right)_{x,y,t}
+\end{align*}
+En utilisant le fait que $-W^*_{mesh} =\frac{1}{\Delta z}$ et que $\left(\frac{\partial f}{\partial z^*}\right)_{x,y,t}=\Delta z \left(\frac{\partial f}{\partial z}\right)_{x,y,t} $, on trouve :
+\begin{align*}
+U \left(\frac{\partial f}{\partial x}\right)_{y,z,t} +V \left(\frac{\partial f}{\partial y}\right)_{x,z,t}+ (W-W_{mesh}) \left(\frac{\partial f}{\partial z}\right)_{x,y,t} = U \left(\frac{\partial f}{\partial x}\right)_{y,z^*,t} + V \left(\frac{\partial f}{\partial y}\right)_{x,z^*,t} + W^* \left(\frac{\partial f}{\partial z^*}\right)_{x,y,t}
+\end{align*}
+\section*{La divergence}
+Les étapes qui décrivent l'écriture de l'équation de contnuité dans le maillage fixe sont expliquées dans \cite{hervouet007} (\textit{pages 21-23}). On ajoute juste les étapes intermédiaires pour retrouver les équations (2.95)-(2.97) :\\
+On a
+\begin{align*}
+\left(\frac{\partial z^*}{\partial x}\right)_{y,z,t}= & - \frac{1}{\Delta z} \left(\frac{\partial z}{\partial x}\right)_{y,z^*,t} 
+\end{align*}
+Donc
+\begin{align*}
+\frac{\partial}{\partial z^*} \left(\frac{\partial z^*}{\partial x}\right)_{y,z,t}= & - \frac{1}{\Delta z} \frac{\partial}{\partial z^*} \left(\frac{\partial z}{\partial x}\right)_{y,z^*,t} =  - \frac{1}{\Delta z} \frac{\partial}{\partial x} \left(\frac{\partial z}{\partial z^* }\right)_{x,y,t} = - \frac{1}{\Delta z} \frac{\partial \Delta z }{\partial x}
+\end{align*}

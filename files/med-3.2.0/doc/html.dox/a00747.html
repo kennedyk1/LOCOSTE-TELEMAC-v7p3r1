@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>MED fichier: Référence du fichier MEDsupportMeshInfo.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Généré par Doxygen 1.6.1 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Documentation&nbsp;MED</span></a></li>
+      <li><a href="pages.html"><span>Guides&nbsp;d'utilisation</span></a></li>
+      <li><a href="modules.html"><span>Guides&nbsp;de&nbsp;référence</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_5dd6e84f739ad96c16a708db73465b58.html">src</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_ccd81287dac8cfafce02b8082a8657c3.html">ci</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier MEDsupportMeshInfo.c</h1><code>#include &quot;<a class="el" href="a00345_source.html">med_config.h</a>&quot;</code><br/>
+<code>#include &lt;<a class="el" href="a00332_source.html">med.h</a>&gt;</code><br/>
+<code>#include &quot;<a class="el" href="a00357_source.html">med_outils.h</a>&quot;</code><br/>
+<code>#include &lt;string.h&gt;</code><br/>
+<div class="dynheader">
+Graphe des dépendances par inclusion de MEDsupportMeshInfo.c:</div>
+<div class="dynsection">
+<div class="center"><img src="a01718.jpg" border="0" usemap="#MEDsupportMeshInfo_8c_map" alt=""/></div>
+<map name="MEDsupportMeshInfo_8c_map" id="MEDsupportMeshInfo_8c">
+<area shape="rect" id="node3" href="a00345.html" title="med_config.h" alt="" coords="561,246,659,277"/><area shape="rect" id="node5" href="a00332.html" title="med.h" alt="" coords="759,246,818,277"/><area shape="rect" id="node52" href="a00357.html" title="med_outils.h" alt="" coords="798,86,894,117"/><area shape="rect" id="node9" href="a00359.html" title="med_proto.h" alt="" coords="742,326,835,357"/><area shape="rect" id="node11" href="a00376.html" title="medC_win_dll.h" alt="" coords="733,486,845,517"/><area shape="rect" id="node13" href="a00532.html" title="medlibrary.h" alt="" coords="25,406,118,437"/><area shape="rect" id="node16" href="a00468.html" title="medfile.h" alt="" coords="142,406,217,437"/><area shape="rect" id="node19" href="a00560.html" title="medmesh.h" alt="" coords="241,406,331,437"/><area shape="rect" id="node22" href="a00439.html" title="medfield.h" alt="" coords="355,406,438,437"/><area shape="rect" id="node25" href="a00426.html" title="medfamily.h" alt="" coords="462,406,555,437"/><area shape="rect" id="node28" href="a00406.html" title="medequivalence.h" alt="" coords="579,406,705,437"/><area shape="rect" id="node31" href="a00736.html" title="medsubdomain.h" alt="" coords="729,406,849,437"/><area shape="rect" id="node34" href="a00701.html" title="medprofile.h" alt="" coords="873,406,966,437"/><area shape="rect" id="node37" href="a00483.html" title="medfilter.h" alt="" coords="990,406,1073,437"/><area shape="rect" id="node40" href="a00550.html" title="medlocalization.h" alt="" coords="1097,406,1219,437"/><area shape="rect" id="node43" href="a00543.html" title="medlink.h" alt="" coords="1243,406,1321,437"/><area shape="rect" id="node46" href="a00682.html" title="medparameter.h" alt="" coords="1345,406,1459,437"/><area shape="rect" id="node49" href="a00511.html" title="medinterp.h" alt="" coords="1483,406,1574,437"/><area shape="rect" id="node55" href="a00362.html" title="med_vargs.h" alt="" coords="605,166,701,197"/><area shape="rect" id="node60" href="a00355.html" title="med_misc.h" alt="" coords="935,166,1029,197"/><area shape="rect" id="node68" href="a00350.html" title="med_hdfi.h" alt="" coords="826,166,911,197"/><area shape="rect" id="node71" href="a00361.html" title="med_utils.h" alt="" coords="1053,166,1141,197"/><area shape="rect" id="node65" href="a00348.html" title="med_exit_if.h" alt="" coords="991,246,1090,277"/><area shape="rect" id="node76" href="a00346.html" title="med_err.h" alt="" coords="1202,246,1282,277"/></map>
+</div>
+
+<p><a href="a00747_source.html">Aller au code source de ce fichier.</a></p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Fonctions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00332_abd29d7c6abaef5da2a5ed1b73464f0ba.html#abd29d7c6abaef5da2a5ed1b73464f0ba">med_err</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="a01054_ga23ddf2e0ab45f4e7a37be051aa5753e4.html#ga23ddf2e0ab45f4e7a37be051aa5753e4">MEDsupportMeshInfo</a> (const <a class="el" href="a00332_afa4ec8284026c8c5545e5333475fb65a.html#afa4ec8284026c8c5545e5333475fb65a">med_idt</a> fid, const int meshit, char *const supportmeshname, <a class="el" href="a00332_a88dc15143f934cc7b771bc89f46372dc.html#a88dc15143f934cc7b771bc89f46372dc">med_int</a> *const spacedim, <a class="el" href="a00332_a88dc15143f934cc7b771bc89f46372dc.html#a88dc15143f934cc7b771bc89f46372dc">med_int</a> *const meshdim, char *const description, <a class="el" href="a00332_a57867e4bed1d104c865cfc9d23c9204d.html#a57867e4bed1d104c865cfc9d23c9204d">med_axis_type</a> *const axistype, char *const axisname, char *const axisunit)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Cette routine permet de lire les informations relatives à un maillage support dans un fichier.  <a href="a01054_ga23ddf2e0ab45f4e7a37be051aa5753e4.html#ga23ddf2e0ab45f4e7a37be051aa5753e4"></a><br/></td></tr>
+</table>
+</div>
+<hr size="1"/><address style="text-align: right;"><small>Généré le Thu Jan 21 18:06:53 2016 pour MED fichier par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
+</body>
+</html>
